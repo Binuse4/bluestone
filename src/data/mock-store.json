@@ -1,0 +1,534 @@
+{
+  "store": {
+    "id": "africa-chic-boutique-uuid",
+    "slug": "africa-chic",
+    "name": "Africa Chic",
+    "description": "Créateur de mode contemporaine inspirée du patrimoine africain. Prêt-à-porter de luxe, maroquinerie d'art et accessoires faits main.",
+    "logo_url": "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=200&auto=format&fit=crop",
+    "cover_url": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200&auto=format&fit=crop",
+    "whatsapp_number": "22997000000",
+    "theme_color": "#8c6239",
+    "template": "elegance",
+    "currency": "FCFA"
+  },
+  "categories": [
+    {
+      "id": "cat-vetements",
+      "name": "Prêt-à-Porter",
+      "description": "Robes, vestes et ensembles contemporains en wax et tissus artisanaux.",
+      "image_url": "https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?q=80&w=400&auto=format&fit=crop",
+      "icon_url": "👕",
+      "sort_order": 1
+    },
+    {
+      "id": "cat-sacs",
+      "name": "Maroquinerie",
+      "description": "Sacs à main, pochettes et bagagerie en cuir fin et pagne tissé.",
+      "image_url": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=400&auto=format&fit=crop",
+      "icon_url": "👜",
+      "sort_order": 2
+    },
+    {
+      "id": "cat-bijoux",
+      "name": "Bijoux d'Art",
+      "description": "Colliers, bracelets et boucles d'oreilles sculptés en bronze et perles.",
+      "image_url": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=400&auto=format&fit=crop",
+      "icon_url": "💍",
+      "sort_order": 3
+    },
+    {
+      "id": "cat-chaussures",
+      "name": "Chaussures",
+      "description": "Sandales et souliers en cuir artisanal alliant confort et élégance.",
+      "image_url": "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=400&auto=format&fit=crop",
+      "icon_url": "👟",
+      "sort_order": 4
+    }
+  ],
+  "products": [
+    {
+      "id": "prod-robe-muna",
+      "category_id": "cat-vetements",
+      "name": "Robe Muna",
+      "description": "Robe longue fluide en lin blanc avec broderie fine dorée faite main le long de l'encolure. Parfaite pour les soirées d'été.",
+      "price": 45000,
+      "image_url": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=600",
+        "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 1,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Blanc", "Noir", "Ocre", "Indigo"]
+    },
+    {
+      "id": "prod-veste-kente",
+      "category_id": "cat-vetements",
+      "name": "Blazer Kente Moderne",
+      "description": "Veste blazer cintrée pour femme avec revers et détails de manches en tissage Kente traditionnel. Tissu haut de gamme.",
+      "price": 65000,
+      "image_url": "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=600",
+        "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 2,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Blanc", "Noir", "Ocre", "Indigo"]
+    },
+    {
+      "id": "prod-chemise-bogolan",
+      "category_id": "cat-vetements",
+      "name": "Chemise Bogolan",
+      "description": "Chemise coupe décontractée pour homme en coton bio, ornée de motifs Bogolan noirs et ocres imprimés de manière artisanale.",
+      "price": 32000,
+      "image_url": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600",
+        "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 3,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Blanc", "Noir", "Ocre", "Indigo"]
+    },
+    {
+      "id": "prod-ensemble-baoule",
+      "category_id": "cat-vetements",
+      "name": "Ensemble Baoulé",
+      "description": "Ensemble haut crop-top et pantalon large en pagne Baoulé tissé main. Confortable, élégant et résolument moderne.",
+      "price": 75000,
+      "image_url": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600",
+        "https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 4,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Blanc", "Noir", "Ocre", "Indigo"]
+    },
+    {
+      "id": "prod-kimono-indigo",
+      "category_id": "cat-vetements",
+      "name": "Kimono Indigo Sauvage",
+      "description": "Kimono long unisexe teint à l'indigo naturel selon les techniques ancestrales. Chaque pièce a un motif de teinture unique.",
+      "price": 55000,
+      "image_url": "https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 5,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Blanc", "Noir", "Ocre", "Indigo"]
+    },
+    {
+      "id": "prod-pantalon-safari",
+      "category_id": "cat-vetements",
+      "name": "Pantalon Safari",
+      "description": "Pantalon cargo ajusté en gabardine de coton robuste. Poches latérales spacieuses, parfait pour un look urbain et baroudeur.",
+      "price": 28000,
+      "image_url": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 6,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Blanc", "Noir", "Ocre", "Indigo"]
+    },
+    {
+      "id": "prod-top-wax",
+      "category_id": "cat-vetements",
+      "name": "Top Wax Croisé",
+      "description": "Haut drapé croisé en véritable cire de wax hollandaise aux couleurs chatoyantes. Dos nu ajustable avec un cordon en satin.",
+      "price": 22000,
+      "image_url": "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 7,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Blanc", "Noir", "Ocre", "Indigo"]
+    },
+    {
+      "id": "prod-boubou-luxe",
+      "category_id": "cat-vetements",
+      "name": "Boubou Moderne de Luxe",
+      "description": "Grand boubou traditionnel revisité en soie sauvage. Broderies fines sur la poitrine et le long des manches. Coupe majestueuse.",
+      "price": 120000,
+      "image_url": "https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 8,
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": ["Blanc", "Noir", "Ocre", "Indigo"]
+    },
+    {
+      "id": "prod-sac-tote-pagne",
+      "category_id": "cat-sacs",
+      "name": "Cabas Tote Bogolan",
+      "description": "Grand cabas du quotidien mariant le cuir de vachette pleine fleur et une large bande centrale en Bogolan traditionnel doublé.",
+      "price": 38000,
+      "image_url": "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 1,
+      "sizes": ["Standard"],
+      "colors": ["Marron", "Noir", "Ocre"]
+    },
+    {
+      "id": "prod-sac-mini-kente",
+      "category_id": "cat-sacs",
+      "name": "Mini Sac Seau Kente",
+      "description": "Sac bandoulière en forme de seau en cuir rigide marron chocolat avec un rabat aimanté habillé de pagne tissé Kente.",
+      "price": 42000,
+      "image_url": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 2,
+      "sizes": ["Standard"],
+      "colors": ["Marron", "Noir", "Ocre"]
+    },
+    {
+      "id": "prod-pochette-soiree",
+      "category_id": "cat-sacs",
+      "name": "Pochette de Soirée Cuir",
+      "description": "Pochette élégante extra-plate en cuir métallisé or avec une dragonne amovible en perles de bronze faites à la main.",
+      "price": 25000,
+      "image_url": "https://images.unsplash.com/photo-1566150905458-1bf1fc15a7a0?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1566150905458-1bf1fc15a7a0?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 3,
+      "sizes": ["Standard"],
+      "colors": ["Marron", "Noir", "Ocre"]
+    },
+    {
+      "id": "prod-sac-dos-nomade",
+      "category_id": "cat-sacs",
+      "name": "Sac à Dos Nomade",
+      "description": "Sac à dos robuste alliant toile de coton épaisse imperméabilisée et renforts en cuir brut. Idéal pour le travail ou le week-end.",
+      "price": 48000,
+      "image_url": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 4,
+      "sizes": ["Standard"],
+      "colors": ["Marron", "Noir", "Ocre"]
+    },
+    {
+      "id": "prod-sac-banane-wax",
+      "category_id": "cat-sacs",
+      "name": "Sac Banane Urban Wax",
+      "description": "Sac banane tendance en wax doublé avec sangle en coton ajustable et fermetures éclair métalliques dorées.",
+      "price": 18000,
+      "image_url": "https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 5,
+      "sizes": ["Standard"],
+      "colors": ["Marron", "Noir", "Ocre"]
+    },
+    {
+      "id": "prod-sac-voyage",
+      "category_id": "cat-sacs",
+      "name": "Sac de Voyage Horizon",
+      "description": "Grand sac week-end en cuir de buffle souple. Finition patinée à la main avec une grande poche zippée pour les chaussures.",
+      "price": 95000,
+      "image_url": "https://images.unsplash.com/photo-1553062407-55e587c96827?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1553062407-55e587c96827?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 6,
+      "sizes": ["Standard"],
+      "colors": ["Marron", "Noir", "Ocre"]
+    },
+    {
+      "id": "prod-pochette-ordinateur",
+      "category_id": "cat-sacs",
+      "name": "Housse Ordinateur Indigo",
+      "description": "Housse rembourrée pour ordinateur 13 ou 15 pouces en tissu indigo traditionnel matelassé avec détails en cuir.",
+      "price": 20000,
+      "image_url": "https://images.unsplash.com/photo-1607185642220-4b9ec34091c8?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1607185642220-4b9ec34091c8?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 7,
+      "sizes": ["Standard"],
+      "colors": ["Marron", "Noir", "Ocre"]
+    },
+    {
+      "id": "prod-sac-plage",
+      "category_id": "cat-sacs",
+      "name": "Panier Raphia & Cuir",
+      "description": "Grand panier tressé en raphia naturel avec de longues anses plates en cuir pour un porté épaule confortable. Esprit vacances chic.",
+      "price": 30000,
+      "image_url": "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 8,
+      "sizes": ["Standard"],
+      "colors": ["Marron", "Noir", "Ocre"]
+    },
+    {
+      "id": "prod-collier-bronze",
+      "category_id": "cat-bijoux",
+      "name": "Collier Reine Amina",
+      "description": "Collier plastron en bronze massif sculpté de motifs géométriques traditionnels et poli pour une brillance dorée subtile.",
+      "price": 35000,
+      "image_url": "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 1,
+      "sizes": ["Unique"],
+      "colors": ["Bronze", "Or", "Argent"]
+    },
+    {
+      "id": "prod-boucles-pendante",
+      "category_id": "cat-bijoux",
+      "name": "Pendantes Gouttes de Bronze",
+      "description": "Boucles d'oreilles pendantes légères martelées en laiton avec de petits éclats de perles de corail rouge.",
+      "price": 15000,
+      "image_url": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 2,
+      "sizes": ["Unique"],
+      "colors": ["Bronze", "Or", "Argent"]
+    },
+    {
+      "id": "prod-bracelet-jonc",
+      "category_id": "cat-bijoux",
+      "name": "Jonc Martelé Laiton",
+      "description": "Bracelet jonc ajustable large en laiton brossé. Finition texturée rappelant les techniques de forge traditionnelles.",
+      "price": 18000,
+      "image_url": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 3,
+      "sizes": ["Unique"],
+      "colors": ["Bronze", "Or", "Argent"]
+    },
+    {
+      "id": "prod-bague-afrique",
+      "category_id": "cat-bijoux",
+      "name": "Bague Silhouette Afrique",
+      "description": "Bague fine et élégante en argent sterling 925 représentant les contours du continent africain.",
+      "price": 25000,
+      "image_url": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 4,
+      "sizes": ["Unique"],
+      "colors": ["Bronze", "Or", "Argent"]
+    },
+    {
+      "id": "prod-boucles-perles",
+      "category_id": "cat-bijoux",
+      "name": "Créoles Perles Massaï",
+      "description": "Créoles colorées entièrement perlées à la main par des artisanes selon les motifs traditionnels Massaï (rouge, bleu, blanc, jaune).",
+      "price": 12000,
+      "image_url": "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 5,
+      "sizes": ["Unique"],
+      "colors": ["Bronze", "Or", "Argent"]
+    },
+    {
+      "id": "prod-collier-perles-bois",
+      "category_id": "cat-bijoux",
+      "name": "Sautoir Ébène & Coco",
+      "description": "Long sautoir en perles de bois d'ébène noir poli et disques de noix de coco. Naturel, sobre et chic.",
+      "price": 16000,
+      "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 6,
+      "sizes": ["Unique"],
+      "colors": ["Bronze", "Or", "Argent"]
+    },
+    {
+      "id": "prod-bracelet-cuir",
+      "category_id": "cat-bijoux",
+      "name": "Manchette Cuir Tressé",
+      "description": "Bracelet manchette en cuir marron foncé double tour avec un fermoir magnétique élégant en acier inoxydable brossé.",
+      "price": 14000,
+      "image_url": "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 7,
+      "sizes": ["Unique"],
+      "colors": ["Bronze", "Or", "Argent"]
+    },
+    {
+      "id": "prod-boucles-bois",
+      "category_id": "cat-bijoux",
+      "name": "Boucles Raphia Tissé",
+      "description": "Créoles légères habillées de fils de raphia naturel tissé en damier noir et crème. Très estivales.",
+      "price": 10000,
+      "image_url": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 8,
+      "sizes": ["Unique"],
+      "colors": ["Bronze", "Or", "Argent"]
+    },
+    {
+      "id": "prod-sandales-nomades",
+      "category_id": "cat-chaussures",
+      "name": "Sandales Nomades Cuir",
+      "description": "Sandales plates style gladiateur en cuir naturel tanné végétal. S'assouplissent et se patinent magnifiquement avec le temps.",
+      "price": 25000,
+      "image_url": "https://images.unsplash.com/photo-1562273138-f46be4ebdf33?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1562273138-f46be4ebdf33?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 1,
+      "sizes": ["38", "39", "40", "41", "42", "43"],
+      "colors": ["Marron", "Noir", "Camel"]
+    },
+    {
+      "id": "prod-mules-raffia",
+      "category_id": "cat-chaussures",
+      "name": "Mules Raffia Tissé",
+      "description": "Mules à petit talon en raphia naturel tressé à la main et semelle intérieure en cuir rembourré pour un confort ultime.",
+      "price": 28000,
+      "image_url": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 2,
+      "sizes": ["38", "39", "40", "41", "42", "43"],
+      "colors": ["Marron", "Noir", "Camel"]
+    },
+    {
+      "id": "prod-babouches-modernes",
+      "category_id": "cat-chaussures",
+      "name": "Babouches Modernes Daim",
+      "description": "Babouches révisitées en cuir suédé (daim) souple ocre jaune. Talon pliable pour un porté chausson ou soulier.",
+      "price": 32000,
+      "image_url": "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 3,
+      "sizes": ["38", "39", "40", "41", "42", "43"],
+      "colors": ["Marron", "Noir", "Camel"]
+    },
+    {
+      "id": "prod-espadrilles-wax",
+      "category_id": "cat-chaussures",
+      "name": "Espadrilles Urban Wax",
+      "description": "Espadrilles d'été avec semelle traditionnelle en corde de jute tressée, tige en pagne wax robuste doublé de toile de coton.",
+      "price": 20000,
+      "image_url": "https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 4,
+      "sizes": ["38", "39", "40", "41", "42", "43"],
+      "colors": ["Marron", "Noir", "Camel"]
+    },
+    {
+      "id": "prod-sandales-talon",
+      "category_id": "cat-chaussures",
+      "name": "Sandales Talon Bloc",
+      "description": "Sandales élégantes à talons blocs en daim noir avec une fine bride cheville ornée d'une boucle en laiton.",
+      "price": 40000,
+      "image_url": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 5,
+      "sizes": ["38", "39", "40", "41", "42", "43"],
+      "colors": ["Marron", "Noir", "Camel"]
+    },
+    {
+      "id": "prod-bottines-desert",
+      "category_id": "cat-chaussures",
+      "name": "Bottines Desert en Nubuck",
+      "description": "Bottines à lacets classiques pour homme en nubuck de qualité supérieure. Semelle crepe en caoutchouc naturel.",
+      "price": 55000,
+      "image_url": "https://images.unsplash.com/photo-1520639888713-7851133b1ed0?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1520639888713-7851133b1ed0?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 6,
+      "sizes": ["38", "39", "40", "41", "42", "43"],
+      "colors": ["Marron", "Noir", "Camel"]
+    },
+    {
+      "id": "prod-sandales-tresses",
+      "category_id": "cat-chaussures",
+      "name": "Sandales Cuir Tressé",
+      "description": "Sandales pour homme avec lanières en cuir de chèvre tressé marron foncé, semelle anatomique recouverte de daim.",
+      "price": 27000,
+      "image_url": "https://images.unsplash.com/photo-1481868002411-49bc3d417a35?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1481868002411-49bc3d417a35?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 7,
+      "sizes": ["38", "39", "40", "41", "42", "43"],
+      "colors": ["Marron", "Noir", "Camel"]
+    },
+    {
+      "id": "prod-mocassins-ete",
+      "category_id": "cat-chaussures",
+      "name": "Mocassins Légers en Lin",
+      "description": "Mocassins extra-souples en toile de lin aérée beige clair, parfaits pour rester chic et au frais les jours de grande chaleur.",
+      "price": 38000,
+      "image_url": "https://images.unsplash.com/photo-1533867617858-e7b97e060509?q=80&w=600&auto=format&fit=crop",
+      "product_images": [
+        "https://images.unsplash.com/photo-1533867617858-e7b97e060509?q=80&w=600"
+      ],
+      "is_available": true,
+      "sort_order": 8,
+      "sizes": ["38", "39", "40", "41", "42", "43"],
+      "colors": ["Marron", "Noir", "Camel"]
+    }
+  ]
+}

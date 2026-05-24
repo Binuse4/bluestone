@@ -1,0 +1,681 @@
+/* =============================================
+   TEMPLATE : VITRINE (Refine Home - Modern Minimalism)
+   Style : High-end interior design, soft cream palette
+   ============================================= */
+
+/* --- GLOBAL : Palette de couleurs --- */
+.theme-vitrine {
+  --refine-bg: #FDF8F2; /* Crème ivoire doux */
+  --refine-text: #111111; /* Noir de jais */
+  --refine-promo: #A38699; /* Lavande velours sourd */
+  --refine-accent: #DAA520; /* Or brossé doux */
+  --refine-card-bg: #FFFFFF;
+  --refine-cat-all: #D9C4BB; /* Beige rosier doux */
+}
+
+.theme-vitrine body {
+  background-color: var(--refine-bg);
+  color: var(--refine-text);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* --- HEADER : Refine Home --- */
+.theme-vitrine .site-header {
+  background-color: transparent;
+  border-bottom: none;
+  padding: 30px 20px 10px 20px;
+}
+
+.theme-vitrine .header-container {
+  display: block;
+}
+
+.theme-vitrine .header-refine-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.theme-vitrine .header-refine-title-link {
+  text-decoration: none;
+}
+
+.theme-vitrine .header-refine-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  max-width: 250px;
+  line-height: 1.1;
+  color: var(--refine-text);
+  margin: 0;
+}
+
+.theme-vitrine .header-refine-right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.theme-vitrine .refine-admin-btn {
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #111;
+  background-color: white;
+  border: 1.5px solid #111;
+  padding: 8px 14px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.theme-vitrine .refine-cart-btn {
+  background: white;
+  border: 1.5px solid #111;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  color: #111;
+}
+
+.theme-vitrine .refine-cart-btn .cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: var(--refine-accent);
+  color: #111;
+  font-size: 0.7rem;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border: 1.5px solid #111;
+}
+
+/* --- SEARCH BAR --- */
+.theme-vitrine .refine-search-section {
+  padding: 0 20px;
+  margin-bottom: 20px;
+}
+
+.theme-vitrine .refine-search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 20px;
+  padding: 12px 20px;
+  gap: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.theme-vitrine .refine-search-bar input {
+  flex: 1;
+  border: none;
+  background: none;
+  font-size: 1rem;
+  color: var(--refine-text);
+  outline: none;
+}
+
+.theme-vitrine .refine-search-bar input::placeholder {
+  color: #aaa;
+}
+
+.theme-vitrine .filter-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #111;
+  display: flex;
+  align-items: center;
+}
+
+/* --- PROMO BANNER (Lavande) --- */
+.theme-vitrine .refine-promo-banner {
+  margin: 0 20px 30px 20px;
+  background-color: var(--refine-promo);
+  border-radius: 35px;
+  padding: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 180px;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-vitrine .promo-content {
+  max-width: 55%;
+  z-index: 2;
+}
+
+.theme-vitrine .promo-text {
+  color: var(--refine-bg);
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+.theme-vitrine .promo-buy-btn {
+  background-color: #111;
+  color: var(--refine-bg);
+  border: none;
+  padding: 10px 35px;
+  border-radius: 25px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.theme-vitrine .promo-image {
+  position: absolute;
+  right: -10px;
+  bottom: 0;
+  width: 50%;
+  height: 100%;
+  z-index: 1;
+}
+
+.theme-vitrine .promo-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-left-radius: 35px;
+}
+
+/* --- CATEGORIES --- */
+.theme-vitrine .refine-categories {
+  padding: 0 20px;
+  margin-bottom: 30px;
+}
+
+.theme-vitrine .refine-cat-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.theme-vitrine .refine-cat-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.theme-vitrine .refine-cat-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  border: 1.5px solid #eee;
+  background-color: white;
+  color: #111;
+}
+
+.theme-vitrine .refine-cat-badge.all-badge {
+  background-color: var(--refine-cat-all);
+  border-color: var(--refine-cat-all);
+}
+
+.theme-vitrine .refine-cat-badge.active {
+  background-color: var(--refine-text);
+  color: var(--refine-bg);
+  border-color: var(--refine-text);
+}
+/* --- PRODUCT GRID & CARDS (CASCADE / MASONRY) --- */
+.theme-vitrine .refine-products {
+  padding: 0 15px 60px 15px;
+}
+
+.theme-vitrine .refine-masonry-grid {
+  column-count: 3;
+  column-gap: 15px;
+  width: 100%;
+}
+
+.theme-vitrine .refine-masonry-item {
+  break-inside: avoid;
+  margin-bottom: 20px;
+}
+
+/* More varied heights for truly non-uniform cascade */
+.theme-vitrine .refine-masonry-item.large .minimal-card-top {
+  height: 240px;
+}
+
+.theme-vitrine .refine-masonry-item.medium .minimal-card-top {
+  height: 180px;
+}
+
+.theme-vitrine .refine-masonry-item.small .minimal-card-top {
+  height: 140px;
+}
+
+/* --- PRODUCT PAGE (Refine Style) --- */
+.theme-vitrine .refine-product-page {
+  padding-top: 20px;
+  padding-bottom: 80px;
+}
+
+.theme-vitrine .refine-page-header {
+  margin-bottom: 30px;
+}
+
+.theme-vitrine .refine-back-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #111;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.theme-vitrine .refine-product-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.theme-vitrine .refine-product-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.theme-vitrine .refine-main-img-container {
+  background-color: white;
+  border-radius: 35px;
+  width: 100%;
+  aspect-ratio: 1/1.1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+.theme-vitrine .refine-image-scroll {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scrollbar-width: none; /* Firefox */
+}
+
+.theme-vitrine .refine-image-scroll::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.theme-vitrine .refine-scroll-item {
+  flex: 0 0 100px;
+  height: 100px;
+  background-color: white;
+  border-radius: 15px;
+  padding: 10px;
+  border: 1.5px solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-vitrine .refine-scroll-item img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+@media (min-width: 1024px) {
+  .theme-vitrine .refine-masonry-grid {
+    column-count: 5;
+    column-gap: 30px;
+  }
+
+  .theme-vitrine .refine-promo-banner {
+    min-height: 350px;
+    padding: 60px;
+    margin-bottom: 60px;
+  }
+
+  .theme-vitrine .promo-text {
+    font-size: 2.5rem;
+  }
+
+  .theme-vitrine .header-refine-title {
+    font-size: 2.2rem;
+    max-width: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .theme-vitrine .refine-masonry-grid {
+    column-count: 2;
+  }
+}
+
+
+
+.theme-vitrine .refine-main-img-container img {
+  width: 85%;
+  height: auto;
+  object-fit: contain;
+}
+
+.theme-vitrine .refine-page-heart {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: white;
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  cursor: pointer;
+}
+
+.theme-vitrine .refine-product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.theme-vitrine .refine-product-name {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.theme-vitrine .refine-product-price {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #111;
+  margin-top: 5px;
+}
+
+.theme-vitrine .refine-product-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: #666;
+}
+
+.theme-vitrine .refine-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #111;
+}
+
+.theme-vitrine .refine-description p {
+  line-height: 1.7;
+  color: #444;
+  font-size: 1rem;
+}
+
+.theme-vitrine .refine-section-label {
+  display: block;
+  font-weight: 800;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.theme-vitrine .refine-pill-list {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.theme-vitrine .refine-pill {
+  border: 1.5px solid #111;
+  background: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.theme-vitrine .refine-pill.active {
+  background-color: #111;
+  color: white;
+}
+
+.theme-vitrine .refine-actions-footer {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.theme-vitrine .refine-qty-input {
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 1.5px solid #111;
+  border-radius: 25px;
+  padding: 5px;
+}
+
+.theme-vitrine .refine-qty-input button {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.theme-vitrine .refine-qty-input span {
+  width: 30px;
+  text-align: center;
+  font-weight: 800;
+}
+
+.theme-vitrine .refine-add-button {
+  flex: 1;
+  background-color: #111;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* --- CART DRAWER (Refine Home) --- */
+.theme-vitrine .cart-drawer.modern-cart {
+  background-color: var(--refine-bg);
+  border-left: 2px solid #111;
+  border-radius: 0; /* Straight for minimalist look or very small radius */
+}
+
+.theme-vitrine .cart-drawer-header {
+  border-bottom: 2px solid #111;
+  padding: 30px 20px;
+}
+
+.theme-vitrine .cart-drawer-title {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.theme-vitrine .cart-item {
+  background-color: white;
+  margin: 15px;
+  border-radius: 20px;
+  border: 1.5px solid #eee;
+}
+
+.theme-vitrine .cart-item-image {
+  background-color: #f9f9f9;
+  border-radius: 15px;
+}
+
+.theme-vitrine .cart-drawer-footer .btn-accent {
+  background-color: #111 !important;
+  border-radius: 25px !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: none !important;
+}
+
+/* --- UNIFIED PRODUCT CARD (Used in Vitrine - Mosaic Style) --- */
+.theme-vitrine .minimal-card {
+  background-color: #F7F7F7; /* Unified light grey background */
+  border-radius: 20px;
+  overflow: hidden;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0,0,0,0.03); /* Microscopic border */
+  box-shadow: none;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.theme-vitrine .minimal-card-top {
+  background-color: transparent; 
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+}
+
+.theme-vitrine .minimal-card:hover {
+  transform: translateY(-5px);
+  background-color: #efefef;
+}
+
+.theme-vitrine .minimal-like-wrapper {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+}
+
+.theme-vitrine .minimal-like-btn {
+  background-color: #FFFFFF; /* Pure white circle */
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #111;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.theme-vitrine .minimal-image-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-vitrine .minimal-product-img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.theme-vitrine .minimal-card-bottom {
+  padding: 5px 10px 20px 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.theme-vitrine .minimal-card-title {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #666;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.theme-vitrine .minimal-card-price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111;
+}
+
+/* --- FALLBACK REFINE CARD (if used elsewhere) --- */
+.theme-vitrine .refine-card {
+  background-color: white;
+  border-radius: 25px;
+  padding: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+  text-decoration: none;
+}
+
+.theme-vitrine .refine-card-image-wrapper {
+  background-color: #fff;
+  border-radius: 20px;
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.theme-vitrine .refine-card-img {
+  width: 85%;
+  height: auto;
+  object-fit: contain;
+}
+
+.theme-vitrine .refine-like-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #111;
+}
+
+.theme-vitrine .refine-card-info {
+  padding: 0 5px 5px 5px;
+}
+
+.theme-vitrine .refine-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 5px 0;
+}
+
+.theme-vitrine .refine-card-price {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #111;
+}

@@ -1,0 +1,9 @@
+@import "./styles/index.css";
+@import "./styles/components.css";
+@import "./styles/pages.css";
+
+/* Templates de boutique */
+@import "./styles/themes/elegance.css";
+@import "./styles/themes/vitrine.css";
+@import "./styles/themes/minimal.css";
+@import "./styles/themes/modern-red.css";
