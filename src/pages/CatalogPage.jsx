@@ -18,7 +18,18 @@ export default function CatalogPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isFavoritesView, setIsFavoritesOnly] = useState(initialView === 'favorites');
   
+  // État local pour les IDs aimés pour la réactivité de la vue favoris
+  const [likedIds, setLikedIds] = useState([]);
+  
   const searchInputRef = useRef(null);
+
+  // Charger les likes au démarrage
+  useEffect(() => {
+    const storedLikes = localStorage.getItem('blueston_likes');
+    if (storedLikes) {
+      setLikedIds(JSON.parse(storedLikes));
+    }
+  }, []);
 
   // Synchroniser la catégorie et le mode favoris avec l'URL
   useEffect(() => {
@@ -30,12 +41,21 @@ export default function CatalogPage() {
     setIsFavoritesOnly(view === 'favorites');
 
     if (focus === 'search' && searchInputRef.current) {
-      searchInputRef.current.focus();
-      // On retire le param focus pour ne pas refocuser à chaque render
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 100);
       searchParams.delete('focus');
       setSearchParams(searchParams);
     }
   }, [searchParams]);
+
+  const handleLikeToggleCallback = (productId, isLiked) => {
+    if (isLiked) {
+      setLikedIds(prev => [...prev, productId]);
+    } else {
+      setLikedIds(prev => prev.filter(id => id !== productId));
+    }
+  };
 
   if (loading) {
     return (
@@ -64,9 +84,7 @@ export default function CatalogPage() {
   const filteredProducts = products.filter((product) => {
     // 1. Filtrage par favoris si activé
     if (isFavoritesView) {
-      const storedLikes = localStorage.getItem('blueston_likes');
-      const likes = storedLikes ? JSON.parse(storedLikes) : [];
-      if (!likes.includes(product.id)) return false;
+      if (!likedIds.includes(product.id)) return false;
     }
 
     // 2. Filtrage par catégorie
@@ -123,7 +141,7 @@ export default function CatalogPage() {
 
         <section className="mr-products" style={{ padding: '0 0 60px 0' }}>
           <div className="products-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '20px' }}>
-            {filteredProducts.map((product) => (<ProductCard key={product.id} product={product} />))}
+            {filteredProducts.map((product) => (<ProductCard key={product.id} product={product} onLikeToggle={handleLikeToggleCallback} />))}
           </div>
           {filteredProducts.length === 0 && <p style={{ textAlign: 'center', gridColumn: '1/-1', color: '#666', marginTop: 40 }}>{isFavoritesView ? "Vous n'avez pas encore de favoris." : "Aucun produit trouvé"}</p>}
         </section>
@@ -143,7 +161,6 @@ export default function CatalogPage() {
         )}
         <section className="refine-search-section">
           <div className="refine-search-bar">
-            {/* Loupe supprimée à gauche comme demandé */}
             <input ref={searchInputRef} type="text" placeholder="Rechercher" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
             <button className="filter-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="2" y1="14" x2="6" y2="14"/><line x1="10" y1="8" x2="14" y2="8"/><line x1="18" y1="16" x2="22" y2="16"/></svg></button>
           </div>
@@ -173,7 +190,7 @@ export default function CatalogPage() {
               {filteredProducts.map((product, index) => {
                 const sizeClass = index % 5 === 0 ? 'large' : (index % 3 === 0 ? 'medium' : 'small');
                 return (
-                  <div key={product.id} className={`refine-masonry-item ${sizeClass}`}><ProductCard product={product} categoryName={categories.find(c => c.id === product.category_id)?.name} /></div>
+                  <div key={product.id} className={`refine-masonry-item ${sizeClass}`}><ProductCard product={product} onLikeToggle={handleLikeToggleCallback} categoryName={categories.find(c => c.id === product.category_id)?.name} /></div>
                 );
               })}
             </div>
@@ -207,7 +224,7 @@ export default function CatalogPage() {
 
         <section className="minimal-products">
           <div className="products-grid">
-            {filteredProducts.map((product) => (<ProductCard key={product.id} product={product} />))}
+            {filteredProducts.map((product) => (<ProductCard key={product.id} product={product} onLikeToggle={handleLikeToggleCallback} />))}
           </div>
           {filteredProducts.length === 0 && <p style={{ textAlign: 'center', marginTop: 40, color: '#999' }}>{isFavoritesView ? "Aucun favori pour le moment." : "Aucun produit trouvé"}</p>}
         </section>
@@ -256,7 +273,7 @@ export default function CatalogPage() {
 
         <section className="modern-products">
           <div className="products-grid">
-            {filteredProducts.map((product) => (<ProductCard key={product.id} product={product} categoryName={categories.find(c => c.id === product.category_id)?.name} />))}
+            {filteredProducts.map((product) => (<ProductCard key={product.id} product={product} onLikeToggle={handleLikeToggleCallback} categoryName={categories.find(c => c.id === product.category_id)?.name} />))}
           </div>
           {filteredProducts.length === 0 && <div className="empty-state"><p>{isFavoritesView ? "Vous n'avez pas encore de favoris." : "Aucun produit trouvé"}</p></div>}
         </section>
