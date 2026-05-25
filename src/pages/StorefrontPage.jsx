@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useStoreData } from '../hooks/useStoreData';
 import { useTheme } from '../context/ThemeContext';
 import CategoryCard from '../components/catalog/CategoryCard';
@@ -13,8 +13,8 @@ export default function StorefrontPage() {
   if (loading) return <div className="container" style={{ padding: 100, textAlign: 'center' }}>Chargement...</div>;
   if (error || !store) return <div className="container" style={{ padding: 100, textAlign: 'center' }}>Boutique introuvable</div>;
 
-  document.documentElement.style.setProperty('--theme-color', store.theme_color || '#8c6239');
-  const featuredProducts = products.filter(p => p.is_available).slice(0, 4);
+  // On ne garde que les produits disponibles pour la page d'accueil
+  const featuredProducts = products.filter(p => p.is_available !== false).slice(0, 4);
 
   // --- RENDU THÈME MODERN-RED ---
   if (template === 'modern-red') {
@@ -30,6 +30,10 @@ export default function StorefrontPage() {
             <img src={store.logo_url} alt={store.name} style={{ width: 100, height: 100, borderRadius: '50%', marginBottom: 20, border: '5px solid #F3F3F3', marginTop: -80, boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }} />
             <h1 style={{ fontWeight: 900, fontSize: '2.5rem', marginBottom: 10 }}>{store.name}</h1>
             <p style={{ color: '#666', marginBottom: 25, fontSize: '1.1rem' }}>{store.description}</p>
+            <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginBottom: 25, flexWrap: 'wrap' }}>
+               {store.address && <a href={`https://maps.google.com/?q=${encodeURIComponent(store.address)}`} target="_blank" rel="noopener noreferrer" style={{ padding: '6px 15px', borderRadius: 20, backgroundColor: '#ddd', fontSize: '0.8rem', fontWeight: 700, textDecoration: 'none', color: '#333' }}>📍 Maps</a>}
+               {store.whatsapp_number && <a href={`https://wa.me/${store.whatsapp_number.toString().replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" style={{ padding: '6px 15px', borderRadius: 20, backgroundColor: '#ddd', fontSize: '0.8rem', fontWeight: 700, textDecoration: 'none', color: '#333' }}>💬 WhatsApp</a>}
+            </div>
             <Link to={`/c/catalogue/${store.slug}/explore`} className="mr-add-btn" style={{ textDecoration: 'none', display: 'inline-block' }}>Explorer le Catalogue</Link>
           </div>
 
@@ -61,7 +65,11 @@ export default function StorefrontPage() {
         <div className="container" style={{ paddingBottom: 80 }}>
           <div style={{ maxWidth: 700, marginBottom: 80 }}>
             <p style={{ fontSize: '1.4rem', color: '#444', lineHeight: 1.6, fontWeight: 500 }}>{store.description}</p>
-            <div style={{ marginTop: 40 }}>
+            <div style={{ display: 'flex', gap: 20, margin: '20px 0 40px 0' }}>
+               {store.address && <a href={`https://maps.google.com/?q=${encodeURIComponent(store.address)}`} target="_blank" rel="noopener noreferrer" style={{ color: '#111', fontWeight: 700, fontSize: '0.9rem' }}>📍 Boutique Officielle</a>}
+               {store.whatsapp_number && <a href={`https://wa.me/${store.whatsapp_number.toString().replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" style={{ color: '#111', fontWeight: 700, fontSize: '0.9rem' }}>💬 Contact WhatsApp</a>}
+            </div>
+            <div style={{ marginTop: 20 }}>
               <Link to={`/c/catalogue/${store.slug}/explore`} className="promo-buy-btn" style={{ textDecoration: 'none', display: 'inline-block', padding: '18px 45px', fontSize: '1.1rem' }}>Explorer la collection</Link>
             </div>
           </div>
@@ -94,6 +102,10 @@ export default function StorefrontPage() {
             <img src={store.logo_url} alt={store.name} style={{ width: 60, height: 60, marginBottom: 30, opacity: 0.8 }} />
             <h1 style={{ fontSize: '5rem', fontWeight: 300, letterSpacing: -2, marginBottom: 30, lineHeight: 1 }}>{store.name}</h1>
             <p style={{ fontSize: '1.2rem', color: '#888', fontWeight: 400, maxWidth: 600, margin: '0 auto 50px auto', lineHeight: 1.6 }}>{store.description}</p>
+            <div style={{ display: 'flex', gap: 20, justifyContent: 'center', marginBottom: 40 }}>
+               {store.address && <a href={`https://maps.google.com/?q=${encodeURIComponent(store.address)}`} target="_blank" rel="noopener noreferrer" style={{ color: '#888', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: 1 }}>📍 Localisation</a>}
+               {store.whatsapp_number && <a href={`https://wa.me/${store.whatsapp_number.toString().replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" style={{ color: '#888', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: 1 }}>💬 WhatsApp</a>}
+            </div>
             <Link to={`/c/catalogue/${store.slug}/explore`} style={{ color: '#000', fontWeight: 700, textDecoration: 'none', borderBottom: '1px solid #000', paddingBottom: 8, fontSize: '1.1rem', letterSpacing: 1 }}>VOIR LE CATALOGUE &rarr;</Link>
           </div>
 
@@ -121,8 +133,16 @@ export default function StorefrontPage() {
           <h1 className="store-name-title">{store.name}</h1>
           <p className="store-description-text">{store.description}</p>
           <div className="store-info-badges">
-            <span className="badge-info">📍 Boutique Officielle</span>
-            <span className="badge-info">💬 WhatsApp : {store.whatsapp_number}</span>
+            {store.address ? (
+              <a href={`https://maps.google.com/?q=${encodeURIComponent(store.address)}`} target="_blank" rel="noopener noreferrer" className="badge-info" style={{ textDecoration: 'none' }}>📍 Boutique Officielle</a>
+            ) : (
+              <span className="badge-info">📍 Boutique Officielle</span>
+            )}
+            {store.whatsapp_number ? (
+              <a href={`https://wa.me/${store.whatsapp_number.toString().replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="badge-info" style={{ textDecoration: 'none' }}>💬 WhatsApp : {store.whatsapp_number}</a>
+            ) : (
+              <span className="badge-info">💬 WhatsApp</span>
+            )}
           </div>
           <div style={{ marginTop: 30 }}>
             <Link to={`/c/catalogue/${store.slug}/explore`} className="btn btn-primary" style={{ padding: '14px 40px', fontWeight: 700, borderRadius: 15 }}>Voir le Catalogue</Link>

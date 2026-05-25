@@ -5,6 +5,9 @@ import { useTheme } from '../../context/ThemeContext';
 import { supabase } from '../../lib/supabase';
 import { uploadFile } from '../../lib/storage';
 
+// Base d'icônes prédéfinies
+const iconBase = ['👕', '👜', '👟', '💍', '👗', '🧢', '🕶️', '🧦', '💄', '📱', '💻', '⌚', '🎧', '⚽', '🏀', '🎮', '🧸', '📚', '🍔', '🍕', '🚗', '🛵', '🏠', '🛋️'];
+
 export default function DashboardPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -20,9 +23,13 @@ export default function DashboardPage() {
     name: '',
     description: '',
     whatsapp_number: '',
+    address: '',
     logo_url: '',
     cover_url: '',
-    theme_color: '#8c6239'
+    theme_color: '#8c6239',
+    promo_rate: 0,
+    promo_category_id: '',
+    promo_active: false
   });
   
   // États formulaire Catégorie
@@ -33,6 +40,7 @@ export default function DashboardPage() {
     name: '',
     description: '',
     price: '',
+    compare_price: '',
     image_url: '',
     category_id: '',
     is_available: true
@@ -55,8 +63,9 @@ export default function DashboardPage() {
       name: '',
       description: '',
       price: '',
+      compare_price: '',
       image_url: '',
-      category_id: categories[0]?.id || '',
+      category_id: categories?.[0]?.id || '',
       is_available: true
     });
     setSizesInput('');
@@ -83,10 +92,11 @@ export default function DashboardPage() {
     setNewProd({
       name: prod.name,
       description: prod.description || '',
-      price: prod.price.toString(),
+      price: prod.price ? prod.price.toString() : '',
+      compare_price: prod.compare_price ? prod.compare_price.toString() : '',
       image_url: prod.image_url || '',
       category_id: prod.category_id || '',
-      is_available: prod.is_available
+      is_available: prod.is_available ?? true
     });
     setSizesInput(prod.sizes ? prod.sizes.join(', ') : '');
     setColorsInput(prod.colors ? prod.colors.join(', ') : '');
@@ -131,9 +141,13 @@ export default function DashboardPage() {
         name: store.name || '',
         description: store.description || '',
         whatsapp_number: store.whatsapp_number || '',
+        address: store.address || '',
         logo_url: store.logo_url || '',
         cover_url: store.cover_url || '',
-        theme_color: store.theme_color || '#8c6239'
+        theme_color: store.theme_color || '#8c6239',
+        promo_rate: store.promo_rate || 0,
+        promo_category_id: store.promo_category_id || '',
+        promo_active: store.promo_active || false
       });
       setSelectedTemplate(store.template || 'elegance');
     }
@@ -141,7 +155,7 @@ export default function DashboardPage() {
 
   // Définir la catégorie par défaut une fois chargées
   useEffect(() => {
-    if (categories.length > 0 && !newProd.category_id) {
+    if (categories && categories.length > 0 && !newProd.category_id) {
       setNewProd(prev => ({ ...prev, category_id: categories[0].id }));
     }
   }, [categories, newProd.category_id]);
@@ -268,9 +282,13 @@ export default function DashboardPage() {
             name: storeForm.name,
             description: storeForm.description,
             whatsapp_number: storeForm.whatsapp_number,
+            address: storeForm.address,
             logo_url: storeForm.logo_url,
             cover_url: storeForm.cover_url,
-            theme_color: storeForm.theme_color
+            theme_color: storeForm.theme_color,
+            promo_rate: storeForm.promo_rate,
+            promo_category_id: storeForm.promo_category_id || null,
+            promo_active: storeForm.promo_active
           })
           .eq('id', store.id);
 
@@ -403,6 +421,7 @@ export default function DashboardPage() {
       name: newProd.name,
       description: newProd.description,
       price: parseFloat(newProd.price),
+      compare_price: newProd.compare_price ? parseFloat(newProd.compare_price) : null,
       currency: store.currency || 'FCFA',
       image_url: newProd.image_url || 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600',
       sizes: parsedSizes,
@@ -473,25 +492,6 @@ export default function DashboardPage() {
     }
   };
 
-  const toggleProductAvailability = async (product) => {
-    if (supabase) {
-      try {
-        const { error } = await supabase
-          .from('products')
-          .update({ is_available: !product.is_available })
-          .eq('id', product.id);
-        if (error) throw error;
-      } catch (err) {
-        console.error(err);
-        return;
-      }
-    } else {
-      const updatedProducts = products.map(p => p.id === product.id ? { ...p, is_available: !p.is_available } : p);
-      localStorage.setItem(`blueston_products_${store.slug}`, JSON.stringify(updatedProducts));
-    }
-    window.location.reload();
-  };
-
   return (
     <div className="admin-layout fade-in">
       {/* Sidebar Admin */}
@@ -542,61 +542,131 @@ export default function DashboardPage() {
 
         {/* --- ONGLET 1 : GÉNÉRAL --- */}
         {activeTab === 'general' && (
-          <form onSubmit={handleSaveStore} className="admin-card fade-in">
-            <h3 className="admin-card-title">Identité de la Boutique</h3>
-            
-            <div className="form-group">
-              <label className="form-label">Nom de la boutique</label>
-              <input 
-                type="text" 
-                className="form-input" 
-                value={storeForm.name} 
-                onChange={(e) => setStoreForm({ ...storeForm, name: e.target.value })} 
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Description commerciale</label>
-              <textarea 
-                className="form-textarea" 
-                rows="3" 
-                value={storeForm.description} 
-                onChange={(e) => setStoreForm({ ...storeForm, description: e.target.value })}
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Numéro WhatsApp (Commande)</label>
-              <input 
-                type="text" 
-                className="form-input" 
-                value={storeForm.whatsapp_number} 
-                onChange={(e) => setStoreForm({ ...storeForm, whatsapp_number: e.target.value })} 
-                placeholder="Ex: 22997000000"
-                required
-              />
-            </div>
-
-            <div className="form-row">
+          <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }} className="fade-in">
+            <form onSubmit={handleSaveStore} className="admin-card" style={{ flex: '1 1 500px' }}>
+              <h3 className="admin-card-title">Identité de la Boutique</h3>
+              
               <div className="form-group">
-                <label className="form-label">Logo</label>
-                <div style={{ display: 'flex', gap: 10 }}>
-                  <input type="text" className="form-input" value={storeForm.logo_url} onChange={(e) => setStoreForm({ ...storeForm, logo_url: e.target.value })} placeholder="URL du logo" />
-                  <input type="file" onChange={(e) => handleFileUpload(e, 'store', 'store-logo')} disabled={isUploading} style={{ width: '150px' }} />
+                <label className="form-label">Nom de la boutique</label>
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  value={storeForm.name} 
+                  onChange={(e) => setStoreForm({ ...storeForm, name: e.target.value })} 
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Description commerciale</label>
+                <textarea 
+                  className="form-textarea" 
+                  rows="3" 
+                  value={storeForm.description} 
+                  onChange={(e) => setStoreForm({ ...storeForm, description: e.target.value })}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Numéro WhatsApp (Commande)</label>
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  value={storeForm.whatsapp_number} 
+                  onChange={(e) => setStoreForm({ ...storeForm, whatsapp_number: e.target.value })} 
+                  placeholder="Ex: 22997000000"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Adresse Physique (Boutique)</label>
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  value={storeForm.address} 
+                  onChange={(e) => setStoreForm({ ...storeForm, address: e.target.value })} 
+                  placeholder="Ex: Cotonou, Haie Vive..."
+                />
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Logo</label>
+                  <div style={{ display: 'flex', gap: 10 }}>
+                    <input type="text" className="form-input" value={storeForm.logo_url} onChange={(e) => setStoreForm({ ...storeForm, logo_url: e.target.value })} placeholder="URL du logo" />
+                    <input type="file" onChange={(e) => handleFileUpload(e, 'store', 'store-logo')} disabled={isUploading} style={{ width: '150px' }} />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Bannière (Cover)</label>
+                  <div style={{ display: 'flex', gap: 10 }}>
+                    <input type="text" className="form-input" value={storeForm.cover_url} onChange={(e) => setStoreForm({ ...storeForm, cover_url: e.target.value })} placeholder="URL de bannière" />
+                    <input type="file" onChange={(e) => handleFileUpload(e, 'store', 'store-cover')} disabled={isUploading} style={{ width: '150px' }} />
+                  </div>
                 </div>
               </div>
-              <div className="form-group">
-                <label className="form-label">Bannière (Cover)</label>
-                <div style={{ display: 'flex', gap: 10 }}>
-                  <input type="text" className="form-input" value={storeForm.cover_url} onChange={(e) => setStoreForm({ ...storeForm, cover_url: e.target.value })} placeholder="URL de bannière" />
-                  <input type="file" onChange={(e) => handleFileUpload(e, 'store', 'store-cover')} disabled={isUploading} style={{ width: '150px' }} />
+
+              <div className="admin-card" style={{ marginTop: '20px', padding: '15px', backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)' }}>
+                <h4 style={{ margin: '0 0 15px 0' }}>Bannière de Réduction (Promo)</h4>
+                <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <input type="checkbox" id="promo_active" checked={storeForm.promo_active} onChange={(e) => setStoreForm({ ...storeForm, promo_active: e.target.checked })} />
+                  <label htmlFor="promo_active" style={{ cursor: 'pointer', margin: 0, fontWeight: 600 }}>Activer la bannière de réduction (S'affiche dans le catalogue)</label>
+                </div>
+                
+                {storeForm.promo_active && (
+                  <div className="form-row" style={{ marginTop: 15 }}>
+                    <div className="form-group">
+                      <label className="form-label">Taux de réduction (%)</label>
+                      <input 
+                        type="number" 
+                        className="form-input" 
+                        value={storeForm.promo_rate} 
+                        onChange={(e) => setStoreForm({ ...storeForm, promo_rate: parseInt(e.target.value) || 0 })} 
+                        min="0" max="100"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Catégorie cible (optionnel)</label>
+                      <select className="form-select" value={storeForm.promo_category_id} onChange={(e) => setStoreForm({ ...storeForm, promo_category_id: e.target.value })}>
+                        <option value="">Toutes les catégories</option>
+                        {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <button type="submit" className="btn btn-primary" style={{ marginTop: 20 }}>Enregistrer les réglages</button>
+            </form>
+
+            {/* LIVE PREVIEW */}
+            <div className="admin-card" style={{ flex: '1 1 350px', backgroundColor: 'var(--bg-secondary)', position: 'sticky', top: 20 }}>
+              <h3 className="admin-card-title">Aperçu en direct</h3>
+              <div style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', backgroundColor: 'white' }}>
+                <div style={{ height: '120px', width: '100%', backgroundColor: '#eee', backgroundImage: `url(${storeForm.cover_url || 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200'})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+                <div style={{ padding: '20px', textAlign: 'center', marginTop: '-50px' }}>
+                  <img src={storeForm.logo_url || 'https://placehold.co/100x100?text=Logo'} alt="Logo" style={{ width: '80px', height: '80px', borderRadius: '50%', border: '4px solid white', objectFit: 'cover', backgroundColor: 'white', margin: '0 auto 10px auto' }} />
+                  <h4 style={{ margin: '0 0 5px 0', fontSize: '1.2rem', fontWeight: 800 }}>{storeForm.name || 'Nom de la Boutique'}</h4>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '10px' }}>{storeForm.description || 'Description courte de votre boutique apparaissant ici.'}</p>
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: 10, fontSize: '0.75rem', marginBottom: '15px' }}>
+                    <span style={{ backgroundColor: 'var(--bg-secondary)', padding: '4px 10px', borderRadius: '20px' }}>📍 {storeForm.address || 'Adresse'}</span>
+                    <span style={{ backgroundColor: 'var(--bg-secondary)', padding: '4px 10px', borderRadius: '20px' }}>💬 {storeForm.whatsapp_number || 'WhatsApp'}</span>
+                  </div>
+                  
+                  {storeForm.promo_active && storeForm.promo_rate > 0 && (
+                    <div style={{ backgroundColor: '#1a1a1a', color: 'white', borderRadius: '15px', padding: '15px', textAlign: 'left', position: 'relative', overflow: 'hidden' }}>
+                      <p style={{ margin: '0 0 10px 0', fontSize: '0.9rem', fontWeight: 700, width: '70%' }}>
+                        {storeForm.promo_rate}% de réduction !
+                        {storeForm.promo_category_id ? ` sur ${categories?.find(c => c.id === storeForm.promo_category_id)?.name || 'cette catégorie'}` : ' sur toute la boutique'}
+                      </p>
+                      <button style={{ backgroundColor: '#ff8c00', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 700 }}>En profiter</button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-
-            <button type="submit" className="btn btn-primary">Enregistrer les réglages</button>
-          </form>
+          </div>
         )}
 
         {/* --- ONGLET 2 : DESIGN --- */}
@@ -649,26 +719,44 @@ export default function DashboardPage() {
                 <label className="form-label">Nom</label>
                 <input type="text" className="form-input" value={newCat.name} onChange={(e) => setNewCat({ ...newCat, name: e.target.value })} required />
               </div>
-              <div className="form-group">
-                <label className="form-label">Description</label>
-                <textarea className="form-textarea" rows="2" value={newCat.description} onChange={(e) => setNewCat({ ...newCat, description: e.target.value })} />
-              </div>
+              
+              {selectedTemplate !== 'minimal' && selectedTemplate !== 'modern-red' && (
+                <div className="form-group">
+                  <label className="form-label">Description</label>
+                  <textarea className="form-textarea" rows="2" value={newCat.description} onChange={(e) => setNewCat({ ...newCat, description: e.target.value })} />
+                </div>
+              )}
               
               <div className="form-row">
-                <div className="form-group">
+                <div className="form-group" style={{ flex: 1 }}>
                   <label className="form-label">Icône (Emoji ou URL)</label>
-                  <div style={{ display: 'flex', gap: 10 }}>
+                  <div style={{ display: 'flex', gap: 10, marginBottom: 10 }}>
                     <input type="text" className="form-input" value={newCat.icon_url} onChange={(e) => setNewCat({ ...newCat, icon_url: e.target.value })} />
                     <input type="file" onChange={(e) => handleFileUpload(e, 'category-icon', 'category-icon')} disabled={isUploading} style={{ width: '150px' }} />
                   </div>
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Bannière</label>
-                  <div style={{ display: 'flex', gap: 10 }}>
-                    <input type="text" className="form-input" value={newCat.image_url} onChange={(e) => setNewCat({ ...newCat, image_url: e.target.value })} />
-                    <input type="file" onChange={(e) => handleFileUpload(e, 'category', 'category')} disabled={isUploading} style={{ width: '150px' }} />
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, padding: '10px', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-sm)' }}>
+                    <span style={{ fontSize: '0.85rem', width: '100%', color: 'var(--text-secondary)' }}>Ou choisissez une icône rapide :</span>
+                    {iconBase.map(icon => (
+                      <button 
+                        key={icon} 
+                        type="button" 
+                        onClick={() => setNewCat({ ...newCat, icon_url: icon })}
+                        style={{ background: 'white', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '5px', fontSize: '1.2rem', cursor: 'pointer' }}
+                      >
+                        {icon}
+                      </button>
+                    ))}
                   </div>
                 </div>
+                {selectedTemplate !== 'minimal' && selectedTemplate !== 'modern-red' && (
+                  <div className="form-group">
+                    <label className="form-label">Bannière</label>
+                    <div style={{ display: 'flex', gap: 10 }}>
+                      <input type="text" className="form-input" value={newCat.image_url} onChange={(e) => setNewCat({ ...newCat, image_url: e.target.value })} />
+                      <input type="file" onChange={(e) => handleFileUpload(e, 'category', 'category')} disabled={isUploading} style={{ width: '150px' }} />
+                    </div>
+                  </div>
+                )}
               </div>
 
               <button type="submit" className="btn btn-primary btn-full">
@@ -714,8 +802,12 @@ export default function DashboardPage() {
                     <input type="text" className="form-input" value={newProd.name} onChange={(e) => setNewProd({ ...newProd, name: e.target.value })} required />
                   </div>
                   <div className="form-group">
-                    <label className="form-label">Prix (FCFA)</label>
+                    <label className="form-label">Prix Normal/Promo (FCFA)</label>
                     <input type="number" className="form-input" value={newProd.price} onChange={(e) => setNewProd({ ...newProd, price: e.target.value })} required />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Ancien Prix (barré)</label>
+                    <input type="number" className="form-input" value={newProd.compare_price} onChange={(e) => setNewProd({ ...newProd, compare_price: e.target.value })} />
                   </div>
                 </div>
 
@@ -743,6 +835,10 @@ export default function DashboardPage() {
                   <div className="form-group">
                     <label className="form-label">Couleurs (virgules)</label>
                     <input type="text" className="form-input" value={colorsInput} onChange={(e) => setColorsInput(e.target.value)} placeholder="Noir, Blanc..." />
+                  </div>
+                  <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: '30px' }}>
+                    <input type="checkbox" id="is_available" checked={newProd.is_available} onChange={(e) => setNewProd({ ...newProd, is_available: e.target.checked })} />
+                    <label htmlFor="is_available" style={{ margin: 0, cursor: 'pointer', fontWeight: 600 }}>En stock (Disponible)</label>
                   </div>
                 </div>
 

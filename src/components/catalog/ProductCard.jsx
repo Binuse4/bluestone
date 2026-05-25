@@ -56,10 +56,11 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
   };
 
   const formattedPrice = product.price.toLocaleString() + ' ' + (product.currency || 'FCFA');
+  const formattedComparePrice = product.compare_price ? product.compare_price.toLocaleString() + ' ' + (product.currency || 'FCFA') : null;
 
   // Rendu spécifique pour le thème MODERN-RED
   if (template === 'modern-red') {
-    const wasPrice = (product.price * 1.5).toLocaleString() + ' ' + (product.currency || 'FCFA');
+    const wasPrice = formattedComparePrice || ((product.price * 1.5).toLocaleString() + ' ' + (product.currency || 'FCFA'));
     return (
       <div className="product-card mr-card fade-in">
         <Link to={`/c/catalogue/${slug}/product/${product.id}`}>
@@ -104,7 +105,10 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
           </div>
           <div className="minimal-card-bottom">
             <h4 className="minimal-card-title">{product.name}</h4>
-            <span className="minimal-card-price">{formattedPrice}</span>
+            <span className="minimal-card-price">
+               {formattedComparePrice && <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.85em', marginRight: '5px' }}>{formattedComparePrice}</span>}
+               {formattedPrice}
+            </span>
           </div>
         </Link>
       </div>
@@ -124,7 +128,10 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
           </div>
           <div className="refine-card-info">
             <h4 className="refine-card-title">{product.name}</h4>
-            <span className="refine-card-price">{formattedPrice}</span>
+            <span className="refine-card-price">
+              {formattedComparePrice && <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.85em', marginRight: '5px' }}>{formattedComparePrice}</span>}
+              {formattedPrice}
+            </span>
           </div>
         </Link>
       </div>
@@ -148,7 +155,10 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
           <div className="modern-card-bottom">
             <h4 className="modern-card-title">{product.name}</h4>
             <div className="modern-card-details">
-              <span className="modern-card-price">{formattedPrice}</span>
+              <span className="modern-card-price">
+                {formattedComparePrice && <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.85em', marginRight: '5px' }}>{formattedComparePrice}</span>}
+                {formattedPrice}
+              </span>
               <div className="modern-card-rating">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFD700" stroke="#FFD700"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
                 <span>4.8</span>
@@ -178,7 +188,10 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
       <div className="product-card-info">
         {categoryName && <span className="product-card-category">{categoryName}</span>}
         <Link to={`/c/catalogue/${slug}/product/${product.id}`}><h4 className="product-card-title">{product.name}</h4></Link>
-        <span className="product-card-price">{formattedPrice}</span>
+        <span className="product-card-price">
+           {formattedComparePrice && <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.85em', marginRight: '5px' }}>{formattedComparePrice}</span>}
+           {formattedPrice}
+        </span>
       </div>
     </div>
   );

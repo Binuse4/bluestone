@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS products (
   name TEXT NOT NULL,
   description TEXT,
   price DECIMAL(10,2) NOT NULL,
+  compare_price DECIMAL(10,2),
   currency TEXT DEFAULT 'FCFA',
   image_url TEXT,                     -- Image principale (rétro-compatibilité)
   product_images TEXT[] DEFAULT '{}', -- Multiples images (thème moderne)
@@ -138,5 +139,8 @@ BEGIN
   VALUES 
     (v_store_id, v_cat_chaussures, 'Sandales Nomades Cuir', 'Sandales plates en cuir naturel tanné végétal.', 25000, 'https://images.unsplash.com/photo-1562273138-f46be4ebdf33?q=80&w=600', ARRAY['38', '39', '40', '41', '42', '43'], ARRAY['Marron', 'Noir', 'Camel'], true, 1),
     (v_store_id, v_cat_chaussures, 'Mules Raffia Tissé', 'Mules à petit talon en raphia naturel tressé.', 28000, 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600', ARRAY['38', '39', '40', '41', '42', '43'], ARRAY['Marron', 'Noir', 'Camel'], true, 2);
+
+END $$;
+0&w=600', ARRAY['38', '39', '40', '41', '42', '43'], ARRAY['Marron', 'Noir', 'Camel'], true, 2);
 
 END $$;

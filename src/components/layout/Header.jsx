@@ -95,8 +95,12 @@ export default function Header({ store, onCartClick }) {
     return (
       <div className="header-modern-layout" style={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
-          <Link to={`/c/catalogue/${storeSlug}`} className="logo">
-            {store?.logo_url && <img src={store.logo_url} alt={store.name} style={{ width: 35, height: 35, borderRadius: '50%' }} />}
+          <Link to={`/c/catalogue/${storeSlug}`} className="logo" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {store?.logo_url && (
+              <div style={{ width: '48px', height: '48px', minWidth: '48px', minHeight: '48px', borderRadius: '50%', overflow: 'hidden', border: '2px solid #eee', backgroundColor: 'white', position: 'relative' }}>
+                <img src={store.logo_url} alt={store.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              </div>
+            )}
           </Link>
         </div>
         
