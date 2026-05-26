@@ -103,9 +103,9 @@ export default function CatalogPage() {
                          (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesCategory = selectedCategory === 'all' || p.category_id === selectedCategory;
     const matchesFavorites = !isFavoritesView || likedIds.includes(p.id);
-    const isAvailable = p.is_available !== false;
     
-    return matchesSearch && matchesCategory && matchesFavorites && isAvailable;
+    // On garde tous les produits (ceux en stock et hors stock), le ProductCard gérera l'affichage du badge "Rupture"
+    return matchesSearch && matchesCategory && matchesFavorites;
   });
 
   // --- RENDU THÈME MODERN-RED ---
@@ -279,11 +279,9 @@ export default function CatalogPage() {
           <section className="discount-banner">
             <div className="discount-content">
               <p className="discount-text">
-                {store.promo_rate}% de réduction !
-                <br />
+                {store.promo_rate}% de réduction ! {' '}
                 {store.promo_category_id ? `Sur la catégorie ${categories?.find(c => c.id === store.promo_category_id)?.name || ''}` : 'Sur toute la boutique'}
-              </p>
-              <button className="discount-btn">En profiter</button>
+              </p>              <button className="discount-btn">En profiter</button>
             </div>
             <div className="discount-images">
               <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400" alt="Sneaker" className="floating-img img-1" />

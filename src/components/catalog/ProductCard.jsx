@@ -62,7 +62,7 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
   if (template === 'modern-red') {
     const wasPrice = formattedComparePrice || ((product.price * 1.5).toLocaleString() + ' ' + (product.currency || 'FCFA'));
     return (
-      <div className="product-card mr-card fade-in">
+      <div className="product-card mr-card fade-in" style={{ opacity: product.is_available === false ? 0.8 : 1 }}>
         <Link to={`/c/catalogue/${slug}/product/${product.id}`}>
           <div className="mr-card-top">
             <h4 className="mr-card-name">{product.name.replace(' ', '\n')}</h4>
@@ -71,7 +71,12 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
             </button>
           </div>
           <div className="mr-card-image-wrapper">
-            <img src={product.image_url} alt={product.name} className="mr-card-img" />
+            <img src={product.image_url} alt={product.name} className="mr-card-img" style={{ filter: product.is_available === false ? 'grayscale(1)' : 'none' }} />
+            {product.is_available === false && (
+              <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', padding: '5px 15px', borderRadius: '10px', fontSize: '0.7rem', fontWeight: 800, zIndex: 10 }}>
+                RUPTURE
+              </div>
+            )}
           </div>
           <div className="mr-card-bottom">
             <div className="mr-price-col-left">
@@ -91,7 +96,7 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
   // Rendu spécifique pour le thème VITRINE (Refine Home avec Cascade)
   if (template === 'vitrine') {
     return (
-      <div className="product-card minimal-card fade-in">
+      <div className="product-card minimal-card fade-in" style={{ opacity: product.is_available === false ? 0.7 : 1 }}>
         <Link to={`/c/catalogue/${slug}/product/${product.id}`}>
           <div className="minimal-card-top">
             <div className="minimal-like-wrapper">
@@ -100,7 +105,12 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
               </button>
             </div>
             <div className="minimal-image-wrapper">
-              <img src={product.image_url} alt={product.name} className="minimal-product-img" />
+              <img src={product.image_url} alt={product.name} className="minimal-product-img" style={{ filter: product.is_available === false ? 'grayscale(1)' : 'none' }} />
+              {product.is_available === false && (
+                <div style={{ position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(0,0,0,0.7)', color: 'white', padding: '4px 10px', borderRadius: '5px', fontSize: '0.65rem', fontWeight: 600 }}>
+                  RUPTURE
+                </div>
+              )}
             </div>
           </div>
           <div className="minimal-card-bottom">
@@ -118,10 +128,15 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
   // Rendu spécifique pour le thème MINIMAL
   if (template === 'minimal') {
     return (
-      <div className="product-card refine-card fade-in">
+      <div className="product-card refine-card fade-in" style={{ opacity: product.is_available === false ? 0.6 : 1 }}>
         <Link to={`/c/catalogue/${slug}/product/${product.id}`}>
           <div className="refine-card-image-wrapper">
-            <img src={product.image_url} alt={product.name} className="refine-card-img" />
+            <img src={product.image_url} alt={product.name} className="refine-card-img" style={{ filter: product.is_available === false ? 'grayscale(1)' : 'none' }} />
+            {product.is_available === false && (
+              <div style={{ position: 'absolute', top: 10, left: 10, backgroundColor: '#000', color: '#fff', padding: '4px 8px', fontSize: '0.65rem', fontWeight: 700, letterSpacing: 1 }}>
+                RUPTURE
+              </div>
+            )}
             <button onClick={handleLikeToggle} className={`refine-like-btn ${isLiked ? 'liked' : ''}`}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill={isLiked ? '#ef4444' : 'none'} stroke={isLiked ? '#ef4444' : 'currentColor'} strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
             </button>
@@ -141,14 +156,19 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
   // Rendu spécifique pour le thème ÉLÉGANCE (Moderne/App-style)
   if (template === 'elegance') {
     return (
-      <div className="product-card modern-card fade-in">
+      <div className="product-card modern-card fade-in" style={{ opacity: product.is_available === false ? 0.8 : 1 }}>
         <Link to={`/c/catalogue/${slug}/product/${product.id}`}>
           <div className="modern-card-top">
+            {product.is_available === false && (
+              <div style={{ position: 'absolute', top: 15, left: 15, backgroundColor: '#3b82f6', color: 'white', padding: '4px 10px', borderRadius: '8px', fontSize: '0.6rem', fontWeight: 800, zIndex: 10 }}>
+                RUPTURE
+              </div>
+            )}
             <button onClick={handleLikeToggle} className="modern-like-btn" aria-label="Aimer le produit">
               <svg width="20" height="20" viewBox="0 0 24 24" fill={isLiked ? '#EF4444' : 'none'} stroke={isLiked ? '#EF4444' : 'currentColor'} strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
             </button>
             <div className="floating-shoe-wrapper">
-              <img src={product.image_url} alt={product.name} className="floating-shoe-img" />
+              <img src={product.image_url} alt={product.name} className="floating-shoe-img" style={{ filter: product.is_available === false ? 'grayscale(1)' : 'none' }} />
               <div className="shoe-depth-shadow"></div>
             </div>
           </div>

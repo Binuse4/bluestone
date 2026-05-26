@@ -231,30 +231,50 @@
   opacity: 0.8;
   font-weight: 300;
 }
-
 /* Cartes de produits (Grille Shopify) */
 .product-card {
   display: flex;
   flex-direction: column;
   background-color: var(--bg-primary);
   border-radius: var(--radius-sm);
-  overflow: hidden;
-  transition: all var(--transition-normal);
+}
+
+@media (max-width: 480px) {
+  .product-card-title {
+    font-size: 0.75rem !important;
+  }
+  .product-card-price {
+    font-size: 0.8rem !important;
+  }
+  .product-card-info {
+    padding: 8px 4px !important;
+  }
+  .btn-like-floater {
+    width: 26px !important;
+    height: 26px !important;
+  }
+  .product-card-image-wrapper {
+    height: 120px !important;
+  }
 }
 
 .product-card-image-wrapper {
   position: relative;
-  aspect-ratio: 4/5;
+  aspect-ratio: 1/1; /* Square frame for uniformity */
   width: 100%;
   overflow: hidden;
   background-color: var(--bg-secondary);
   border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .product-card-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* Contain ensures the whole product is visible without distortion */
+  padding: 10px; /* Internal padding to breathe */
   transition: transform var(--transition-slow);
 }
 

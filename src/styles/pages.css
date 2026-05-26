@@ -188,10 +188,11 @@
   gap: 30px 20px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px 12px;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px 6px !important;
+    padding: 5px !important;
   }
 }
 

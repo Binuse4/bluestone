@@ -13,8 +13,8 @@ export default function StorefrontPage() {
   if (loading) return <div className="container" style={{ padding: 100, textAlign: 'center' }}>Chargement...</div>;
   if (error || !store) return <div className="container" style={{ padding: 100, textAlign: 'center' }}>Boutique introuvable</div>;
 
-  // On ne garde que les produits disponibles pour la page d'accueil
-  const featuredProducts = products.filter(p => p.is_available !== false).slice(0, 4);
+  // Produits en vedette (on prend les 4 premiers produits)
+  const featuredProducts = products.slice(0, 4);
 
   // --- RENDU THÈME MODERN-RED ---
   if (template === 'modern-red') {
