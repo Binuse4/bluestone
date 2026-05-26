@@ -894,38 +894,60 @@
   }
 }
 
+/* --- FORCE 3 COLUMNS ON MOBILE (< 768px) --- */
 @media (max-width: 768px) {
-  .theme-elegance .products-grid {
+  body.theme-elegance .products-grid {
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 10px 8px !important;
-    padding: 5px !important;
+    display: grid !important;
+    gap: 8px 4px !important;
+    padding: 4px !important;
   }
   
-  .theme-elegance .modern-card {
-    padding: 10px;
-    border-radius: 15px;
+  body.theme-elegance .modern-card {
+    padding: 6px !important;
+    border-radius: 10px !important;
   }
   
-  .theme-elegance .modern-card-top {
-    height: 100px;
+  body.theme-elegance .modern-card-top {
+    height: 85px !important;
   }
   
-  .theme-elegance .floating-shoe-img {
-    width: 80px;
-    height: 80px;
+  body.theme-elegance .floating-shoe-img {
+    width: 65px !important;
+    height: 65px !important;
   }
 
-  .theme-elegance .modern-card-title {
-    font-size: 0.75rem;
+  body.theme-elegance .modern-card-title {
+    font-size: 0.65rem !important;
+    white-space: normal !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
   }
 
-  .theme-elegance .modern-card-price {
-    font-size: 0.8rem;
+  body.theme-elegance .modern-card-price {
+    font-size: 0.7rem !important;
+    font-weight: 800 !important;
   }
   
-  .theme-elegance .modern-card-rating {
-    display: none;
+  body.theme-elegance .modern-card-rating {
+    display: none !important;
   }
+}
+
+/* Fail-safe for category icons on Elegance template */
+body.theme-elegance .category-card-icon-overlay,
+body.theme-elegance .cat-icon {
+  display: none !important;
+}
+
+/* Logo Circle Fail-safe */
+body.theme-elegance .logo div,
+body.theme-elegance .store-logo-wrapper {
+  aspect-ratio: 1/1 !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
 }
 
 
