@@ -1,6 +1,6 @@
 # BLUE'STON Connect — Topo Technique
 
-> **État d'avancement** — Dernière mise à jour : 25 mai 2026
+> **État d'avancement** — Dernière mise à jour : 26 mai 2026
 > Ce fichier documente tout ce qui a été développé et implémenté jusqu'à aujourd'hui.
 
 ---
@@ -60,18 +60,18 @@ BlueStone/
 │   │   ├── layout/
 │   │   │   └── Header.jsx      # Header avec 4 variantes (elegance, vitrine, minimal, modern-red)
 │   │   ├── catalog/
-│   │   │   ├── ProductCard.jsx  # Carte produit avec 4 variantes visuelles + compare_price
-│   │   │   └── CategoryCard.jsx # Carte catégorie (avec icône overlay optionnelle)
+│   │   │   ├── ProductCard.jsx  # Carte produit (4 variantes + fallback) + badge RUPTURE + compare_price
+│   │   │   └── CategoryCard.jsx # Carte catégorie (icône masquée sur Élégance)
 │   │   └── cart/
 │   │       └── CartDrawer.jsx   # Panier latéral (drawer) + code promo
 │   │
 │   ├── pages/
-│   │   ├── StorefrontPage.jsx   # Homepage de la boutique (4 rendus : hero, catégories, featured)
-│   │   ├── CatalogPage.jsx      # Grille catalogue avec 4 rendus + vue favoris + focus search
-│   │   ├── ProductPage.jsx      # Fiche produit avec 4 rendus + galerie images + sync couleur→image
+│   │   ├── StorefrontPage.jsx   # Homepage boutique (4 rendus template-aware, featured products)
+│   │   ├── CatalogPage.jsx      # Catalogue (4 rendus + fallback, favoris, search, promo banner)
+│   │   ├── ProductPage.jsx      # Fiche produit (4 rendus + galerie + sync couleur→image)
 │   │   ├── NotFoundPage.jsx     # Page 404
 │   │   └── admin/
-│   │       └── DashboardPage.jsx # Console admin (CRUD catégories/produits + edit + template + upload)
+│   │       └── DashboardPage.jsx # Console admin (CRUD, edit, template, upload, promo)
 │   │
 │   └── styles/
 │       ├── index.css            # Variables CSS globales, reset, animations
@@ -94,12 +94,21 @@ BlueStone/
 | Fonctionnalité | Description | Fichier principal |
 |---|---|---|
 | **Homepage boutique** | Hero banner, profil boutique centré, grille catégories, produits vedettes (4 rendus par template) | `StorefrontPage.jsx` |
-| **Catalogue complet** | Grille de produits, barre de recherche, filtres par catégorie, vue favoris intégrée | `CatalogPage.jsx` |
+| **Catalogue complet** | Grille produits, recherche, filtres catégories, vue favoris, bannière promo dynamique | `CatalogPage.jsx` |
 | **Fiche produit** | Galerie d'images, prix + ancien prix barré, sélecteurs taille/couleur, quantité, ajout panier | `ProductPage.jsx` |
 | **Panier latéral** | Drawer animé, modification quantités, suppression, code promo, récap prix | `CartDrawer.jsx` |
-| **Commande WhatsApp** | Le bouton "Commander" génère un lien WhatsApp avec le récapitulatif du panier formaté | `whatsapp.js` |
-| **Vue Favoris** | Accessible via `?view=favorites`, filtre les produits likés, bouton retour au catalogue | `CatalogPage.jsx` |
-| **Focus Search** | Accessible via `?focus=search`, focus automatique sur la barre de recherche | `CatalogPage.jsx` |
+| **Commande WhatsApp** | Bouton "Commander" → lien WhatsApp avec récapitulatif panier formaté | `whatsapp.js` |
+| **Vue Favoris** | `?view=favorites` → filtre les produits likés, bouton retour au catalogue | `CatalogPage.jsx` |
+| **Focus Search** | `?focus=search` → auto-focus sur la barre de recherche | `CatalogPage.jsx` |
+
+### ✅ Gestion de la Disponibilité (Rupture de Stock)
+
+Tous les templates affichent visuellement les produits en rupture :
+- **Badge "RUPTURE"** affiché en overlay sur la carte produit
+- **Image en grayscale** (`filter: grayscale(1)`) quand `is_available === false`
+- **Opacité réduite** de la carte (0.6 à 0.8 selon le template)
+- Les produits en rupture restent visibles dans le catalogue (pas filtrés) mais sont clairement identifiés
+- Style du badge adapté à chaque template : bleu arrondi (elegance), noir texte (minimal), fond semi-transparent (vitrine), rouge vif (modern-red)
 
 ### ✅ Options Produits
 
@@ -120,8 +129,18 @@ BlueStone/
 - Persistance dans `localStorage` (`blueston_likes`)
 - Toggle visuel instantané (cœur rempli en rouge `#ef4444` si liké)
 
-### ✅ Codes Promotionnels
+### ✅ Système de Promotions
 
+#### Promotions dynamiques (admin)
+- Champs `promo_active` (BOOLEAN), `promo_rate` (INT, pourcentage), `promo_category_id` (UUID, optionnel) dans le store
+- Configurables depuis l'admin
+- Affichage conditionnel dans le catalogue :
+  - **Élégance** : bannière discount avec images sneakers flottantes + texte dynamique
+  - **Vitrine** : bannière promo lavande avec le taux et la catégorie ciblée
+- Si `promo_category_id` est renseigné → promo ciblée sur une catégorie
+- Si vide → promo sur toute la boutique
+
+#### Codes promotionnels (panier)
 | Code | Type | Règle |
 |---|---|---|
 | `BLUESTON10` | -10% | Pourcentage sur le total |
@@ -129,36 +148,36 @@ BlueStone/
 | `FREE2026` | -100% | Démo : gratuit total |
 
 - Champ de saisie dans le `CartDrawer`, validation instantanée
-- Recalcul automatique quand le panier change (`useEffect` sur `cartTotal`)
-- Montant de la réduction affiché dans le récap
+- Recalcul automatique quand le panier change
 - Inclus dans le message WhatsApp
 
 ### ✅ Upload d'Images (Supabase Storage)
 
 - Module `storage.js` pour uploader des fichiers vers le bucket `assets`
 - Utilisé dans l'admin pour : logo, couverture, icône de catégorie, images de catégories, images de produits
-- Les images sont organisées en sous-dossiers par boutique : `{slug}/store/`, `{slug}/product/`, `{slug}/category-icon/`, etc.
-- Indicateur `isUploading` pour feedback visuel pendant l'upload
+- Sous-dossiers par boutique : `{slug}/store/`, `{slug}/product/`, `{slug}/category-icon/`, etc.
+- Indicateur `isUploading` pour feedback visuel
 
 ### ✅ Espace Admin (Dashboard)
 
 | Section | Actions |
 |---|---|
-| **Général** | Modifier nom, description, WhatsApp, adresse, logo (URL + upload), couverture (URL + upload) |
-| **Design & Template** | Choisir parmi 4 templates visuels (sélecteur visuel avec descriptions + features) |
-| **Catégories** | **Ajouter / Modifier / Supprimer** des catégories (avec icône emoji/URL + bannière + upload) |
-| **Produits** | **Ajouter / Modifier / Supprimer** des produits (tailles, couleurs, prix comparé, image URL + upload) |
+| **Général** | Modifier nom, description, WhatsApp, adresse, logo + cover (URL + upload) |
+| **Design & Template** | Choisir parmi 4 templates visuels (sélecteur avec descriptions + features) |
+| **Catégories** | **Ajouter / Modifier / Supprimer** (icône emoji/URL + bannière + upload) |
+| **Produits** | **Ajouter / Modifier / Supprimer** (tailles, couleurs, prix comparé, image + upload) |
 
-Fonctionnalités admin récentes :
+Fonctionnalités admin :
 - **Mode édition** : boutons "Modifier" sur chaque catégorie et produit dans les tableaux
 - **`editingCatId` / `editingProdId`** : états pour basculer entre création et modification
 - **`cancelEdit()`** : réinitialise tous les formulaires et sort du mode édition
-- **`startEditCategory(cat)`** / **`startEditProduct(prod)`** : pré-rempli les formulaires
-- **`handleFileUpload(e, type, target)`** : upload d'image vers Supabase Storage avec routing vers le bon champ
-- **Icônes prédéfinies** : palette d'emojis (`iconBase`) pour faciliter le choix d'icônes de catégories
+- **`startEditCategory(cat)` / `startEditProduct(prod)`** : pré-rempli les formulaires
+- **Upload fichiers** : `handleFileUpload(e, type, target)` avec routing vers le bon champ
+- **Icônes prédéfinies** : palette d'emojis (`iconBase`) pour choix rapide d'icônes
 - **Champ `compare_price`** : ancien prix dans le formulaire produit
-- **Champ `address`** : adresse physique de la boutique (lien Google Maps sur la homepage)
-- Toutes les actions CRUD fonctionnent avec **Supabase** (si connecté) ou **localStorage** (mode local)
+- **Champ `address`** : adresse physique (lien Google Maps sur la homepage)
+- **Promotions** : `promo_active`, `promo_rate`, `promo_category_id` configurables
+- Toutes les actions CRUD → **Supabase** (si connecté) ou **localStorage** (mode local)
 
 ---
 
@@ -170,30 +189,30 @@ Fonctionnalités admin récentes :
 ThemeContext → body.classList → theme-{name} → CSS overrides + JSX conditionnel
 ```
 
-Chaque composant (Header, CatalogPage, ProductCard, ProductPage, StorefrontPage) a des blocs `if (template === '...')` qui retournent un rendu JSX complètement différent par template.
+Chaque composant (Header, CatalogPage, ProductCard, ProductPage, StorefrontPage, CategoryCard) a des rendus conditionnels par template.
 
 ### Les 4 Templates
 
 | Aspect | 🏛 Élégance | 🎨 Vitrine | ⬜ Minimal | 🔴 Modern Red |
 |---|---|---|---|---|
 | **Style global** | App-style moderne | Masonry éditorial | Ultra-épuré | Soft UI gris + rouge vif |
-| **Header** | Titre centré "Explorer", icônes recherche/favoris/panier | Logo + titre, bouton Admin | Logo minimaliste, texte uppercase, icônes fines | Logo arrondi + titre, accent rouge `#EF4444` |
-| **Homepage** | Hero banner + profil centré + badges + catégories + sélection du moment | Full-screen banner + description + collections | Banner arrondi + logo + titre géant + lien catalogue | Banner 30vh + card arrondie remontée + produits vedettes |
-| **Catalogue** | Profil boutique, bannière discount sneaker, catégories pills avec icônes | Barre de recherche + bannière promo lavande + masonry cascade | Barre de recherche seule + catégories soulignées + grille | Barre de recherche gris + pills rouges + grille 2-4 col |
-| **Cards** | `modern-card` : image flottante inclinée, ombre de profondeur, rating ⭐ | `minimal-card` : fond gris, cascade hauteurs variées | `refine-card` : image + infos épurées, like overlay | `mr-card` : fond `#E8E8E8`, prix ancien/nouveau, like rouge |
-| **Fiche produit** | Galerie inclinée + thumbnails, couleurs en dots, tailles en pills, rating | Image pleine + thumbnails, rating + avis, options taille/couleur | Simple 1 colonne, sélecteurs minimalistes | Panneau arrondi 40px, swatches couleur, tailles en cercles |
+| **Header** | Titre centré "Explorer", icônes recherche/favoris/panier | Logo + titre, bouton Admin | Logo minimaliste, uppercase, icônes fines | Logo arrondi + titre, accent `#EF4444` |
+| **Homepage** | Hero + profil centré + badges maps/whatsapp + catégories + sélection du moment | Full-screen banner + description + collections | Banner arrondi + logo + titre géant + lien catalogue | Banner 30vh + card arrondie remontée + produits vedettes |
+| **Catalogue** | Profil boutique + bannière promo dynamique + pills catégories (sans icônes) + recherche | Recherche + bannière promo dynamique + masonry cascade + badges catégories avec icônes | Recherche + catégories soulignées + grille | Recherche gris + pills rouges + grille 2-4 col |
+| **Cards** | `modern-card` : image flottante inclinée, ombre, rating ⭐, badge RUPTURE bleu | `minimal-card` : fond gris, cascade, badge RUPTURE noir | `refine-card` : image + infos épurées, like overlay, badge RUPTURE noir | `mr-card` : fond `#E8E8E8`, prix ancien/nouveau, badge RUPTURE rouge |
+| **Fiche produit** | Galerie inclinée + thumbnails, dots couleur, pills taille, rating | Image + thumbnails, rating + avis, options taille/couleur | Simple 1 colonne, sélecteurs minimalistes | Panneau arrondi 40px, swatches couleur, tailles cercles |
+| **Catégorie card** | Image + titre + desc (pas d'icône overlay) | Image + titre + desc + icône overlay | Image + titre + desc + icône overlay | Image + titre + desc + icône overlay |
 | **Couleur accent** | Bleu `#3b82f6` | Noir `#111` | Noir `#121212` | Rouge `#EF4444` |
 | **CSS** | `elegance.css` | `vitrine.css` | `minimal.css` | `modern-red.css` |
 
 ### Détails des rendus JSX par composant
 
-Chaque composant a des branches conditionnelles complètes :
-
-- **Header.jsx** (4 variantes) : `minimal` → texte uppercase + icônes fines, `modern-red` → logo arrondi 10px + titre + accent, `vitrine` → logo + titre crème, `elegance` → titre centré "Explorer"
-- **ProductCard.jsx** (4 variantes + fallback) : chaque template a son propre layout de carte, bouton like, affichage prix (avec `compare_price` barré si disponible)
-- **CatalogPage.jsx** (4 rendus) : `modern-red` → pills rouges + recherche + grille, `vitrine` → masonry + bannière promo, `minimal` → recherche + catégories texte, `elegance` → profil boutique + bannière discount + catégories pills. Tous incluent la vue favoris (`?view=favorites`) et le focus search (`?focus=search`)
-- **ProductPage.jsx** (4 rendus + fallback) : `modern-red` → galerie + panneau arrondi + swatches couleur + tailles cercle, `vitrine` → galerie thumbnails + rating + options pilules, `elegance` → galerie inclinée + dots couleur + tailles pilules, `minimal` → image + infos simples. Tous incluent le `compare_price` barré et la sync couleur→image
-- **StorefrontPage.jsx** (4 rendus) : `modern-red` → banner + card remontée + produits vedettes, `vitrine` → full-screen banner + collections, `minimal` → banner arrondi + titre géant, `elegance` → hero + profil + catégories + sélection du moment
+- **Header.jsx** (4 variantes) : `minimal` → uppercase + icônes fines, `modern-red` → logo arrondi + accent, `vitrine` → logo + titre crème, `elegance` → titre centré "Explorer"
+- **ProductCard.jsx** (4 variantes + fallback) : chaque template a son layout, like, `compare_price` barré, badge RUPTURE stylé, grayscale si indisponible
+- **CatalogPage.jsx** (4 rendus + fallback) : chaque template a sa recherche, ses catégories, sa vue favoris, sa bannière promo dynamique (elegance + vitrine)
+- **ProductPage.jsx** (4 rendus + fallback) : galerie, couleurs dots/pills, tailles, `compare_price`, sync couleur→image
+- **StorefrontPage.jsx** (4 rendus) : homepage complète par template avec featured products, liens Maps/WhatsApp
+- **CategoryCard.jsx** : icône overlay masquée pour `elegance` (`template !== 'elegance'`)
 
 ---
 
@@ -214,6 +233,9 @@ stores (
   address TEXT,               -- Adresse physique (lien Google Maps)
   theme_color TEXT,           -- ex: '#8c6239'
   template TEXT,              -- 'elegance' | 'vitrine' | 'minimal' | 'modern-red'
+  promo_active BOOLEAN,       -- Promotion active ?
+  promo_rate INT,             -- Taux de réduction en %
+  promo_category_id UUID,     -- Catégorie ciblée (null = toute la boutique)
   currency TEXT,              -- 'FCFA'
   is_active BOOLEAN,
   created_at, updated_at
@@ -226,7 +248,7 @@ categories (
   name TEXT,
   description TEXT,
   image_url TEXT,
-  icon_url TEXT,              -- Emoji ou URL d'icône (affiché sur la carte catégorie)
+  icon_url TEXT,              -- Emoji ou URL d'icône (masqué sur Élégance)
   is_selected BOOLEAN,
   sort_order INT
 )
@@ -241,7 +263,7 @@ products (
   price DECIMAL,
   compare_price DECIMAL,      -- Ancien prix (affiché barré si renseigné)
   currency TEXT,
-  image_url TEXT,              -- Image principale (rétro-compatibilité)
+  image_url TEXT,              -- Image principale
   product_images TEXT[],       -- Multiples images (galerie)
   sizes TEXT[],                -- ex: {'S', 'M', 'L', 'XL'}
   colors TEXT[],               -- ex: {'Blanc', 'Noir', 'Ocre'}
@@ -252,8 +274,8 @@ products (
 
 ### Row Level Security (RLS)
 
-- **Lecture publique** activée sur les 3 tables (tout le monde peut voir les catalogues)
-- **Écriture publique temporaire** (pour la démo, à restreindre plus tard avec auth)
+- **Lecture publique** activée sur les 3 tables
+- **Écriture publique temporaire** (à restreindre avec auth plus tard)
 
 ### Données de démo (Seed)
 
@@ -280,7 +302,7 @@ Sinon ?
 - **Clé unique** : `cartItemId = productId-size-color`
 - Un même produit avec tailles différentes = 2 entrées distinctes
 - `addToCart(product, qty, size, color)` / `removeFromCart(cartItemId)` / `updateQuantity(cartItemId, newQty)`
-- Persistance automatique dans `localStorage` (`blueston_cart`)
+- Persistance auto dans `localStorage` (`blueston_cart`)
 - Recalcul automatique de la réduction promo quand le panier change
 
 ### Thème (ThemeContext)
@@ -288,34 +310,46 @@ Sinon ?
 - **4 templates valides** : `['elegance', 'vitrine', 'minimal', 'modern-red']`
 - `useTheme()` retourne `{ template, setTemplate, VALID_TEMPLATES }`
 - `setTemplate('vitrine')` → retire toutes les classes `theme-*` du body et ajoute `theme-vitrine`
-- Synchro automatique : `StoreLayout` lit `store.template` et appelle `setTemplate()` au chargement
+- Synchro auto : `StoreLayout` lit `store.template` et appelle `setTemplate()` au chargement
+
+### Filtrage des produits (CatalogPage)
+
+```javascript
+const filteredProducts = products.filter(p => {
+  const matchesSearch = p.name.toLowerCase().includes(searchQuery) || p.description?.toLowerCase().includes(searchQuery);
+  const matchesCategory = selectedCategory === 'all' || p.category_id === selectedCategory;
+  const matchesFavorites = !isFavoritesView || likedIds.includes(p.id);
+  return matchesSearch && matchesCategory && matchesFavorites;
+});
+```
+> Les produits en rupture restent visibles dans les résultats — le badge "RUPTURE" est géré côté `ProductCard`.
 
 ### Color Hex Mapping
 
 `getColorHex(colorName)` dans `ProductPage.jsx` :
-- Mapping de 24 noms de couleurs français → codes hex (Noir, Blanc, Rouge, Bleu, Vert, Jaune, Marron, Gris, Rose, Ocre, Indigo, Camel)
-- Fallback : `#CCCCCC` si couleur non reconnue
-- Utilisé pour les swatches de couleur sur les fiches produit (dots circulaires)
+- 24 noms de couleurs français → codes hex (Noir, Blanc, Rouge, Bleu, Vert, Jaune, Marron, Gris, Rose, Ocre, Indigo, Camel)
+- Fallback : `#CCCCCC`
 
 ### Sync Couleur → Image
 
 - `useEffect` sur `selectedColor` dans `ProductPage.jsx`
-- Quand une couleur est sélectionnée, `mainImageIndex` est mis à jour avec l'index correspondant dans `product_images`
-- Permet d'afficher automatiquement l'image du produit dans la couleur choisie
+- `mainImageIndex` mis à jour avec l'index correspondant dans `product_images`
 
 ### WhatsApp
 
 - `generateWhatsAppLink(store, cartItems, totalPrice, promoDetails)`
-- Format du message : numéro, nom boutique, liste produits (nom, taille, couleur, quantité), sous-total, réduction, total
+- Format : numéro, nom boutique, liste produits (nom, taille, couleur, quantité), sous-total, réduction, total
 
 ### Upload d'images (storage.js)
 
-- `uploadFile(file, bucket, path)` → retourne l'URL publique du fichier uploadé
-- Bucket `assets` sur Supabase Storage, organisé par slug de boutique
+- `uploadFile(file, bucket, path)` → URL publique
+- Bucket `assets` sur Supabase Storage, organisé par slug
 
 ### Rendu conditionnel par template
 
-Chaque composant majeur utilise des blocs `if (template === '...') return (...)` en haut du rendu pour retourner un JSX complètement différent selon le template actif. Pas de rendu fallback par défaut dans CatalogPage (retourne `null`).
+- Blocs `if (template === '...') return (...)` en haut de chaque composant
+- `CatalogPage` a un **rendu fallback** (5ème rendu par défaut avec pills + search basiques)
+- `CategoryCard` masque l'icône overlay quand `template === 'elegance'`
 
 ---
 
@@ -324,9 +358,11 @@ Chaque composant majeur utilise des blocs `if (template === '...') return (...)`
 ### Migrations SQL (à exécuter sur Supabase)
 
 ```sql
--- Nouveaux champs ajoutés depuis la création initiale :
 ALTER TABLE stores ADD COLUMN IF NOT EXISTS template TEXT DEFAULT 'elegance';
 ALTER TABLE stores ADD COLUMN IF NOT EXISTS address TEXT;
+ALTER TABLE stores ADD COLUMN IF NOT EXISTS promo_active BOOLEAN DEFAULT false;
+ALTER TABLE stores ADD COLUMN IF NOT EXISTS promo_rate INT DEFAULT 0;
+ALTER TABLE stores ADD COLUMN IF NOT EXISTS promo_category_id UUID REFERENCES categories(id) ON DELETE SET NULL;
 ALTER TABLE categories ADD COLUMN IF NOT EXISTS icon_url TEXT;
 ALTER TABLE categories ADD COLUMN IF NOT EXISTS is_selected BOOLEAN DEFAULT false;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS product_images TEXT[] DEFAULT '{}';
@@ -339,15 +375,15 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS compare_price DECIMAL(10,2);
 - [ ] Vérifier le rendu responsive des 4 templates sur mobile
 - [ ] Tester le flux complet : scan NFC → catalogue → panier → WhatsApp
 - [ ] Déployer sur Vercel (avec variables d'environnement Supabase)
-- [ ] Configurer Supabase Storage (bucket `assets` en public + policies INSERT/SELECT/UPDATE/DELETE)
+- [ ] Configurer Supabase Storage (bucket `assets` en public + policies)
 
 ### Post-démo (roadmap)
 
 - [ ] Authentification admin (login/mot de passe)
-- [ ] Upload multiple d'images (galerie produit via le formulaire admin)
+- [ ] Upload multiple d'images (galerie produit via formulaire admin)
 - [ ] Gestion des stocks avancée (quantités par taille/couleur)
 - [ ] Multi-boutiques (déjà architecturé avec le slug)
 - [ ] Notifications push / PWA
 - [ ] Analytics et statistiques (vues, ajouts panier, commandes)
-- [ ] Système de promotions dynamiques (taux de réduction par catégorie depuis l'admin)
 - [ ] Page favoris dédiée (actuellement intégrée dans CatalogPage via `?view=favorites`)
+- [ ] Système de commentaires/avis clients
