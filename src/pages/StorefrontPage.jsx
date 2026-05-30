@@ -30,13 +30,15 @@ export default function StorefrontPage() {
     if (!banners || banners.length === 0) return null;
     
     const banner = banners[currentBannerIdx];
+    if (!banner) return null;
+
     const bannerProduct = Array.isArray(banner.products) ? banner.products[0] : banner.products;
     const bannerTitle = banner.title || (bannerProduct ? `${banner.discount_rate}% de réduction sur ${bannerProduct.name}` : "Offre Spéciale");
     const bannerImg = bannerProduct?.image_url;
 
     return (
       <section className="discount-banner fade-in" style={{ 
-        display: 'flex', 
+        display: 'flex !important', 
         flexDirection: 'row',
         alignItems: 'center', 
         justifyContent: 'space-between', 
@@ -47,9 +49,13 @@ export default function StorefrontPage() {
         color: template === 'minimal' ? '#111' : '#fff',
         minHeight: '180px',
         position: 'relative',
-        marginBottom: '40px'
+        marginBottom: '40px',
+        zIndex: 10,
+        width: '100%',
+        visibility: 'visible',
+        opacity: 1
       }}>
-        <div className="discount-content" style={{ flex: '1 1 60%', zIndex: 2, paddingRight: '20px' }}>
+        <div className="discount-content" style={{ flex: '1 1 60%', zIndex: 2, paddingRight: '20px', display: 'block' }}>
           <p className="discount-text" style={{ 
             fontSize: template === 'minimal' ? '1.8rem' : '1.2rem', 
             fontWeight: 800, 
@@ -95,9 +101,9 @@ export default function StorefrontPage() {
           )}
         </div>
         {banners.length > 1 && (
-          <div className="carousel-dots" style={{ bottom: 15 }}>
+          <div className="carousel-dots" style={{ bottom: 15, position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 8 }}>
             {banners.map((_, i) => (
-              <span key={i} className={`dot ${i === currentBannerIdx ? 'active' : ''}`} onClick={() => setCurrentBannerIdx(i)} style={{ backgroundColor: template === 'minimal' ? (i === currentBannerIdx ? '#000' : '#ccc') : (i === currentBannerIdx ? '#ff8c00' : '#666') }}></span>
+              <span key={i} className={`dot ${i === currentBannerIdx ? 'active' : ''}`} onClick={() => setCurrentBannerIdx(i)} style={{ width: 8, height: 8, borderRadius: '50%', cursor: 'pointer', backgroundColor: template === 'minimal' ? (i === currentBannerIdx ? '#000' : '#ccc') : (i === currentBannerIdx ? '#ff8c00' : '#666') }}></span>
             ))}
           </div>
         )}
