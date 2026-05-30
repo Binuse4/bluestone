@@ -20,18 +20,6 @@ CREATE TABLE IF NOT EXISTS stores (
   updated_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Table des Bannières de Réduction (banners)
-CREATE TABLE IF NOT EXISTS banners (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  store_id UUID REFERENCES stores(id) ON DELETE CASCADE NOT NULL,
-  product_id UUID REFERENCES products(id) ON DELETE CASCADE,
-  title TEXT,
-  discount_rate INT DEFAULT 0,
-  is_active BOOLEAN DEFAULT true,
-  sort_order INT DEFAULT 0,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-
 -- Table des Catégories (categories)
 CREATE TABLE IF NOT EXISTS categories (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -65,26 +53,37 @@ CREATE TABLE IF NOT EXISTS products (
   updated_at TIMESTAMPTZ DEFAULT now()
 );
 
+-- Table des Bannières de Réduction (banners)
+CREATE TABLE IF NOT EXISTS banners (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  store_id UUID REFERENCES stores(id) ON DELETE CASCADE NOT NULL,
+  product_id UUID REFERENCES products(id) ON DELETE CASCADE,
+  title TEXT,
+  discount_rate INT DEFAULT 0,
+  is_active BOOLEAN DEFAULT true,
+  sort_order INT DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
 -- Activer Row Level Security (RLS) pour la sécurité
 ALTER TABLE stores ENABLE ROW LEVEL SECURITY;
 ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE banners ENABLE ROW LEVEL SECURITY;
 
 -- Créer des règles de lecture publique (tout le monde peut voir les catalogues)
 CREATE POLICY "Lecture publique pour stores" ON stores FOR SELECT USING (true);
 CREATE POLICY "Lecture publique pour categories" ON categories FOR SELECT USING (true);
 CREATE POLICY "Lecture publique pour products" ON products FOR SELECT USING (true);
+CREATE POLICY "Lecture publique pour banners" ON banners FOR SELECT USING (true);
 
 -- Règles d'écriture (à lier avec l'authentification Supabase plus tard)
 -- Pour la démo, on autorise l'écriture publique si besoin ou on la restreint aux administrateurs
 CREATE POLICY "Écriture publique temporaire pour stores" ON stores FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Écriture publique temporaire pour categories" ON categories FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Écriture publique temporaire pour products" ON products FOR ALL USING (true) WITH CHECK (true);
-
-
-ALTER TABLE banners ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Lecture publique pour banners" ON banners FOR SELECT USING (true);
 CREATE POLICY "Écriture publique temporaire pour banners" ON banners FOR ALL USING (true) WITH CHECK (true);
+
 
 -- ============================================================
 -- 2. INSERTION DES DONNÉES INITIALES (SEED DE DÉMO)
