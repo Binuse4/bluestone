@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useStoreData } from '../hooks/useStoreData';
 import { useTheme } from '../context/ThemeContext';
@@ -10,106 +10,10 @@ export default function StorefrontPage() {
   const { store, categories, products, banners, loading, error } = useStoreData(slug);
   const { template } = useTheme();
 
-  // Carousel Logic for Banners
-  const [currentBannerIdx, setCurrentBannerIdx] = useState(0);
-  useEffect(() => {
-    if (banners && banners.length > 1) {
-      const interval = setInterval(() => {
-        setCurrentBannerIdx(prev => (prev + 1) % banners.length);
-      }, 4000);
-      return () => clearInterval(interval);
-    }
-  }, [banners]);
-
   if (loading) return <div className="container" style={{ padding: 100, textAlign: 'center' }}>Chargement...</div>;
   if (error || !store) return <div className="container" style={{ padding: 100, textAlign: 'center' }}>Boutique introuvable</div>;
 
   const featuredProducts = products.filter(p => p.is_available !== false).slice(0, 4);
-
-  const renderBanner = () => {
-    if (!banners || banners.length === 0) return null;
-    
-    const banner = banners[currentBannerIdx];
-    if (!banner) return null;
-
-    const bannerProduct = Array.isArray(banner.products) ? banner.products[0] : banner.products;
-    const bannerTitle = banner.title || (bannerProduct ? `${banner.discount_rate}% de réduction sur ${bannerProduct.name}` : "Offre Spéciale");
-    const bannerImg = bannerProduct?.image_url;
-
-    return (
-      <section className="discount-banner fade-in" style={{ 
-        display: 'flex !important', 
-        flexDirection: 'row',
-        alignItems: 'center', 
-        justifyContent: 'space-between', 
-        overflow: 'hidden', 
-        padding: template === 'minimal' ? '40px' : '24px', 
-        backgroundColor: template === 'minimal' ? '#f5f5f5' : '#1a1a1a', 
-        borderRadius: template === 'minimal' ? '0px' : '20px', 
-        color: template === 'minimal' ? '#111' : '#fff',
-        minHeight: '180px',
-        position: 'relative',
-        marginBottom: '40px',
-        zIndex: 10,
-        width: '100%',
-        visibility: 'visible',
-        opacity: 1
-      }}>
-        <div className="discount-content" style={{ flex: '1 1 60%', zIndex: 2, paddingRight: '20px', display: 'block' }}>
-          <p className="discount-text" style={{ 
-            fontSize: template === 'minimal' ? '1.8rem' : '1.2rem', 
-            fontWeight: 800, 
-            margin: 0, 
-            color: 'inherit', 
-            lineHeight: 1.2, 
-            whiteSpace: 'normal',
-            maxWidth: '100%'
-          }}>
-            {bannerTitle}
-          </p>
-          <Link to={`/c/catalogue/${slug}/product/${banner.product_id}`} className="discount-btn" style={{ 
-            marginTop: 20,
-            textDecoration: 'none', 
-            display: 'inline-block',
-            backgroundColor: template === 'minimal' ? '#000' : '#ff8c00',
-            color: '#fff',
-            padding: '12px 30px',
-            borderRadius: template === 'minimal' ? '0px' : '12px',
-            fontWeight: 700,
-            fontSize: '0.9rem'
-          }}>En profiter</Link>
-        </div>
-        <div className="discount-images" style={{ 
-          flex: '0 0 35%', 
-          display: 'flex', 
-          justifyContent: template === 'minimal' ? 'flex-end' : 'center', 
-          paddingRight: template === 'minimal' ? '0' : '20px',
-          zIndex: 1 
-        }}>
-          {bannerImg && (
-            <img 
-              src={bannerImg} 
-              alt="Promo" 
-              style={{ 
-                width: 'auto', 
-                height: '150px', 
-                maxWidth: '100%', 
-                objectFit: 'contain', 
-                transform: template === 'minimal' ? 'none' : 'rotate(-10deg) scale(1.1) translateX(-10px)' 
-              }} 
-            />
-          )}
-        </div>
-        {banners.length > 1 && (
-          <div className="carousel-dots" style={{ bottom: 15, position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 8 }}>
-            {banners.map((_, i) => (
-              <span key={i} className={`dot ${i === currentBannerIdx ? 'active' : ''}`} onClick={() => setCurrentBannerIdx(i)} style={{ width: 8, height: 8, borderRadius: '50%', cursor: 'pointer', backgroundColor: template === 'minimal' ? (i === currentBannerIdx ? '#000' : '#ccc') : (i === currentBannerIdx ? '#ff8c00' : '#666') }}></span>
-            ))}
-          </div>
-        )}
-      </section>
-    );
-  };
 
   // --- RENDU THÈME MINIMAL ---
   if (template === 'minimal') {
@@ -134,8 +38,6 @@ export default function StorefrontPage() {
             </div>
             <Link to={`/c/catalogue/${store.slug}/explore`} style={{ color: '#000', fontWeight: 700, textDecoration: 'none', borderBottom: '1px solid #000', paddingBottom: 8, fontSize: '1.1rem', letterSpacing: 1 }}>VOIR LE CATALOGUE &rarr;</Link>
           </div>
-
-          {renderBanner()}
 
           <section>
             <div className="products-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 60 }}>
@@ -176,8 +78,6 @@ export default function StorefrontPage() {
           </div>
         </div>
 
-        {renderBanner()}
-
         <section className="home-section" style={{ borderTop: '1px solid #eee', marginTop: 60, paddingTop: 40 }}>
           <div className="section-header">
             <h2 className="section-title">Nos Catégories</h2>
@@ -202,3 +102,4 @@ export default function StorefrontPage() {
     </div>
   );
 }
+
