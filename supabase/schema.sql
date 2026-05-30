@@ -156,4 +156,25 @@ BEGIN
     (v_store_id, v_cat_chaussures, 'Sandales Nomades Cuir', 'Sandales plates en cuir naturel tanné végétal.', 25000, 'https://images.unsplash.com/photo-1562273138-f46be4ebdf33?q=80&w=600', ARRAY['38', '39', '40', '41', '42', '43'], ARRAY['Marron', 'Noir', 'Camel'], true, 1),
     (v_store_id, v_cat_chaussures, 'Mules Raffia Tissé', 'Mules à petit talon en raphia naturel tressé.', 28000, 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600', ARRAY['38', '39', '40', '41', '42', '43'], ARRAY['Marron', 'Noir', 'Camel'], true, 2);
 
+  -- 4. Créer des bannières de démonstration
+  INSERT INTO banners (store_id, product_id, title, discount_rate, sort_order)
+  SELECT 
+    v_store_id, 
+    id, 
+    '20% de réduction sur ' || name,
+    20,
+    1
+  FROM products 
+  WHERE name = 'Robe Muna' AND store_id = v_store_id;
+
+  INSERT INTO banners (store_id, product_id, title, discount_rate, sort_order)
+  SELECT 
+    v_store_id, 
+    id, 
+    '15% de réduction sur ' || name,
+    15,
+    2
+  FROM products 
+  WHERE name = 'Cabas Tote Bogolan' AND store_id = v_store_id;
+
 END $$;

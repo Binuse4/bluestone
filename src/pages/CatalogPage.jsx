@@ -97,7 +97,7 @@ export default function CatalogPage() {
     if (!banners || banners.length === 0) return null;
     
     const banner = banners[currentBannerIdx];
-    const bannerTitle = `${banner.discount_rate}% de réduction sur ${banner.products?.name}`;
+    const bannerTitle = banner.title || `${banner.discount_rate}% de réduction sur ${banner.products?.name}`;
 
     return (
       <section className="discount-banner fade-in" style={{ 
