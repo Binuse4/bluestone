@@ -48,18 +48,23 @@ export function useStoreData(storeSlug) {
 
             if (productsError) throw productsError;
 
-            // 4. Charger les Bannières
+            // 4. Charger les Bannières (SANS jointure SQL complexe qui peut échouer)
             const { data: bannersData, error: bannersError } = await supabase
               .from('banners')
-              .select('*, products(name, image_url)')
+              .select('*')
               .eq('store_id', storeData.id)
               .order('sort_order', { ascending: true });
 
             if (bannersError) {
-              console.warn("Could not load banners, table might not exist yet:", bannersError.message);
+              console.warn("Could not load banners:", bannersError.message);
               setBanners([]);
             } else {
-              setBanners(bannersData || []);
+              // Liaison MANUELLE avec les produits pour une robustesse totale
+              const enrichedBanners = (bannersData || []).map(banner => ({
+                ...banner,
+                products: (productsData || []).find(p => p.id === banner.product_id)
+              }));
+              setBanners(enrichedBanners);
             }
 
             setStore(storeData);
