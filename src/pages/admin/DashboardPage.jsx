@@ -11,7 +11,7 @@ const iconBase = ['👕', '👜', '👟', '💍', '👗', '🧢', '🕶️', '�
 export default function DashboardPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const { store, categories, products, loading, error } = useStoreData(slug);
+  const { store, categories, products, banners, loading, error } = useStoreData(slug);
   const { setTemplate: setGlobalTemplate } = useTheme();
   
   const [activeTab, setActiveTab] = useState('general'); // general | design | categories | products
@@ -26,11 +26,12 @@ export default function DashboardPage() {
     address: '',
     logo_url: '',
     cover_url: '',
-    theme_color: '#8c6239',
-    promo_rate: 0,
-    promo_category_id: '',
-    promo_active: false
+    theme_color: '#8c6239'
   });
+
+  // États formulaire Bannières
+  const [bannersList, setBannersList] = useState([]);
+  const [newBanner, setNewBanner] = useState({ product_id: '', discount_rate: 0 });
   
   // États formulaire Catégorie
   const [newCat, setNewCat] = useState({ name: '', description: '', image_url: '', icon_url: '' });
@@ -144,14 +145,14 @@ export default function DashboardPage() {
         address: store.address || '',
         logo_url: store.logo_url || '',
         cover_url: store.cover_url || '',
-        theme_color: store.theme_color || '#8c6239',
-        promo_rate: store.promo_rate || 0,
-        promo_category_id: store.promo_category_id || '',
-        promo_active: store.promo_active || false
+        theme_color: store.theme_color || '#8c6239'
       });
       setSelectedTemplate(store.template || 'elegance');
     }
-  }, [store]);
+    if (banners) {
+      setBannersList(banners);
+    }
+  }, [store, banners]);
 
   // Définir la catégorie par défaut une fois chargées
   useEffect(() => {
@@ -159,6 +160,75 @@ export default function DashboardPage() {
       setNewProd(prev => ({ ...prev, category_id: categories[0].id }));
     }
   }, [categories, newProd.category_id]);
+
+  // Ajouter ou Modifier une bannière
+  const handleAddBanner = async (e) => {
+    e.preventDefault();
+    if (bannersList.length >= 2) {
+      alert("Vous ne pouvez pas ajouter plus de 2 bannières.");
+      return;
+    }
+    if (!newBanner.product_id) {
+      alert("Veuillez sélectionner un produit pour la bannière.");
+      return;
+    }
+
+    const selectedProd = products.find(p => p.id === newBanner.product_id);
+    const automatedTitle = `${newBanner.discount_rate}% de réduction sur ${selectedProd?.name}`;
+
+    const bannerData = {
+      store_id: store.id,
+      product_id: newBanner.product_id,
+      title: automatedTitle,
+      discount_rate: parseInt(newBanner.discount_rate) || 0,
+      sort_order: bannersList.length + 1
+    };
+
+    if (supabase) {
+      try {
+        const { error } = await supabase.from('banners').insert([bannerData]);
+        if (error) throw error;
+        alert("Bannière ajoutée avec succès !");
+      } catch (err) {
+        console.error(err);
+        alert("Erreur Supabase: " + err.message);
+        return;
+      }
+    } else {
+      const activeSlug = slug || store?.slug;
+      const bannerToAdd = { ...bannerData, id: `banner-${Date.now()}`, products: selectedProd };
+      const updatedBanners = [...bannersList, bannerToAdd];
+      setBannersList(updatedBanners);
+      localStorage.setItem(`blueston_banners_${activeSlug}`, JSON.stringify(updatedBanners));
+    }
+    
+    setNewBanner({ product_id: '', discount_rate: 0 });
+    window.location.reload();
+  };
+
+  const handleDeleteBanner = async (bannerId) => {
+    if (confirm("Supprimer cette bannière ?")) {
+      if (supabase) {
+        await supabase.from('banners').delete().eq('id', bannerId);
+      } else {
+        const updated = bannersList.filter(b => b.id !== bannerId);
+        setBannersList(updated);
+        localStorage.setItem(`blueston_banners_${slug}`, JSON.stringify(updated));
+      }
+      window.location.reload();
+    }
+  };
+
+  // Carousel Preview Logic
+  const [currentBannerIdx, setCurrentBannerIdx] = useState(0);
+  useEffect(() => {
+    if (bannersList.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentBannerIdx(prev => (prev + 1) % bannersList.length);
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [bannersList]);
 
   if (loading) {
     return (
@@ -196,20 +266,6 @@ export default function DashboardPage() {
       }
     },
     {
-      id: 'vitrine',
-      name: 'Vitrine',
-      emoji: '🎨',
-      description: 'Style éditorial sophistiqué avec une grille en cascade (Masonry). Idéal pour la décoration et l\'art.',
-      features: ['Masonry Grid', 'Palette Crème', 'Full-width Banner', '3 colonnes'],
-      preview: {
-        headerBg: '#fdf8f2',
-        headerText: '#111',
-        cardRadius: '20px',
-        gridCols: 3,
-        heroHeight: '60vh'
-      }
-    },
-    {
       id: 'minimal',
       name: 'Minimal',
       emoji: '⬜',
@@ -219,20 +275,6 @@ export default function DashboardPage() {
         headerBg: '#fafafa',
         headerText: '#1a1a1a',
         cardRadius: '0px',
-        gridCols: 2,
-        heroHeight: '0px'
-      }
-    },
-    {
-      id: 'modern-red',
-      name: 'Modern Red',
-      emoji: '🔴',
-      description: 'Design Soft UI avec des accents rouge vif. Cartes surélevées, ombres douces et prix avant/après. Style app mobile.',
-      features: ['Accent Rouge', 'Soft UI / Ombres', 'Prix Ancien/Neuf'],
-      preview: {
-        headerBg: '#f3f3f3',
-        headerText: '#111',
-        cardRadius: '16px',
         gridCols: 2,
         heroHeight: '0px'
       }
@@ -285,10 +327,7 @@ export default function DashboardPage() {
             address: storeForm.address,
             logo_url: storeForm.logo_url,
             cover_url: storeForm.cover_url,
-            theme_color: storeForm.theme_color,
-            promo_rate: storeForm.promo_rate,
-            promo_category_id: storeForm.promo_category_id || null,
-            promo_active: storeForm.promo_active
+            theme_color: storeForm.theme_color
           })
           .eq('id', store.id);
 
@@ -492,6 +531,9 @@ export default function DashboardPage() {
     }
   };
 
+  // Get selected product for new banner preview
+  const selectedProdForBanner = products.find(p => p.id === newBanner.product_id);
+
   return (
     <div className="admin-layout fade-in">
       {/* Sidebar Admin */}
@@ -608,61 +650,151 @@ export default function DashboardPage() {
               </div>
 
               <div className="admin-card" style={{ marginTop: '20px', padding: '15px', backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)' }}>
-                <h4 style={{ margin: '0 0 15px 0' }}>Bannière de Réduction (Promo)</h4>
-                <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <input type="checkbox" id="promo_active" checked={storeForm.promo_active} onChange={(e) => setStoreForm({ ...storeForm, promo_active: e.target.checked })} />
-                  <label htmlFor="promo_active" style={{ cursor: 'pointer', margin: 0, fontWeight: 600 }}>Activer la bannière de réduction (S'affiche dans le catalogue)</label>
+                <h4 style={{ margin: '0 0 15px 0' }}>Bannières de Réduction (Produits)</h4>
+                
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">Produit cible</label>
+                    <select className="form-select" value={newBanner.product_id} onChange={(e) => setNewBanner({ ...newBanner, product_id: e.target.value })}>
+                      <option value="">Choisir un produit...</option>
+                      {products.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Taux (%)</label>
+                    <input type="number" className="form-input" value={newBanner.discount_rate} onChange={(e) => setNewBanner({ ...newBanner, discount_rate: e.target.value })} />
+                  </div>
                 </div>
                 
-                {storeForm.promo_active && (
-                  <div className="form-row" style={{ marginTop: 15 }}>
-                    <div className="form-group">
-                      <label className="form-label">Taux de réduction (%)</label>
-                      <input 
-                        type="number" 
-                        className="form-input" 
-                        value={storeForm.promo_rate} 
-                        onChange={(e) => setStoreForm({ ...storeForm, promo_rate: parseInt(e.target.value) || 0 })} 
-                        min="0" max="100"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">Catégorie cible (optionnel)</label>
-                      <select className="form-select" value={storeForm.promo_category_id} onChange={(e) => setStoreForm({ ...storeForm, promo_category_id: e.target.value })}>
-                        <option value="">Toutes les catégories</option>
-                        {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                      </select>
-                    </div>
+                <div style={{ backgroundColor: '#fff', padding: '10px', borderRadius: '8px', border: '1px dashed #ccc', marginBottom: '10px' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#888' }}>APERÇU DU MESSAGE :</span>
+                  <p style={{ margin: '5px 0 0 0', fontWeight: 600 }}>
+                    {newBanner.discount_rate}% de réduction sur {selectedProdForBanner?.name || '[Produit]'}
+                  </p>
+                </div>
+
+                <button 
+                  type="button" 
+                  onClick={handleAddBanner} 
+                  className="btn btn-secondary btn-full" 
+                  style={{ marginTop: 10 }}
+                  disabled={bannersList.length >= 2}
+                >
+                  {bannersList.length >= 2 ? "Limite de 2 bannières atteinte" : "Ajouter cette bannière"}
+                </button>
+
+                {bannersList.length > 0 && (
+                  <div style={{ marginTop: 20, borderTop: '1px solid #ddd', paddingTop: 15 }}>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#666' }}>Bannières actives :</span>
+                    {bannersList.map(b => (
+                      <div key={b.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #eee' }}>
+                        <span style={{ fontSize: '0.85rem' }}>{b.discount_rate}% de réduction sur {b.products?.name}</span>
+                        <button onClick={() => handleDeleteBanner(b.id)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>Supprimer</button>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
 
-              <button type="submit" className="btn btn-primary" style={{ marginTop: 20 }}>Enregistrer les réglages</button>
+              <button type="submit" className="btn btn-primary" style={{ marginTop: 20 }}>Enregistrer les réglages généraux</button>
             </form>
 
             {/* LIVE PREVIEW */}
             <div className="admin-card" style={{ flex: '1 1 350px', backgroundColor: 'var(--bg-secondary)', position: 'sticky', top: 20 }}>
-              <h3 className="admin-card-title">Aperçu en direct</h3>
-              <div style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', backgroundColor: 'white' }}>
-                <div style={{ height: '120px', width: '100%', backgroundColor: '#eee', backgroundImage: `url(${storeForm.cover_url || 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200'})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
-                <div style={{ padding: '20px', textAlign: 'center', marginTop: '-50px' }}>
-                  <img src={storeForm.logo_url || 'https://placehold.co/100x100?text=Logo'} alt="Logo" style={{ width: '80px', height: '80px', borderRadius: '50%', border: '4px solid white', objectFit: 'cover', backgroundColor: 'white', margin: '0 auto 10px auto' }} />
-                  <h4 style={{ margin: '0 0 5px 0', fontSize: '1.2rem', fontWeight: 800 }}>{storeForm.name || 'Nom de la Boutique'}</h4>
-                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '10px' }}>{storeForm.description || 'Description courte de votre boutique apparaissant ici.'}</p>
-                  <div style={{ display: 'flex', justifyContent: 'center', gap: 10, fontSize: '0.75rem', marginBottom: '15px' }}>
-                    <span style={{ backgroundColor: 'var(--bg-secondary)', padding: '4px 10px', borderRadius: '20px' }}>📍 {storeForm.address || 'Adresse'}</span>
-                    <span style={{ backgroundColor: 'var(--bg-secondary)', padding: '4px 10px', borderRadius: '20px' }}>💬 {storeForm.whatsapp_number || 'WhatsApp'}</span>
+              <h3 className="admin-card-title">Aperçu en direct ({selectedTemplate === 'minimal' ? 'Minimal' : 'Élégance'})</h3>
+              <div style={{ 
+                border: '1px solid var(--border-color)', 
+                borderRadius: selectedTemplate === 'minimal' ? '0px' : 'var(--radius-lg)', 
+                overflow: 'hidden', 
+                backgroundColor: 'white',
+                transition: 'all 0.3s ease'
+              }}>
+                {/* Header Preview */}
+                {selectedTemplate === 'minimal' ? (
+                  <div style={{ padding: '20px 15px', borderBottom: '1px solid #eee', display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ height: '120px', width: '100%', borderRadius: '15px', overflow: 'hidden', backgroundColor: '#f9f9f9', backgroundImage: `url(${storeForm.cover_url || 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200'})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
                   </div>
+                ) : (
+                  <div style={{ height: '120px', width: '100%', backgroundColor: '#eee', backgroundImage: `url(${storeForm.cover_url || 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200'})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+                )}
+
+                <div style={{ padding: '20px', textAlign: 'center', marginTop: selectedTemplate === 'minimal' ? '0px' : '-50px' }}>
+                  <img src={storeForm.logo_url || '/4423697.png'} alt="Logo" style={{ 
+                    width: selectedTemplate === 'minimal' ? '60px' : '80px', 
+                    height: selectedTemplate === 'minimal' ? '60px' : '80px', 
+                    borderRadius: '50%', 
+                    border: selectedTemplate === 'minimal' ? 'none' : '4px solid white', 
+                    objectFit: 'contain', 
+                    backgroundColor: 'white', 
+                    margin: '0 auto 10px auto',
+                    opacity: selectedTemplate === 'minimal' ? 0.8 : 1
+                  }} />
+                  <h4 style={{ 
+                    margin: '0 0 5px 0', 
+                    fontSize: selectedTemplate === 'minimal' ? '1.5rem' : '1.2rem', 
+                    fontWeight: selectedTemplate === 'minimal' ? 300 : 800,
+                    letterSpacing: selectedTemplate === 'minimal' ? '-1px' : 'normal'
+                  }}>{storeForm.name || 'Nom de la Boutique'}</h4>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '10px' }}>{storeForm.description || 'Description courte de votre boutique apparaissant ici.'}</p>
                   
-                  {storeForm.promo_active && storeForm.promo_rate > 0 && (
-                    <div style={{ backgroundColor: '#1a1a1a', color: 'white', borderRadius: '15px', padding: '15px', textAlign: 'left', position: 'relative', overflow: 'hidden' }}>
-                      <p style={{ margin: '0 0 10px 0', fontSize: '0.9rem', fontWeight: 700, width: '70%' }}>
-                        {storeForm.promo_rate}% de réduction !
-                        {storeForm.promo_category_id ? ` sur ${categories?.find(c => c.id === storeForm.promo_category_id)?.name || 'cette catégorie'}` : ' sur toute la boutique'}
-                      </p>
-                      <button style={{ backgroundColor: '#ff8c00', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 700 }}>En profiter</button>
+                  {/* Banners Preview Adapted to Template */}
+                  {(newBanner.product_id || bannersList.length > 0) && (
+                    <div style={{ 
+                      backgroundColor: selectedTemplate === 'minimal' ? '#f5f5f5' : '#1a1a1a', 
+                      color: selectedTemplate === 'minimal' ? '#111' : 'white', 
+                      borderRadius: selectedTemplate === 'minimal' ? '0px' : '15px', 
+                      padding: '15px', 
+                      textAlign: 'left', 
+                      position: 'relative', 
+                      overflow: 'hidden', 
+                      minHeight: '100px', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      marginBottom: 15,
+                      border: selectedTemplate === 'minimal' ? '1px solid #eee' : 'none'
+                    }}>
+                      <div style={{ flex: 1 }}>
+                        <p style={{ 
+                          margin: 0, 
+                          fontSize: '0.85rem', 
+                          fontWeight: 700, 
+                          lineHeight: 1.4,
+                          textTransform: selectedTemplate === 'minimal' ? 'uppercase' : 'none'
+                        }}>
+                          {newBanner.product_id 
+                            ? `${newBanner.discount_rate}% de réduction sur ${selectedProdForBanner?.name || 'ce produit'}` 
+                            : bannersList[currentBannerIdx]?.title}
+                        </p>
+                      </div>
+                      {(newBanner.product_id ? selectedProdForBanner?.image_url : bannersList[currentBannerIdx]?.products?.image_url) && (
+                        <img 
+                          src={newBanner.product_id ? selectedProdForBanner.image_url : bannersList[currentBannerIdx].products.image_url} 
+                          style={{ 
+                            width: '50px', 
+                            height: '50px', 
+                            objectFit: 'contain', 
+                            transform: selectedTemplate === 'minimal' ? 'none' : 'rotate(-10deg)', 
+                            flexShrink: 0, 
+                            marginLeft: 10 
+                          }} 
+                          alt="promo" 
+                        />
+                      )}
                     </div>
                   )}
+
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: 10, fontSize: '0.75rem' }}>
+                    {selectedTemplate === 'minimal' ? (
+                       <a href="#" onClick={(e) => e.preventDefault()} style={{ display: 'flex', alignItems: 'center', gap: 6, backgroundColor: '#25D366', color: 'white', padding: '8px 15px', borderRadius: 20, textDecoration: 'none', fontWeight: 700 }}>
+                         <img src="/4423697.png" style={{ width: 14, height: 14 }} alt="wa" /> WhatsApp
+                       </a>
+                    ) : (
+                      <>
+                        <span style={{ backgroundColor: 'var(--bg-secondary)', padding: '4px 10px', borderRadius: '20px' }}>📍 {storeForm.address || 'Adresse'}</span>
+                        <span style={{ backgroundColor: 'var(--bg-secondary)', padding: '4px 10px', borderRadius: '20px' }}>💬 {storeForm.whatsapp_number || 'WhatsApp'}</span>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -720,7 +852,7 @@ export default function DashboardPage() {
                 <input type="text" className="form-input" value={newCat.name} onChange={(e) => setNewCat({ ...newCat, name: e.target.value })} required />
               </div>
               
-              {selectedTemplate !== 'minimal' && selectedTemplate !== 'modern-red' && (
+              {selectedTemplate !== 'minimal' && (
                 <div className="form-group">
                   <label className="form-label">Description</label>
                   <textarea className="form-textarea" rows="2" value={newCat.description} onChange={(e) => setNewCat({ ...newCat, description: e.target.value })} />
@@ -728,27 +860,30 @@ export default function DashboardPage() {
               )}
               
               <div className="form-row">
-                <div className="form-group" style={{ flex: 1 }}>
-                  <label className="form-label">Icône (Emoji ou URL)</label>
-                  <div style={{ display: 'flex', gap: 10, marginBottom: 10 }}>
-                    <input type="text" className="form-input" value={newCat.icon_url} onChange={(e) => setNewCat({ ...newCat, icon_url: e.target.value })} />
-                    <input type="file" onChange={(e) => handleFileUpload(e, 'category-icon', 'category-icon')} disabled={isUploading} style={{ width: '150px' }} />
+                {selectedTemplate !== 'elegance' && (
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label className="form-label">Icône (Emoji ou URL)</label>
+                    <div style={{ display: 'flex', gap: 10, marginBottom: 10 }}>
+                      <input type="text" className="form-input" value={newCat.icon_url} onChange={(e) => setNewCat({ ...newCat, icon_url: e.target.value })} />
+                      <input type="file" onChange={(e) => handleFileUpload(e, 'category-icon', 'category-icon')} disabled={isUploading} style={{ width: '150px' }} />
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, padding: '10px', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-sm)' }}>
+                      <span style={{ fontSize: '0.85rem', width: '100%', color: 'var(--text-secondary)' }}>Ou choisissez une icône rapide :</span>
+                      {iconBase.map(icon => (
+                        <button 
+                          key={icon} 
+                          type="button" 
+                          onClick={() => setNewCat({ ...newCat, icon_url: icon })}
+                          style={{ background: 'white', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '5px', fontSize: '1.2rem', cursor: 'pointer' }}
+                        >
+                          {icon}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, padding: '10px', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-sm)' }}>
-                    <span style={{ fontSize: '0.85rem', width: '100%', color: 'var(--text-secondary)' }}>Ou choisissez une icône rapide :</span>
-                    {iconBase.map(icon => (
-                      <button 
-                        key={icon} 
-                        type="button" 
-                        onClick={() => setNewCat({ ...newCat, icon_url: icon })}
-                        style={{ background: 'white', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '5px', fontSize: '1.2rem', cursor: 'pointer' }}
-                      >
-                        {icon}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                {selectedTemplate !== 'minimal' && selectedTemplate !== 'modern-red' && (
+                )}
+                
+                {selectedTemplate !== 'minimal' && (
                   <div className="form-group">
                     <label className="form-label">Bannière</label>
                     <div style={{ display: 'flex', gap: 10 }}>

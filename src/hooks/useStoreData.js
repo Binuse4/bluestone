@@ -6,6 +6,7 @@ export function useStoreData(storeSlug) {
   const [store, setStore] = useState(null);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+  const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -29,8 +30,6 @@ export function useStoreData(storeSlug) {
           }
 
           if (storeData) {
-            setStore(storeData);
-
             // 2. Charger les catégories de cette boutique
             const { data: categoriesData, error: categoriesError } = await supabase
               .from('categories')
@@ -39,7 +38,6 @@ export function useStoreData(storeSlug) {
               .order('sort_order', { ascending: true });
 
             if (categoriesError) throw categoriesError;
-            setCategories(categoriesData || []);
 
             // 3. Charger les produits de cette boutique
             const { data: productsData, error: productsError } = await supabase
@@ -49,23 +47,38 @@ export function useStoreData(storeSlug) {
               .order('sort_order', { ascending: true });
 
             if (productsError) throw productsError;
+
+            // 4. Charger les Bannières
+            const { data: bannersData, error: bannersError } = await supabase
+              .from('banners')
+              .select('*, products(name, image_url)')
+              .eq('store_id', storeData.id)
+              .eq('is_active', true)
+              .order('sort_order', { ascending: true });
+
+            if (bannersError) {
+              console.warn("Could not load banners, table might not exist yet:", bannersError.message);
+              setBanners([]);
+            } else {
+              setBanners(bannersData || []);
+            }
+
+            setStore(storeData);
+            setCategories(categoriesData || []);
             setProducts(productsData || []);
           }
         } else {
           // Fallback sur localStorage / données mockées locales
-          // Pour la démo, on simule un petit délai de chargement
           await new Promise(resolve => setTimeout(resolve, 500));
 
-          // Déterminer le slug effectif
           const activeSlug = storeSlug || mockData.store.slug;
 
-          // Charger depuis localStorage ou initialiser avec mockData
           let localStore = localStorage.getItem(`blueston_store_${activeSlug}`);
           let localCategories = localStorage.getItem(`blueston_categories_${activeSlug}`);
           let localProducts = localStorage.getItem(`blueston_products_${activeSlug}`);
+          let localBanners = localStorage.getItem(`blueston_banners_${activeSlug}`);
 
           if (!localStore) {
-            // Initialisation avec les valeurs mockées par défaut
             const initialStore = { ...mockData.store, slug: activeSlug };
             if (activeSlug !== mockData.store.slug) {
               initialStore.name = activeSlug
@@ -76,7 +89,6 @@ export function useStoreData(storeSlug) {
             
             localStorage.setItem(`blueston_store_${activeSlug}`, JSON.stringify(initialStore));
             
-            // On n'écrase que si c'est vide
             if (!localCategories) {
               localStorage.setItem(`blueston_categories_${activeSlug}`, JSON.stringify(mockData.categories));
               setCategories(mockData.categories);
@@ -92,10 +104,12 @@ export function useStoreData(storeSlug) {
             }
 
             setStore(initialStore);
+            setBanners([]);
           } else {
             setStore(JSON.parse(localStore));
             setCategories(JSON.parse(localCategories));
             setProducts(JSON.parse(localProducts));
+            setBanners(localBanners ? JSON.parse(localBanners) : []);
           }
         }
       } catch (err) {
@@ -109,5 +123,5 @@ export function useStoreData(storeSlug) {
     loadData();
   }, [storeSlug]);
 
-  return { store, categories, products, loading, error };
+  return { store, categories, products, banners, loading, error };
 }

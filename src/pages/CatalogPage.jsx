@@ -6,7 +6,7 @@ import ProductCard from '../components/catalog/ProductCard';
 
 export default function CatalogPage() {
   const { slug } = useParams();
-  const { store, categories, products, loading, error } = useStoreData(slug);
+  const { store, categories, products, banners, loading, error } = useStoreData(slug);
   const { template } = useTheme();
   
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,12 +18,20 @@ export default function CatalogPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isFavoritesView, setIsFavoritesOnly] = useState(initialView === 'favorites');
   
-  // État local pour les IDs aimés pour la réactivité de la vue favoris
   const [likedIds, setLikedIds] = useState([]);
-  
   const searchInputRef = useRef(null);
 
-  // Charger les likes au démarrage
+  // Carousel Logic for Banners
+  const [currentBannerIdx, setCurrentBannerIdx] = useState(0);
+  useEffect(() => {
+    if (banners && banners.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentBannerIdx(prev => (prev + 1) % banners.length);
+      }, 4000);
+      return () => clearInterval(interval);
+    }
+  }, [banners]);
+
   useEffect(() => {
     const storedLikes = localStorage.getItem('blueston_likes');
     if (storedLikes) {
@@ -35,7 +43,6 @@ export default function CatalogPage() {
     }
   }, []);
 
-  // Synchroniser la catégorie et le mode favoris avec l'URL
   useEffect(() => {
     const cat = searchParams.get('category') || 'all';
     const view = searchParams.get('view') || 'all';
@@ -76,154 +83,104 @@ export default function CatalogPage() {
     setSearchParams(searchParams);
   };
 
-  if (loading) {
-    return (
-      <div className="container catalog-layout" style={{ padding: '40px 20px' }}>
-        <div className="skeleton" style={{ width: 150, height: 24, marginBottom: 20 }}></div>
-        <div className="products-grid">
-          {[1,2,3,4,5,6].map(i => <div key={i} className="skeleton" style={{ height: 250, borderRadius: 'var(--radius-md)' }}></div>)}
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <div className="container" style={{ padding: 100, textAlign: 'center' }}>Chargement...</div>;
+  if (error || !store) return <div className="container" style={{ padding: 100, textAlign: 'center' }}>Erreur catalogue</div>;
 
-  if (error || !store) {
-    return (
-      <div className="container not-found-layout">
-        <h2 className="not-found-title">Oups !</h2>
-        <p className="not-found-text">Impossible de charger le catalogue.</p>
-        <Link to="/" className="btn btn-primary">Retour à l'accueil</Link>
-      </div>
-    );
-  }
-
-  // Filtrage des produits
   const filteredProducts = products.filter(p => {
-    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()));
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || p.category_id === selectedCategory;
     const matchesFavorites = !isFavoritesView || likedIds.includes(p.id);
-    
-    // On garde tous les produits (ceux en stock et hors stock), le ProductCard gérera l'affichage du badge "Rupture"
     return matchesSearch && matchesCategory && matchesFavorites;
   });
 
-  // --- RENDU THÈME MODERN-RED ---
-  if (template === 'modern-red') {
+  const renderBanner = () => {
+    if (!banners || banners.length === 0) return null;
+    
+    const banner = banners[currentBannerIdx];
+    const bannerTitle = `${banner.discount_rate}% de réduction sur ${banner.products?.name}`;
+
     return (
-      <div className="container catalog-layout mr-view fade-in">
-        {isFavoritesView && (
-           <div style={{ padding: '20px 0', borderBottom: '1px solid #ddd', marginBottom: 20 }}>
-             <h2 style={{ fontWeight: 900, fontSize: '1.5rem', color: '#EF4444' }}>❤️ Mes Favoris</h2>
-             <button onClick={clearFavorites} style={{ background: 'none', border: 'none', color: '#666', fontWeight: 700, cursor: 'pointer', padding: 0 }}>&larr; Retour au catalogue</button>
-           </div>
-        )}
-
-        <section className="mr-search-section" style={{ padding: '20px 0' }}>
-          <div className="mr-search-bar" style={{ display: 'flex', alignItems: 'center', backgroundColor: '#DDD', borderRadius: '15px', padding: '12px 20px', gap: '15px' }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input ref={searchInputRef} type="text" placeholder="Rechercher..." style={{ border: 'none', background: 'none', outline: 'none', flex: 1 }} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-          </div>
-        </section>
-
-        <section className="mr-categories" style={{ marginBottom: 30 }}>
-          <div className="mr-cat-scroll" style={{ display: 'flex', gap: 12, overflowX: 'auto', scrollbarWidth: 'none' }}>
-            <button onClick={() => handleCategoryChange('all')} style={{ padding: '10px 24px', borderRadius: '25px', border: 'none', fontWeight: 800, cursor: 'pointer', backgroundColor: selectedCategory === 'all' ? '#EF4444' : '#DDD', color: selectedCategory === 'all' ? 'white' : '#666' }}>Tout</button>
-            {categories.map((cat) => (
-              <button key={cat.id} onClick={() => handleCategoryChange(cat.id)} style={{ padding: '10px 24px', borderRadius: '25px', border: 'none', fontWeight: 800, cursor: 'pointer', whiteSpace: 'nowrap', backgroundColor: selectedCategory === cat.id ? '#EF4444' : '#DDD', color: selectedCategory === cat.id ? 'white' : '#666' }}>{cat.name}</button>
-            ))}
-          </div>
-        </section>
-
-        <section className="mr-products" style={{ padding: '0 0 60px 0' }}>
-          <div className="products-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '20px' }}>
-            {filteredProducts.map((product) => (<ProductCard key={product.id} product={product} onLikeToggle={handleLikeToggle} />))}
-          </div>
-          {filteredProducts.length === 0 && <p style={{ textAlign: 'center', gridColumn: '1/-1', color: '#666', marginTop: 40 }}>{isFavoritesView ? "Vous n'avez pas encore de favoris." : "Aucun produit trouvé"}</p>}
-        </section>
-      </div>
-    );
-  }
-
-  // --- RENDU THÈME VITRINE ---
-  if (template === 'vitrine') {
-    return (
-      <div className="container catalog-layout refine-view fade-in">
-        {isFavoritesView && (
-           <div style={{ padding: '20px 20px 0 20px' }}>
-             <h2 style={{ fontWeight: 900, fontSize: '1.5rem' }}>❤️ Mes Favoris</h2>
-             <button onClick={clearFavorites} style={{ background: 'none', border: 'none', color: '#666', fontWeight: 700, cursor: 'pointer', padding: 0 }}>&larr; Retour au catalogue</button>
-           </div>
-        )}
-        <section className="refine-search-section">
-          <div className="refine-search-bar">
-            <input ref={searchInputRef} type="text" placeholder="Rechercher" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-            <button className="filter-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="2" y1="14" x2="6" y2="14"/><line x1="10" y1="8" x2="14" y2="8"/><line x1="18" y1="16" x2="22" y2="16"/></svg></button>
-          </div>
-        </section>
-
-        {!isFavoritesView && store?.promo_active && store?.promo_rate > 0 && (
-          <section className="refine-promo-banner">
-            <div className="promo-content">
-              <p className="promo-text">
-                Profitez de {store.promo_rate}% de réduction !
-                <br />
-                {store.promo_category_id ? `Sur ${categories.find(c => c.id === store.promo_category_id)?.name || 'la sélection'}` : 'Sur toute la boutique'}
-              </p>
-              <button className="promo-buy-btn">Acheter</button>
-            </div>
-            <div className="promo-image"><img src="https://images.unsplash.com/photo-1581783898377-1c85bf937427?q=80&w=400" alt="Home Decor" /></div>
-          </section>
-        )}
-
-        <section className="refine-categories">
-          <div className="refine-cat-scroll">
-            <button onClick={() => handleCategoryChange('all')} className={`refine-cat-badge all-badge ${selectedCategory === 'all' ? 'active' : ''}`}>Tout</button>
-            {categories.map((cat) => (
-              <button key={cat.id} onClick={() => handleCategoryChange(cat.id)} className={`refine-cat-badge ${selectedCategory === cat.id ? 'active' : ''}`}>
-                <span className="cat-icon-outline">{cat.icon_url || '🏷️'}</span>
-                <span>{cat.name}</span>
-              </button>
-            ))}
-          </div>
-        </section>
-
-        <section className="refine-products">
-          {filteredProducts.length === 0 ? (
-            <div className="empty-state"><p>{isFavoritesView ? "Vous n'avez pas encore de favoris." : "Aucun produit trouvé"}</p></div>
-          ) : (
-            <div className="refine-masonry-grid">
-              {filteredProducts.map((product, index) => {
-                const sizeClass = index % 5 === 0 ? 'large' : (index % 3 === 0 ? 'medium' : 'small');
-                return (
-                  <div key={product.id} className={`refine-masonry-item ${sizeClass}`}>
-                    <ProductCard product={product} onLikeToggle={handleLikeToggle} categoryName={categories.find(c => c.id === product.category_id)?.name} />
-                  </div>
-                );
-              })}
-            </div>
+      <section className="discount-banner fade-in" style={{ 
+        display: 'flex', 
+        flexDirection: 'row',
+        alignItems: 'center', 
+        justifyContent: 'space-between', 
+        overflow: 'hidden', 
+        padding: template === 'minimal' ? '40px' : '24px', 
+        backgroundColor: template === 'minimal' ? '#f5f5f5' : '#1a1a1a', 
+        borderRadius: template === 'minimal' ? '0px' : '20px', 
+        color: template === 'minimal' ? '#111' : '#fff',
+        minHeight: '180px',
+        position: 'relative'
+      }}>
+        <div className="discount-content" style={{ flex: '1 1 60%', zIndex: 2, paddingRight: '20px' }}>
+          <p className="discount-text" style={{ 
+            fontSize: template === 'minimal' ? '1.8rem' : '1.2rem', 
+            fontWeight: 800, 
+            margin: 0, 
+            color: 'inherit', 
+            lineHeight: 1.2, 
+            whiteSpace: 'normal',
+            maxWidth: '100%'
+          }}>
+            {bannerTitle}
+          </p>
+          <Link to={`/c/catalogue/${slug}/product/${banner.product_id}`} className="discount-btn" style={{ 
+            marginTop: 20,
+            textDecoration: 'none', 
+            display: 'inline-block',
+            backgroundColor: template === 'minimal' ? '#000' : '#ff8c00',
+            color: '#fff',
+            padding: '12px 30px',
+            borderRadius: template === 'minimal' ? '0px' : '12px',
+            fontWeight: 700,
+            fontSize: '0.9rem'
+          }}>En profiter</Link>
+        </div>
+        <div className="discount-images" style={{ 
+          flex: '0 0 35%', 
+          display: 'flex', 
+          justifyContent: template === 'minimal' ? 'flex-end' : 'center', 
+          paddingRight: template === 'minimal' ? '0' : '20px',
+          zIndex: 1 
+        }}>
+          {banner.products?.image_url && (
+            <img 
+              src={banner.products.image_url} 
+              alt="Promo" 
+              style={{ 
+                width: 'auto', 
+                height: '150px', 
+                maxWidth: '100%', 
+                objectFit: 'contain', 
+                transform: template === 'minimal' ? 'none' : 'rotate(-10deg) scale(1.1) translateX(-10px)' 
+              }} 
+            />
           )}
-        </section>
-      </div>
+        </div>
+        {banners.length > 1 && (
+          <div className="carousel-dots" style={{ bottom: 15 }}>
+            {banners.map((_, i) => (
+              <span key={i} className={`dot ${i === currentBannerIdx ? 'active' : ''}`} onClick={() => setCurrentBannerIdx(i)} style={{ backgroundColor: template === 'minimal' ? (i === currentBannerIdx ? '#000' : '#ccc') : (i === currentBannerIdx ? '#ff8c00' : '#666') }}></span>
+            ))}
+          </div>
+        )}
+      </section>
     );
-  }
+  };
 
   // --- RENDU THÈME MINIMAL ---
   if (template === 'minimal') {
     return (
       <div className="container catalog-layout minimal-view fade-in">
-        {isFavoritesView && (
-           <div style={{ textAlign: 'center', padding: '20px 0' }}>
-             <h2 style={{ fontWeight: 300, fontSize: '2rem', letterSpacing: 1 }}>MES FAVORIS</h2>
-             <button onClick={clearFavorites} style={{ background: 'none', border: 'none', color: '#888', letterSpacing: 1, cursor: 'pointer' }}>&larr; RETOUR AU CATALOGUE</button>
-           </div>
-        )}
         <section className="minimal-search-section">
           <div className="minimal-search-bar">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input ref={searchInputRef} type="text" placeholder="Rechercher..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
           </div>
         </section>
+
+        {renderBanner()}
 
         <section className="minimal-categories" style={{ marginBottom: 40, display: 'flex', justifyContent: 'center', gap: 30, flexWrap: 'wrap' }}>
           <button onClick={() => handleCategoryChange('all')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 500, textDecoration: selectedCategory === 'all' ? 'underline' : 'none', color: selectedCategory === 'all' ? '#000' : '#888' }}>Tout</button>
@@ -234,169 +191,70 @@ export default function CatalogPage() {
           <div className="products-grid">
             {filteredProducts.map((product) => (<ProductCard key={product.id} product={product} onLikeToggle={handleLikeToggle} />))}
           </div>
-          {filteredProducts.length === 0 && <p style={{ textAlign: 'center', marginTop: 40, color: '#999' }}>{isFavoritesView ? "Aucun favori pour le moment." : "Aucun produit trouvé"}</p>}
         </section>
-      </div>
-    );
-  }
-
-  // --- RENDU THÈME ÉLÉGANCE ---
-  if (template === 'elegance') {
-    return (
-      <div className="container catalog-layout modern-view fade-in">
-        {isFavoritesView && (
-           <div style={{ padding: '0 0 20px 0' }}>
-             <h2 style={{ fontWeight: 800, fontSize: '1.8rem' }}>Mes Favoris ❤️</h2>
-             <button onClick={clearFavorites} className="section-link" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>&larr; Retour au catalogue</button>
-           </div>
-        )}
         
-        {!isFavoritesView && (
-          <section className="modern-store-header">
-            <div className="modern-logo-wrapper">
-              <img src={store.logo_url} alt={store.name} />
-            </div>
-            <div className="modern-store-info">
-              <h2 className="modern-store-name">{store.name}</h2>
-              <p className="modern-store-tagline">
-                {store.address ? (
-                  <a href={`https://maps.google.com/?q=${encodeURIComponent(store.address)}`} target="_blank" rel="noopener noreferrer" style={{color: 'inherit', textDecoration: 'none'}}>📍 Boutique Officielle</a>
-                ) : (
-                  <span>📍 Boutique Officielle</span>
-                )}
-                {' • '}
-                {store.whatsapp_number ? (
-                  <a href={`https://wa.me/${store.whatsapp_number.toString().replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" style={{color: 'inherit', textDecoration: 'none'}}>💬 WhatsApp</a>
-                ) : (
-                  <span>💬 WhatsApp</span>
-                )}
-              </p>
-            </div>
-          </section>
+        {/* WhatsApp Badge Minimal only */}
+        {store.whatsapp_number && (
+          <div style={{ position: 'fixed', bottom: 30, right: 30, zIndex: 1000 }}>
+            <a href={`https://wa.me/${store.whatsapp_number.toString().replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="whatsapp-minimal-badge">
+              <img src="/4423697.png" alt="WhatsApp" style={{ width: '24px', height: '24px' }} />
+              <span>WhatsApp</span>
+            </a>
+          </div>
         )}
-
-        {store?.promo_active && store?.promo_rate > 0 && (
-          <section className="discount-banner">
-            <div className="discount-content">
-              <p className="discount-text">
-                {store.promo_rate}% de réduction ! {' '}
-                {store.promo_category_id ? `Sur la catégorie ${categories?.find(c => c.id === store.promo_category_id)?.name || ''}` : 'Sur toute la boutique'}
-              </p>              <button className="discount-btn">En profiter</button>
-            </div>
-            <div className="discount-images">
-              <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400" alt="Sneaker" className="floating-img img-1" />
-              <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=400" alt="Sneaker" className="floating-img img-2" />
-            </div>
-            <div className="carousel-dots"><span className="dot active"></span><span className="dot"></span><span className="dot"></span></div>
-          </section>
-        )}
-
-        <section className="modern-categories">
-          <div className="section-header"><h2 className="section-title">Catégories</h2><button className="section-link">Voir tout</button></div>
-          <div className="category-scroll-wrapper">
-            <button onClick={() => handleCategoryChange('all')} className={`modern-cat-pill ${selectedCategory === 'all' ? 'active' : ''}`}><span>Tout</span></button>
-            {categories.map(cat => (
-              <button key={cat.id} onClick={() => handleCategoryChange(cat.id)} className={`modern-cat-pill ${selectedCategory === cat.id ? 'active' : ''}`}>
-                {/* Icône masquée sur Elégance selon demande utilisateur */}
-                <span>{cat.name}</span>
-              </button>
-            ))}
-          </div>
-        </section>
-
-        <div className="search-bar-wrapper" style={{ margin: '0 auto 30px auto' }}>
-          <div className="search-input-box">
-             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-             <input 
-               ref={searchInputRef}
-               type="text" 
-               placeholder="Rechercher un article..." 
-               value={searchQuery} 
-               onChange={(e) => setSearchQuery(e.target.value)} 
-             />
-          </div>
-        </div>
-
-        <section className="modern-products">
-          <div className="products-grid">
-            {filteredProducts.map(product => (
-              <ProductCard 
-                key={product.id} 
-                product={product} 
-                onLikeToggle={handleLikeToggle}
-              />
-            ))}
-          </div>
-          {filteredProducts.length === 0 && (
-            <div className="empty-results" style={{ textAlign: 'center', padding: '60px 20px' }}>
-              <span style={{ fontSize: '3rem' }}>🔍</span>
-              <h3>Aucun résultat trouvé</h3>
-              <p>Essayez une autre recherche ou catégorie.</p>
-            </div>
-          )}
-        </section>
       </div>
     );
   }
 
-  // --- RENDU THÈME PAR DÉFAUT ---
+  // --- RENDU THÈME ÉLÉGANCE (DEFAULT) ---
   return (
-    <div className="container catalog-layout fade-in" style={{ paddingTop: 40 }}>
-      <div className="catalog-header">
-        <h2 className="page-title">{isFavoritesView ? 'Mes Favoris ❤️' : 'Notre Collection'}</h2>
-        {isFavoritesView && <button onClick={clearFavorites} className="btn btn-secondary">Voir tout le catalogue</button>}
-      </div>
+    <div className="container catalog-layout modern-view fade-in">
+      <section className="modern-store-header">
+        <div className="modern-logo-wrapper"><img src={store.logo_url} alt={store.name} /></div>
+        <div className="modern-store-info">
+          <h2 className="modern-store-name">{store.name}</h2>
+          <p className="modern-store-tagline">
+            {store.address ? (
+              <a href={`https://maps.google.com/?q=${encodeURIComponent(store.address)}`} target="_blank" rel="noopener noreferrer" style={{ backgroundColor: '#f5f5f5', padding: '6px 15px', borderRadius: 20, textDecoration: 'none', color: '#111', fontWeight: 700, fontSize: '0.75rem' }}>Localisation</a>
+            ) : (
+              <span style={{ backgroundColor: '#f5f5f5', padding: '6px 15px', borderRadius: 20, color: '#111', fontWeight: 700, fontSize: '0.75rem' }}>Localisation</span>
+            )}
+            {' '}
+            {store.whatsapp_number ? (
+              <a href={`https://wa.me/${store.whatsapp_number.toString().replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" style={{ backgroundColor: '#111', padding: '6px 15px', borderRadius: 20, textDecoration: 'none', color: 'white', fontWeight: 700, fontSize: '0.75rem' }}>Nous contacter</a>
+            ) : (
+              <span style={{ backgroundColor: '#111', padding: '6px 15px', borderRadius: 20, color: 'white', fontWeight: 700, fontSize: '0.75rem' }}>Nous contacter</span>
+            )}
+          </p>
+        </div>
+      </section>
 
-      <div className="catalog-filters">
-        <div className="category-pills">
-          <button 
-            onClick={() => handleCategoryChange('all')} 
-            className={`pill ${selectedCategory === 'all' ? 'active' : ''}`}
-          >
-            Tout
-          </button>
+      {renderBanner()}
+
+      <section className="modern-categories">
+        <div className="section-header"><h2 className="section-title">Catégories</h2></div>
+        <div className="category-scroll-wrapper">
+          <button onClick={() => handleCategoryChange('all')} className={`modern-cat-pill ${selectedCategory === 'all' ? 'active' : ''}`}><span>Tout</span></button>
           {categories.map(cat => (
-            <button 
-              key={cat.id} 
-              onClick={() => handleCategoryChange(cat.id)} 
-              className={`pill ${selectedCategory === cat.id ? 'active' : ''}`}
-            >
-              {cat.name}
+            <button key={cat.id} onClick={() => handleCategoryChange(cat.id)} className={`modern-cat-pill ${selectedCategory === cat.id ? 'active' : ''}`}>
+              <span>{cat.name}</span>
             </button>
           ))}
         </div>
+      </section>
 
-        <div className="search-bar">
-          <input 
-            ref={searchInputRef}
-            type="text" 
-            placeholder="Rechercher..." 
-            value={searchQuery} 
-            onChange={(e) => setSearchQuery(e.target.value)} 
-            className="search-input"
-          />
+      <div className="search-bar-wrapper" style={{ margin: '0 auto 30px auto' }}>
+        <div className="search-input-box">
+           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+           <input ref={searchInputRef} type="text" placeholder="Rechercher un article..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
         </div>
       </div>
 
-      <div className="products-grid">
-        {filteredProducts.map(product => {
-          const category = categories.find(c => c.id === product.category_id);
-          return (
-            <ProductCard 
-              key={product.id} 
-              product={product} 
-              categoryName={category?.name} 
-              onLikeToggle={handleLikeToggle}
-            />
-          );
-        })}
-      </div>
-
-      {filteredProducts.length === 0 && (
-        <div className="empty-results">
-          <p>Aucun produit ne correspond à votre recherche.</p>
+      <section className="modern-products">
+        <div className="products-grid">
+          {filteredProducts.map(product => (<ProductCard key={product.id} product={product} onLikeToggle={handleLikeToggle} />))}
         </div>
-      )}
+      </section>
     </div>
   );
 }

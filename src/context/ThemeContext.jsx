@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext();
 
-const VALID_TEMPLATES = ['elegance', 'vitrine', 'minimal', 'modern-red'];
+const VALID_TEMPLATES = ['elegance', 'minimal']; // Suppression de Vitrine et Modern Red
 const DEFAULT_TEMPLATE = 'elegance';
 
 export function ThemeProvider({ children }) {
@@ -10,8 +10,8 @@ export function ThemeProvider({ children }) {
 
   // Appliquer la classe CSS sur le body chaque fois que le template change
   useEffect(() => {
-    // Retirer toutes les anciennes classes de thème
-    VALID_TEMPLATES.forEach((t) => {
+    // Retirer toutes les anciennes classes de thème possibles
+    ['elegance', 'minimal', 'vitrine', 'modern-red'].forEach((t) => {
       document.body.classList.remove(`theme-${t}`);
     });
     // Appliquer la nouvelle

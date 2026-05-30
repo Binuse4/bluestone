@@ -11,12 +11,25 @@ CREATE TABLE IF NOT EXISTS stores (
   logo_url TEXT,
   cover_url TEXT,
   whatsapp_number TEXT,                -- Numéro WhatsApp de la boutique (ex: 22997000000)
+  address TEXT,                        -- Adresse physique
   theme_color TEXT DEFAULT '#8c6239',  -- Couleur de thème personnalisable
-  template TEXT DEFAULT 'elegance',    -- Template de la vitrine : 'elegance', 'vitrine', 'minimal'
+  template TEXT DEFAULT 'elegance',    -- Template de la vitrine : 'elegance', 'minimal'
   currency TEXT DEFAULT 'FCFA',        -- Devise par défaut
   is_active BOOLEAN DEFAULT true,
   created_at TIMESTAMPTZ DEFAULT now(),
   updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Table des Bannières de Réduction (banners)
+CREATE TABLE IF NOT EXISTS banners (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  store_id UUID REFERENCES stores(id) ON DELETE CASCADE NOT NULL,
+  product_id UUID REFERENCES products(id) ON DELETE CASCADE,
+  title TEXT,
+  discount_rate INT DEFAULT 0,
+  is_active BOOLEAN DEFAULT true,
+  sort_order INT DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT now()
 );
 
 -- Table des Catégories (categories)
@@ -68,6 +81,10 @@ CREATE POLICY "Écriture publique temporaire pour stores" ON stores FOR ALL USIN
 CREATE POLICY "Écriture publique temporaire pour categories" ON categories FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Écriture publique temporaire pour products" ON products FOR ALL USING (true) WITH CHECK (true);
 
+
+ALTER TABLE banners ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Lecture publique pour banners" ON banners FOR SELECT USING (true);
+CREATE POLICY "Écriture publique temporaire pour banners" ON banners FOR ALL USING (true) WITH CHECK (true);
 
 -- ============================================================
 -- 2. INSERTION DES DONNÉES INITIALES (SEED DE DÉMO)

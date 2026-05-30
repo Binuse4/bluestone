@@ -15,6 +15,7 @@ export default function CategoryCard({ category }) {
     <div className="category-card" onClick={handleCardClick}>
       <div className="category-card-image-wrapper">
         <img src={category.image_url} alt={category.name} loading="lazy" />
+        {/* L'icône est masquée pour Élégance */}
         {category.icon_url && template !== 'elegance' && (
           <div className="category-card-icon-overlay">
             {category.icon_url.length < 5 ? category.icon_url : <img src={category.icon_url} alt="icon" />}
@@ -23,7 +24,8 @@ export default function CategoryCard({ category }) {
       </div>
       <div className="category-card-content">
         <h3 className="category-card-title">{category.name}</h3>
-        <p className="category-card-desc">{category.description}</p>
+        {/* La description est masquée pour Minimal */}
+        {template !== 'minimal' && <p className="category-card-desc">{category.description}</p>}
       </div>
     </div>
   );

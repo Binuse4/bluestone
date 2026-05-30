@@ -66,142 +66,44 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  color: #121212;
 }
 
-.theme-elegance .header-icon-btn {
-  background: none;
-  border: none;
-  padding: 8px;
-  cursor: pointer;
-  color: #121212;
+.theme-elegance .header-actions-right {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  transition: background 0.2s;
-}
-
-.theme-elegance .header-icon-btn:hover {
-  background-color: #f5f5f5;
-}
-
-/* Hide navigation actions in modern header for now or integrate them */
-.theme-elegance .nav-actions {
-  display: none; 
-}
-
-/* --- HERO : On le désactive ou on l'adapte car on aura le Discount Banner --- */
-.theme-elegance .hero-wrapper {
-  display: none;
-}
-
-
-.theme-elegance .header-right-actions {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.theme-elegance .admin-pill-link {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #3b82f6;
-  background-color: rgba(59, 130, 246, 0.1);
-  padding: 4px 10px;
-  border-radius: 20px;
-  text-decoration: none;
-  margin-right: 4px;
-}
-
-.theme-elegance .header-icon-btn.cart-trigger {
-  position: relative;
-}
-
-.theme-elegance .cart-badge {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #ef4444;
-  color: white;
-  font-size: 0.65rem;
-  min-width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-}
-
-/* --- MODERN STORE HEADER --- */
-.theme-elegance .modern-store-header {
-  display: flex;
-  align-items: center;
   gap: 15px;
-  margin-top: 10px;
-  margin-bottom: 5px;
-}
-
-.theme-elegance .modern-logo-wrapper {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: white;
-  border: 2px solid #eee;
-  display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.theme-elegance .modern-logo-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.theme-elegance .modern-store-name {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: #121212;
-  margin: 0;
-  line-height: 1.2;
-}
-
-.theme-elegance .modern-store-tagline {
-  font-size: 0.8rem;
-  color: #666;
-  margin: 2px 0 0 0;
 }
 
 /* --- DISCOUNT BANNER --- */
-
 .theme-elegance .discount-banner {
   background-color: #1a1a1a;
   border-radius: 20px;
-  padding: 24px;
+  padding: 30px;
   position: relative;
-  display: flex;
+  display: flex !important;
+  flex-direction: row !important;
   justify-content: space-between;
   align-items: center;
   margin: 20px 0 30px 0;
-  min-height: 160px;
-  overflow: hidden; /* Fix: prevent images from covering other sections */
+  min-height: 180px;
+  overflow: hidden;
 }
 
 .theme-elegance .discount-content {
+  flex: 1;
   max-width: 65%;
   z-index: 2;
+  display: block !important;
 }
 
 .theme-elegance .discount-text {
   color: white;
-  font-size: 1.1rem;
-  font-weight: 600;
-  line-height: 1.4;
-  margin-bottom: 16px;
-  white-space: normal;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 20px;
+  white-space: normal !important;
+  word-wrap: break-word;
 }
 
 .theme-elegance .discount-btn {
@@ -220,17 +122,17 @@
 }
 
 .theme-elegance .discount-images {
-  position: absolute;
-  right: -20px;
-  top: 0;
-  width: 40%;
+  position: relative; /* Switch to relative to stay in flex flow properly */
+  width: 35%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
 }
 
 .theme-elegance .floating-img {
-  position: absolute;
-  width: 120px;
+  width: 130px;
   height: auto;
   filter: drop-shadow(0 15px 25px rgba(0,0,0,0.5));
   z-index: 3;
@@ -282,28 +184,31 @@
 
 .theme-elegance .carousel-dots {
   position: absolute;
-  bottom: -20px;
+  bottom: 15px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   gap: 8px;
+  z-index: 5;
 }
 
 .theme-elegance .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  border: 1px solid #121212;
+  border: 1px solid #ffffff44;
+  background-color: #ffffff22;
+  cursor: pointer;
 }
 
 .theme-elegance .dot.active {
-  background-color: #3b82f6; /* Blue */
-  border-color: #3b82f6;
+  background-color: #ff8c00;
+  border-color: #ff8c00;
   width: 20px;
   border-radius: 4px;
 }
 
-/* --- MODERN CATEGORIES --- */
+/* --- CATEGORIES PILLS --- */
 .theme-elegance .modern-categories {
   margin-bottom: 30px;
 }
@@ -311,83 +216,65 @@
 .theme-elegance .modern-categories .section-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
+  align-items: flex-end;
+  margin-bottom: 15px;
 }
 
 .theme-elegance .modern-categories .section-title {
   font-size: 1.25rem;
-  font-weight: 700;
-  color: #121212;
+  font-weight: 800;
+  margin: 0;
 }
 
 .theme-elegance .modern-categories .section-link {
-  background: none;
-  border: none;
-  color: #666;
-  font-weight: 600;
-  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #3b82f6;
+  text-decoration: none;
 }
 
 .theme-elegance .category-scroll-wrapper {
   display: flex;
   gap: 12px;
   overflow-x: auto;
-  padding: 10px 0;
-  scrollbar-width: none; /* Firefox */
+  padding-bottom: 10px;
+  scrollbar-width: none;
 }
 
 .theme-elegance .category-scroll-wrapper::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  display: none;
 }
 
 .theme-elegance .modern-cat-pill {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 10px 20px;
   background-color: #f5f5f5;
   border: none;
-  padding: 8px 16px 8px 8px;
-  border-radius: 16px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s;
+  border-radius: 25px;
+  font-weight: 700;
   color: #666;
-  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.theme-elegance .cat-icon {
-  width: 40px;
-  height: 40px;
-  background-color: white;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
+.theme-elegance .modern-cat-pill span {
+  font-size: 0.9rem;
 }
 
 .theme-elegance .modern-cat-pill.active {
-  background-color: #3b82f6;
+  background-color: #1a1a1a;
   color: white;
 }
 
-.theme-elegance .modern-cat-pill.active .cat-icon {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
-}
-
-/* --- MODERN PRODUCTS GRID --- */
-.theme-elegance .modern-products {
-  padding-bottom: 100px;
-}
-
-/* --- MODERN PRODUCT CARDS (Neomorphic Light) --- */
+/* --- MODERN PRODUCT CARD --- */
 .theme-elegance .modern-card {
   background-color: #FFFFFF;
   border-radius: 30px;
   padding: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Soft overall shadow */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   height: 100%;
   display: flex;
@@ -450,41 +337,29 @@
   transition: transform 0.4s ease;
 }
 
-.theme-elegance .modern-card:hover .floating-shoe-img {
-  transform: rotate(-5deg) translateY(-15px) scale(1.05);
-}
-
-/* THE CRUCIAL DEPTH SHADOW */
 .theme-elegance .shoe-depth-shadow {
   position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
+  bottom: 15px;
+  width: 60%;
   height: 15px;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 70%);
-  filter: blur(8px);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 70%);
   border-radius: 50%;
   z-index: 1;
 }
 
-.theme-elegance .modern-card:hover .shoe-depth-shadow {
-  width: 120px;
-  opacity: 0.6;
-}
-
 .theme-elegance .modern-card-bottom {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  padding-top: 5px;
 }
 
 .theme-elegance .modern-card-title {
-  font-family: 'Poppins', 'Roboto', sans-serif;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #121212;
-  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  color: #1a1a1a;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .theme-elegance .modern-card-details {
@@ -495,406 +370,284 @@
 
 .theme-elegance .modern-card-price {
   font-size: 1rem;
-  font-weight: 800;
-  color: #121212;
+  font-weight: 900;
+  color: #1a1a1a;
 }
 
 .theme-elegance .modern-card-rating {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #121212;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #888;
 }
 
-/* Redefine grid for better spacing */
-.theme-elegance .modern-products .products-grid {
-  gap: 25px;
-  padding: 10px 5px;
-}
-
-
-/* --- MODERN PRODUCT PAGE (Product Details) --- */
+/* --- MODERN PRODUCT PAGE --- */
 .theme-elegance .modern-product-page {
   padding-top: 20px;
-  padding-bottom: 120px; /* Space for fixed footer on mobile if needed */
+  padding-bottom: 100px;
 }
 
 .theme-elegance .modern-breadcrumb {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
   margin-bottom: 30px;
 }
 
 .theme-elegance .modern-back-btn {
-  width: 44px;
-  height: 44px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
   background-color: white;
-  border: 1px solid #f0f0f0;
-  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #121212;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  color: #111;
+  text-decoration: none;
 }
 
 .theme-elegance .breadcrumb-title {
+  font-weight: 800;
   font-size: 1.1rem;
-  font-weight: 700;
-  color: #121212;
 }
 
 .theme-elegance .modern-gallery-section {
+  position: relative;
+  background-color: #f9f9f9;
+  border-radius: 40px;
+  padding: 40px 20px;
+  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-bottom: 40px;
+  align-items: center;
 }
 
 .theme-elegance .modern-main-image-wrapper {
-  position: relative;
   width: 100%;
-  aspect-ratio: 1/1;
+  max-width: 400px;
+  position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
-  background-color: #f9f9f9;
-  border-radius: 40px;
-  overflow: visible;
 }
 
 .theme-elegance .modern-main-img {
-  width: 80%;
+  width: 85%;
   height: auto;
-  z-index: 2;
   transform: rotate(-10deg);
+  filter: drop-shadow(0 30px 50px rgba(0,0,0,0.15));
+  z-index: 2;
 }
 
 .theme-elegance .shoe-depth-shadow-large {
   position: absolute;
-  bottom: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  height: 30px;
+  bottom: -10px;
+  width: 70%;
+  height: 25px;
   background: radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 70%);
-  filter: blur(15px);
+  border-radius: 50%;
   z-index: 1;
 }
 
 .theme-elegance .modern-thumbnails {
   display: flex;
-  gap: 12px;
-  justify-content: center;
+  gap: 15px;
+  margin-top: 40px;
 }
 
 .theme-elegance .modern-thumb {
   width: 60px;
   height: 60px;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 2px solid transparent;
-  background-color: #f5f5f5;
+  border-radius: 15px;
+  background-color: white;
+  padding: 8px;
   cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
 }
 
 .theme-elegance .modern-thumb.active {
-  border-color: #3b82f6;
+  border-color: #111;
 }
 
 .theme-elegance .modern-thumb img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .theme-elegance .modern-info-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  padding: 0 10px;
 }
 
 .theme-elegance .modern-info-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin-bottom: 20px;
 }
 
 .theme-elegance .modern-product-name {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: #121212;
-  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin: 0 0 5px 0;
+  line-height: 1.1;
 }
 
 .theme-elegance .modern-product-cat {
   font-size: 0.9rem;
-  font-weight: 600;
-  color: #666;
+  font-weight: 700;
+  color: #3b82f6;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .theme-elegance .modern-page-like-btn {
-  width: 48px;
-  height: 48px;
-  background-color: #f5f5f5;
+  background: none;
   border: none;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #121212;
+  padding: 5px;
   cursor: pointer;
-  transition: all 0.2s;
-}
-
-.theme-elegance .modern-page-like-btn.liked {
-  background-color: #fee2e2;
-  color: #ef4444;
 }
 
 .theme-elegance .modern-price-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 30px;
 }
 
 .theme-elegance .modern-price-value {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #121212;
+  font-size: 1.8rem;
+  font-weight: 900;
 }
 
 .theme-elegance .modern-rating-badge {
   display: flex;
   align-items: center;
   gap: 6px;
+  background-color: #f5f5f5;
+  padding: 6px 15px;
+  border-radius: 20px;
+  font-weight: 700;
   font-size: 0.85rem;
-  font-weight: 600;
-  color: #666;
-  background-color: #f9f9f9;
-  padding: 6px 12px;
-  border-radius: 10px;
 }
 
 .theme-elegance .modern-section-label {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #121212;
+  font-size: 0.95rem;
+  font-weight: 800;
   margin-bottom: 12px;
+  display: block;
 }
 
 .theme-elegance .modern-description-text {
-  font-size: 0.95rem;
-  line-height: 1.6;
   color: #666;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin-bottom: 30px;
 }
 
 .theme-elegance .modern-options-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 25px;
+  margin-bottom: 40px;
 }
 
 .theme-elegance .modern-option-list {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .theme-elegance .modern-size-pill {
-  padding: 10px 20px;
-  border-radius: 14px;
-  border: 1px solid #e0e0e0;
+  min-width: 50px;
+  height: 50px;
+  border-radius: 15px;
+  border: 2px solid #f0f0f0;
   background-color: white;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .theme-elegance .modern-size-pill.active {
-  background-color: #121212;
+  background-color: #111;
   color: white;
-  border-color: #121212;
+  border-color: #111;
 }
 
 .theme-elegance .modern-color-dot {
-  width: 36px;
-  height: 36px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
-  border: 2px solid white;
-  box-shadow: 0 0 0 1px #e0e0e0;
+  border: 3px solid white;
+  box-shadow: 0 0 0 1.5px #eee;
   cursor: pointer;
   transition: transform 0.2s;
 }
 
 .theme-elegance .modern-color-dot.active {
-  transform: scale(1.15);
-  box-shadow: 0 0 0 2px #3b82f6;
+  transform: scale(1.2);
+  box-shadow: 0 0 0 2px #111;
 }
 
 .theme-elegance .modern-purchase-footer {
   display: flex;
   gap: 15px;
-  margin-top: 10px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+  z-index: 100;
 }
 
 .theme-elegance .modern-qty-selector {
   display: flex;
   align-items: center;
+  gap: 15px;
   background-color: #f5f5f5;
-  border-radius: 14px;
-  padding: 4px;
+  border-radius: 15px;
+  padding: 5px;
 }
 
 .theme-elegance .modern-qty-selector button {
   width: 40px;
   height: 40px;
+  border-radius: 12px;
   border: none;
-  background: none;
-  font-size: 1.2rem;
-  font-weight: 600;
+  background-color: white;
+  font-weight: 800;
   cursor: pointer;
 }
 
 .theme-elegance .modern-qty-selector span {
-  width: 30px;
+  font-weight: 800;
+  min-width: 20px;
   text-align: center;
-  font-weight: 700;
 }
 
 .theme-elegance .modern-add-btn {
   flex: 1;
-  background-color: #3b82f6;
+  background-color: #111;
   color: white;
   border: none;
-  border-radius: 14px;
-  font-size: 1.1rem;
-  font-weight: 700;
+  border-radius: 15px;
+  font-weight: 800;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background-color 0.2s;
 }
 
 .theme-elegance .modern-add-btn:hover {
-  background-color: #2563eb;
-}
-
-.theme-elegance .modern-related-section {
-  margin-top: 60px;
-}
-
-/* --- MODERN CART DRAWER --- */
-.theme-elegance .cart-drawer.modern-cart {
-  border-top-left-radius: 40px;
-  border-bottom-left-radius: 40px;
-  width: 100%;
-  max-width: 450px;
-  padding: 10px;
-}
-
-.theme-elegance .cart-drawer-header {
-  border-bottom: none;
-  padding: 30px 20px 20px 20px;
-}
-
-.theme-elegance .cart-drawer-title {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #121212;
-}
-
-.theme-elegance .cart-count-badge {
-  color: #3b82f6 !important;
-  font-weight: 800 !important;
-  margin-left: 8px;
-}
-
-.theme-elegance .cart-item {
-  border-bottom: 1px solid #f5f5f5;
-  padding: 20px 10px;
-  gap: 15px;
-}
-
-.theme-elegance .cart-item-image {
-  width: 90px;
-  height: 90px;
-  border-radius: 20px;
-  background-color: #f9f9f9;
-}
-
-.theme-elegance .cart-item-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #121212;
-}
-
-.theme-elegance .cart-item-price {
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: #121212;
-  margin-top: 4px;
-}
-
-.theme-elegance .cart-item-qty-actions {
-  background-color: #f5f5f5;
-  border-radius: 12px;
-  padding: 2px;
-  gap: 10px;
-}
-
-.theme-elegance .cart-item-qty-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  background-color: white;
-  border: none;
-  font-weight: 700;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-.theme-elegance .cart-drawer-footer {
-  border-top: none;
-  padding: 20px;
-  background-color: white;
-}
-
-.theme-elegance .modern-cart input {
-  border-radius: 12px !important;
-  padding: 12px !important;
-  border-color: #f0f0f0 !important;
-  background-color: #f9f9f9 !important;
-}
-
-.theme-elegance .modern-cart .btn-primary {
-  border-radius: 12px;
-  background-color: #121212 !important;
-}
-
-.theme-elegance .cart-summary-row {
-  margin-bottom: 6px;
-}
-
-.theme-elegance .btn-accent.btn-full {
-  border-radius: 18px;
-  padding: 18px 24px !important;
-  background-color: #3b82f6 !important;
-  font-size: 1.1rem;
-  font-weight: 700;
-  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-}
-
-.theme-elegance .cart-drawer-note {
-  font-size: 0.75rem;
-  line-height: 1.5;
-  color: #999;
-  text-align: center;
-  margin-top: 15px;
+  background-color: #333;
 }
 
 /* --- RESPONSIVE ADJUSTMENTS --- */
@@ -994,5 +747,3 @@ body.theme-elegance .store-logo-wrapper {
   border-radius: 50% !important;
   overflow: hidden !important;
 }
-
-
