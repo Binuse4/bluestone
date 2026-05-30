@@ -97,7 +97,9 @@ export default function CatalogPage() {
     if (!banners || banners.length === 0) return null;
     
     const banner = banners[currentBannerIdx];
-    const bannerTitle = banner.title || `${banner.discount_rate}% de réduction sur ${banner.products?.name}`;
+    const bannerProduct = Array.isArray(banner.products) ? banner.products[0] : banner.products;
+    const bannerTitle = banner.title || (bannerProduct ? `${banner.discount_rate}% de réduction sur ${bannerProduct.name}` : "Offre Spéciale");
+    const bannerImg = bannerProduct?.image_url;
 
     return (
       <section className="discount-banner fade-in" style={{ 
@@ -144,9 +146,9 @@ export default function CatalogPage() {
           paddingRight: template === 'minimal' ? '0' : '20px',
           zIndex: 1 
         }}>
-          {banner.products?.image_url && (
+          {bannerImg && (
             <img 
-              src={banner.products.image_url} 
+              src={bannerImg} 
               alt="Promo" 
               style={{ 
                 width: 'auto', 

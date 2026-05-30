@@ -53,7 +53,6 @@ export function useStoreData(storeSlug) {
               .from('banners')
               .select('*, products(name, image_url)')
               .eq('store_id', storeData.id)
-              .eq('is_active', true)
               .order('sort_order', { ascending: true });
 
             if (bannersError) {
@@ -103,8 +102,15 @@ export function useStoreData(storeSlug) {
               setProducts(JSON.parse(localProducts));
             }
 
+            if (!localBanners) {
+              const initialBanners = mockData.banners || [];
+              localStorage.setItem(`blueston_banners_${activeSlug}`, JSON.stringify(initialBanners));
+              setBanners(initialBanners);
+            } else {
+              setBanners(JSON.parse(localBanners));
+            }
+
             setStore(initialStore);
-            setBanners([]);
           } else {
             setStore(JSON.parse(localStore));
             setCategories(JSON.parse(localCategories));

@@ -530,5 +530,29 @@
       "sizes": ["38", "39", "40", "41", "42", "43"],
       "colors": ["Marron", "Noir", "Camel"]
     }
+  ],
+  "banners": [
+    {
+      "id": "mock-banner-1",
+      "product_id": "prod-robe-muna",
+      "title": "20% de réduction sur Robe Muna",
+      "discount_rate": 20,
+      "is_active": true,
+      "products": {
+        "name": "Robe Muna",
+        "image_url": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=600"
+      }
+    },
+    {
+      "id": "mock-banner-2",
+      "product_id": "prod-sac-tote-pagne",
+      "title": "15% de réduction sur Cabas Tote Bogolan",
+      "discount_rate": 15,
+      "is_active": true,
+      "products": {
+        "name": "Cabas Tote Bogolan",
+        "image_url": "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600"
+      }
+    }
   ]
 }

@@ -181,7 +181,8 @@ export default function DashboardPage() {
       product_id: newBanner.product_id,
       title: automatedTitle,
       discount_rate: parseInt(newBanner.discount_rate) || 0,
-      sort_order: bannersList.length + 1
+      sort_order: bannersList.length + 1,
+      is_active: true
     };
 
     if (supabase) {
