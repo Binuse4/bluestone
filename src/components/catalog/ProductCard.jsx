@@ -41,7 +41,7 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
 
       localStorage.setItem('blueston_likes', JSON.stringify(likes));
       setIsLiked(newLikedStatus);
-      
+
       if (onLikeToggle) onLikeToggle(product.id, newLikedStatus);
     } catch (err) {
       console.error(err);
@@ -71,29 +71,35 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
               </button>
             </div>
             <div className="minimal-image-wrapper" style={{ width: '100%', height: '100%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <img 
-                src={product.image_url} 
-                alt={product.name} 
-                className="minimal-product-img" 
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
-                  objectFit: 'cover', 
-                  filter: product.is_available === false ? 'grayscale(1)' : 'none' 
-                }} 
+              <img
+                src={product.image_url}
+                alt={product.name}
+                className="minimal-product-img"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  filter: product.is_available === false ? 'grayscale(1)' : 'none'
+                }}
               />
-              {product.is_available === false && (
+              {/* Zone d'affichage Badge : Rupture prioritaire, sinon Ancien Prix */}
+              {product.is_available === false ? (
                 <div style={{ position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#000', color: 'white', padding: '4px 10px', fontSize: '0.65rem', fontWeight: 600, letterSpacing: 1 }}>
                   RUPTURE
                 </div>
+              ) : (
+                formattedComparePrice && (
+                  <div style={{ position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#f0f0f0', color: '#999', padding: '4px 10px', fontSize: '0.65rem', fontWeight: 600, textDecoration: 'line-through' }}>
+                    {formattedComparePrice}
+                  </div>
+                )
               )}
             </div>
           </div>
           <div className="minimal-card-bottom">
             <h4 className="minimal-card-title">{product.name}</h4>
             <span className="minimal-card-price">
-               {formattedComparePrice && <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.85em', marginRight: '5px' }}>{formattedComparePrice}</span>}
-               {formattedPrice}
+              {formattedPrice}
             </span>
           </div>
         </Link>

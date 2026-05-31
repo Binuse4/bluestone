@@ -5,17 +5,17 @@ import { generateWhatsAppLink } from '../../lib/whatsapp';
 import html2canvas from 'html2canvas';
 
 export default function CartDrawer({ isOpen, onClose, store }) {
-  const { 
-    cart, 
-    updateQuantity, 
-    removeFromCart, 
-    cartTotal, 
-    cartCount, 
-    promoCode, 
-    promoError, 
-    discount, 
-    finalTotal, 
-    applyPromoCode 
+  const {
+    cart,
+    updateQuantity,
+    removeFromCart,
+    cartTotal,
+    cartCount,
+    promoCode,
+    promoError,
+    discount,
+    finalTotal,
+    applyPromoCode
   } = useCart();
   const { template } = useTheme();
 
@@ -40,9 +40,9 @@ export default function CartDrawer({ isOpen, onClose, store }) {
     // Si l'utilisateur clique sur le lien, on intercepte pour capturer l'image d'abord
     if (cartRef.current) {
       try {
-        const canvas = await html2canvas(cartRef.current, { 
-          useCORS: true, 
-          allowTaint: true, 
+        const canvas = await html2canvas(cartRef.current, {
+          useCORS: true,
+          allowTaint: true,
           backgroundColor: '#ffffff',
           scale: 2 // Meilleure qualité
         });
@@ -55,7 +55,7 @@ export default function CartDrawer({ isOpen, onClose, store }) {
         console.error("Erreur lors de la capture du panier :", err);
       }
     }
-    
+
     // On laisse un petit délai pour le téléchargement avant d'ouvrir WhatsApp
     setTimeout(() => {
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
@@ -70,7 +70,7 @@ export default function CartDrawer({ isOpen, onClose, store }) {
           {/* Header */}
           <div className="cart-drawer-header" style={{ backgroundColor: '#F3F3F3', borderBottom: 'none', padding: '20px' }}>
             <button className="cart-drawer-close" onClick={onClose} style={{ color: '#111', background: 'none', border: 'none' }}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
             </button>
             <h3 style={{ fontWeight: 800, margin: 0 }}>Mon Panier</h3>
             <div style={{ width: 24 }}></div>
@@ -148,7 +148,7 @@ export default function CartDrawer({ isOpen, onClose, store }) {
         {/* En-tête */}
         <div className="cart-drawer-header">
           <h3 className="cart-drawer-title">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>
             <span>Mon Panier</span>
             <span className="cart-count-badge">({cartCount})</span>
           </h3>
@@ -210,9 +210,8 @@ export default function CartDrawer({ isOpen, onClose, store }) {
               {discount > 0 && <div className="cart-summary-row" style={{ color: '#15803d' }}><span>Réduction</span><span>-{discount.toLocaleString()} {store?.currency || 'FCFA'}</span></div>}
               <div className="cart-summary-row" style={{ borderTop: '1px dashed var(--border-color)', paddingTop: 10 }}><strong>Total Net</strong><strong style={{ fontSize: '1.25rem' }}>{finalTotal.toLocaleString()} {store?.currency || 'FCFA'}</strong></div>
             </div>
-            
+
             <button className="btn btn-primary btn-full btn-accent" onClick={handleWhatsAppCheckout} style={{ padding: '14px 24px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>
               Commander sur WhatsApp
             </button>
             <p className="cart-drawer-note" style={{ textAlign: 'center', marginTop: 15, fontSize: '0.75rem', color: '#999' }}>L'image de votre panier sera téléchargée automatiquement pour être jointe à votre message.</p>
