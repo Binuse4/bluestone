@@ -13,11 +13,11 @@ export default function DashboardPage() {
   const navigate = useNavigate();
   const { store, categories, products, banners, loading, error } = useStoreData(slug);
   const { setTemplate: setGlobalTemplate } = useTheme();
-  
+
   const [activeTab, setActiveTab] = useState('general'); // general | design | categories | products
   const [selectedTemplate, setSelectedTemplate] = useState('elegance');
   const [isUploading, setIsUploading] = useState(false);
-  
+
   // États formulaire Boutique
   const [storeForm, setStoreForm] = useState({
     name: '',
@@ -32,10 +32,10 @@ export default function DashboardPage() {
   // États formulaire Bannières
   const [bannersList, setBannersList] = useState([]);
   const [newBanner, setNewBanner] = useState({ product_id: '', discount_rate: 0 });
-  
+
   // États formulaire Catégorie
   const [newCat, setNewCat] = useState({ name: '', description: '', image_url: '', icon_url: '' });
-  
+
   // États formulaire Produit
   const [newProd, setNewProd] = useState({
     name: '',
@@ -119,13 +119,13 @@ export default function DashboardPage() {
     try {
       setIsUploading(true);
       const url = await uploadFile(file, 'assets', `${slug}/${type}`);
-      
+
       if (target === 'store-logo') setStoreForm(prev => ({ ...prev, logo_url: url }));
       if (target === 'store-cover') setStoreForm(prev => ({ ...prev, cover_url: url }));
       if (target === 'category') setNewCat(prev => ({ ...prev, image_url: url }));
       if (target === 'category-icon') setNewCat(prev => ({ ...prev, icon_url: url }));
       if (target === 'product') setNewProd(prev => ({ ...prev, image_url: url }));
-      
+
       alert("Image chargée avec succès !");
     } catch (err) {
       console.error(err);
@@ -202,7 +202,7 @@ export default function DashboardPage() {
       setBannersList(updatedBanners);
       localStorage.setItem(`blueston_banners_${activeSlug}`, JSON.stringify(updatedBanners));
     }
-    
+
     setNewBanner({ product_id: '', discount_rate: 0 });
     window.location.reload();
   };
@@ -343,7 +343,7 @@ export default function DashboardPage() {
       localStorage.setItem(`blueston_store_${store.slug}`, JSON.stringify(updatedStore));
       alert("Paramètres de la boutique enregistrés localement (localStorage) !");
     }
-    
+
     document.documentElement.style.setProperty('--theme-color', storeForm.theme_color);
   };
 
@@ -395,7 +395,7 @@ export default function DashboardPage() {
     } else {
       let updatedCategories;
       if (editingCatId) {
-        updatedCategories = categories.map(c => 
+        updatedCategories = categories.map(c =>
           c.id === editingCatId ? { ...c, ...newCat } : c
         );
         alert(`Catégorie "${newCat.name}" modifiée localement !`);
@@ -410,7 +410,7 @@ export default function DashboardPage() {
       }
       localStorage.setItem(`blueston_categories_${store.slug}`, JSON.stringify(updatedCategories));
     }
-    
+
     cancelEdit();
     window.location.reload();
   };
@@ -494,7 +494,7 @@ export default function DashboardPage() {
     } else {
       let updatedProducts;
       if (editingProdId) {
-        updatedProducts = products.map(p => 
+        updatedProducts = products.map(p =>
           p.id === editingProdId ? { ...p, ...prodData } : p
         );
         alert(`Produit "${newProd.name}" modifié localement !`);
@@ -545,26 +545,26 @@ export default function DashboardPage() {
           </Link>
         </div>
         <nav className="admin-nav-list">
-          <button 
-            onClick={() => setActiveTab('general')} 
+          <button
+            onClick={() => setActiveTab('general')}
             className={`admin-nav-item ${activeTab === 'general' ? 'active' : ''}`}
           >
             ⚙️ Général
           </button>
-          <button 
-            onClick={() => setActiveTab('design')} 
+          <button
+            onClick={() => setActiveTab('design')}
             className={`admin-nav-item ${activeTab === 'design' ? 'active' : ''}`}
           >
             🎨 Design & Template
           </button>
-          <button 
-            onClick={() => setActiveTab('categories')} 
+          <button
+            onClick={() => setActiveTab('categories')}
             className={`admin-nav-item ${activeTab === 'categories' ? 'active' : ''}`}
           >
             📁 Catégories
           </button>
-          <button 
-            onClick={() => setActiveTab('products')} 
+          <button
+            onClick={() => setActiveTab('products')}
             className={`admin-nav-item ${activeTab === 'products' ? 'active' : ''}`}
           >
             📦 Produits
@@ -588,35 +588,35 @@ export default function DashboardPage() {
           <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }} className="fade-in">
             <form onSubmit={handleSaveStore} className="admin-card" style={{ flex: '1 1 500px' }}>
               <h3 className="admin-card-title">Identité de la Boutique</h3>
-              
+
               <div className="form-group">
                 <label className="form-label">Nom de la boutique</label>
-                <input 
-                  type="text" 
-                  className="form-input" 
-                  value={storeForm.name} 
-                  onChange={(e) => setStoreForm({ ...storeForm, name: e.target.value })} 
+                <input
+                  type="text"
+                  className="form-input"
+                  value={storeForm.name}
+                  onChange={(e) => setStoreForm({ ...storeForm, name: e.target.value })}
                   required
                 />
               </div>
 
               <div className="form-group">
                 <label className="form-label">Description commerciale</label>
-                <textarea 
-                  className="form-textarea" 
-                  rows="3" 
-                  value={storeForm.description} 
+                <textarea
+                  className="form-textarea"
+                  rows="3"
+                  value={storeForm.description}
                   onChange={(e) => setStoreForm({ ...storeForm, description: e.target.value })}
                 />
               </div>
 
               <div className="form-group">
                 <label className="form-label">Numéro WhatsApp (Commande)</label>
-                <input 
-                  type="text" 
-                  className="form-input" 
-                  value={storeForm.whatsapp_number} 
-                  onChange={(e) => setStoreForm({ ...storeForm, whatsapp_number: e.target.value })} 
+                <input
+                  type="text"
+                  className="form-input"
+                  value={storeForm.whatsapp_number}
+                  onChange={(e) => setStoreForm({ ...storeForm, whatsapp_number: e.target.value })}
                   placeholder="Ex: 22997000000"
                   required
                 />
@@ -624,12 +624,12 @@ export default function DashboardPage() {
 
               <div className="form-group">
                 <label className="form-label">Adresse Physique (Boutique)</label>
-                <input 
-                  type="text" 
-                  className="form-input" 
-                  value={storeForm.address} 
-                  onChange={(e) => setStoreForm({ ...storeForm, address: e.target.value })} 
-                  placeholder="Ex: Cotonou, Haie Vive..."
+                <input
+                  type="text"
+                  className="form-input"
+                  value={storeForm.address}
+                  onChange={(e) => setStoreForm({ ...storeForm, address: e.target.value })}
+                  placeholder="Lien Google Maps de la boutique"
                 />
               </div>
 
@@ -652,7 +652,7 @@ export default function DashboardPage() {
 
               <div className="admin-card" style={{ marginTop: '20px', padding: '15px', backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)' }}>
                 <h4 style={{ margin: '0 0 15px 0' }}>Bannières de Réduction (Produits)</h4>
-                
+
                 <div className="form-row">
                   <div className="form-group">
                     <label className="form-label">Produit cible</label>
@@ -666,7 +666,7 @@ export default function DashboardPage() {
                     <input type="number" className="form-input" value={newBanner.discount_rate} onChange={(e) => setNewBanner({ ...newBanner, discount_rate: e.target.value })} />
                   </div>
                 </div>
-                
+
                 <div style={{ backgroundColor: '#fff', padding: '10px', borderRadius: '8px', border: '1px dashed #ccc', marginBottom: '10px' }}>
                   <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#888' }}>APERÇU DU MESSAGE :</span>
                   <p style={{ margin: '5px 0 0 0', fontWeight: 600 }}>
@@ -674,10 +674,10 @@ export default function DashboardPage() {
                   </p>
                 </div>
 
-                <button 
-                  type="button" 
-                  onClick={handleAddBanner} 
-                  className="btn btn-secondary btn-full" 
+                <button
+                  type="button"
+                  onClick={handleAddBanner}
+                  className="btn btn-secondary btn-full"
                   style={{ marginTop: 10 }}
                   disabled={bannersList.length >= 2}
                 >
@@ -703,10 +703,10 @@ export default function DashboardPage() {
             {/* LIVE PREVIEW */}
             <div className="admin-card" style={{ flex: '1 1 350px', backgroundColor: 'var(--bg-secondary)', position: 'sticky', top: 20 }}>
               <h3 className="admin-card-title">Aperçu en direct ({selectedTemplate === 'minimal' ? 'Minimal' : 'Élégance'})</h3>
-              <div style={{ 
-                border: '1px solid var(--border-color)', 
-                borderRadius: selectedTemplate === 'minimal' ? '0px' : 'var(--radius-lg)', 
-                overflow: 'hidden', 
+              <div style={{
+                border: '1px solid var(--border-color)',
+                borderRadius: selectedTemplate === 'minimal' ? '0px' : 'var(--radius-lg)',
+                overflow: 'hidden',
                 backgroundColor: 'white',
                 transition: 'all 0.3s ease'
               }}>
@@ -720,65 +720,65 @@ export default function DashboardPage() {
                 )}
 
                 <div style={{ padding: '20px', textAlign: 'center', marginTop: selectedTemplate === 'minimal' ? '0px' : '-50px' }}>
-                  <img src={storeForm.logo_url || '/4423697.png'} alt="Logo" style={{ 
-                    width: selectedTemplate === 'minimal' ? '60px' : '80px', 
-                    height: selectedTemplate === 'minimal' ? '60px' : '80px', 
-                    borderRadius: '50%', 
-                    border: selectedTemplate === 'minimal' ? 'none' : '4px solid white', 
-                    objectFit: 'contain', 
-                    backgroundColor: 'white', 
+                  <img src={storeForm.logo_url || '/4423697.png'} alt="Logo" style={{
+                    width: selectedTemplate === 'minimal' ? '60px' : '80px',
+                    height: selectedTemplate === 'minimal' ? '60px' : '80px',
+                    borderRadius: '50%',
+                    border: selectedTemplate === 'minimal' ? 'none' : '4px solid white',
+                    objectFit: 'contain',
+                    backgroundColor: 'white',
                     margin: '0 auto 10px auto',
                     opacity: selectedTemplate === 'minimal' ? 0.8 : 1
                   }} />
-                  <h4 style={{ 
-                    margin: '0 0 5px 0', 
-                    fontSize: selectedTemplate === 'minimal' ? '1.5rem' : '1.2rem', 
+                  <h4 style={{
+                    margin: '0 0 5px 0',
+                    fontSize: selectedTemplate === 'minimal' ? '1.5rem' : '1.2rem',
                     fontWeight: selectedTemplate === 'minimal' ? 300 : 800,
                     letterSpacing: selectedTemplate === 'minimal' ? '-1px' : 'normal'
                   }}>{storeForm.name || 'Nom de la Boutique'}</h4>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '10px' }}>{storeForm.description || 'Description courte de votre boutique apparaissant ici.'}</p>
-                  
+
                   {/* Banners Preview Adapted to Template */}
                   {(newBanner.product_id || bannersList.length > 0) && (
-                    <div style={{ 
-                      backgroundColor: selectedTemplate === 'minimal' ? '#f5f5f5' : '#1a1a1a', 
-                      color: selectedTemplate === 'minimal' ? '#111' : 'white', 
-                      borderRadius: selectedTemplate === 'minimal' ? '0px' : '15px', 
-                      padding: '15px', 
-                      textAlign: 'left', 
-                      position: 'relative', 
-                      overflow: 'hidden', 
-                      minHeight: '100px', 
-                      display: 'flex', 
-                      alignItems: 'center', 
+                    <div style={{
+                      backgroundColor: selectedTemplate === 'minimal' ? '#f5f5f5' : '#1a1a1a',
+                      color: selectedTemplate === 'minimal' ? '#111' : 'white',
+                      borderRadius: selectedTemplate === 'minimal' ? '0px' : '15px',
+                      padding: '15px',
+                      textAlign: 'left',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      minHeight: '100px',
+                      display: 'flex',
+                      alignItems: 'center',
                       marginBottom: 15,
                       border: selectedTemplate === 'minimal' ? '1px solid #eee' : 'none'
                     }}>
                       <div style={{ flex: 1 }}>
-                        <p style={{ 
-                          margin: 0, 
-                          fontSize: '0.85rem', 
-                          fontWeight: 700, 
+                        <p style={{
+                          margin: 0,
+                          fontSize: '0.85rem',
+                          fontWeight: 700,
                           lineHeight: 1.4,
                           textTransform: selectedTemplate === 'minimal' ? 'uppercase' : 'none'
                         }}>
-                          {newBanner.product_id 
-                            ? `${newBanner.discount_rate}% de réduction sur ${selectedProdForBanner?.name || 'ce produit'}` 
+                          {newBanner.product_id
+                            ? `${newBanner.discount_rate}% de réduction sur ${selectedProdForBanner?.name || 'ce produit'}`
                             : bannersList[currentBannerIdx]?.title}
                         </p>
                       </div>
                       {(newBanner.product_id ? selectedProdForBanner?.image_url : bannersList[currentBannerIdx]?.products?.image_url) && (
-                        <img 
-                          src={newBanner.product_id ? selectedProdForBanner.image_url : bannersList[currentBannerIdx].products.image_url} 
-                          style={{ 
-                            width: '50px', 
-                            height: '50px', 
-                            objectFit: 'contain', 
-                            transform: selectedTemplate === 'minimal' ? 'none' : 'rotate(-10deg)', 
-                            flexShrink: 0, 
-                            marginLeft: 10 
-                          }} 
-                          alt="promo" 
+                        <img
+                          src={newBanner.product_id ? selectedProdForBanner.image_url : bannersList[currentBannerIdx].products.image_url}
+                          style={{
+                            width: '50px',
+                            height: '50px',
+                            objectFit: 'contain',
+                            transform: selectedTemplate === 'minimal' ? 'none' : 'rotate(-10deg)',
+                            flexShrink: 0,
+                            marginLeft: 10
+                          }}
+                          alt="promo"
                         />
                       )}
                     </div>
@@ -786,9 +786,9 @@ export default function DashboardPage() {
 
                   <div style={{ display: 'flex', justifyContent: 'center', gap: 10, fontSize: '0.75rem' }}>
                     {selectedTemplate === 'minimal' ? (
-                       <a href="#" onClick={(e) => e.preventDefault()} style={{ display: 'flex', alignItems: 'center', gap: 6, backgroundColor: '#25D366', color: 'white', padding: '8px 15px', borderRadius: 20, textDecoration: 'none', fontWeight: 700 }}>
-                         <img src="/4423697.png" style={{ width: 14, height: 14 }} alt="wa" /> WhatsApp
-                       </a>
+                      <a href="#" onClick={(e) => e.preventDefault()} style={{ display: 'flex', alignItems: 'center', gap: 6, backgroundColor: '#25D366', color: 'white', padding: '8px 15px', borderRadius: 20, textDecoration: 'none', fontWeight: 700 }}>
+                        <img src="/4423697.png" style={{ width: 14, height: 14 }} alt="wa" /> WhatsApp
+                      </a>
                     ) : (
                       <>
                         <span style={{ backgroundColor: 'var(--bg-secondary)', padding: '4px 10px', borderRadius: '20px' }}>📍 {storeForm.address || 'Adresse'}</span>
@@ -808,9 +808,9 @@ export default function DashboardPage() {
             <h3 className="admin-card-title">Choix du Template</h3>
             <div className="admin-templates-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
               {templateOptions.map(opt => (
-                <div 
-                  key={opt.id} 
-                  className={`template-card ${selectedTemplate === opt.id ? 'active' : ''}`} 
+                <div
+                  key={opt.id}
+                  className={`template-card ${selectedTemplate === opt.id ? 'active' : ''}`}
                   onClick={() => handleSaveTemplate(opt.id)}
                   style={{
                     padding: 20,
@@ -852,14 +852,14 @@ export default function DashboardPage() {
                 <label className="form-label">Nom</label>
                 <input type="text" className="form-input" value={newCat.name} onChange={(e) => setNewCat({ ...newCat, name: e.target.value })} required />
               </div>
-              
+
               {selectedTemplate !== 'minimal' && (
                 <div className="form-group">
                   <label className="form-label">Description</label>
                   <textarea className="form-textarea" rows="2" value={newCat.description} onChange={(e) => setNewCat({ ...newCat, description: e.target.value })} />
                 </div>
               )}
-              
+
               <div className="form-row">
                 {selectedTemplate !== 'elegance' && (
                   <div className="form-group" style={{ flex: 1 }}>
@@ -871,9 +871,9 @@ export default function DashboardPage() {
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, padding: '10px', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-sm)' }}>
                       <span style={{ fontSize: '0.85rem', width: '100%', color: 'var(--text-secondary)' }}>Ou choisissez une icône rapide :</span>
                       {iconBase.map(icon => (
-                        <button 
-                          key={icon} 
-                          type="button" 
+                        <button
+                          key={icon}
+                          type="button"
                           onClick={() => setNewCat({ ...newCat, icon_url: icon })}
                           style={{ background: 'white', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '5px', fontSize: '1.2rem', cursor: 'pointer' }}
                         >
@@ -883,7 +883,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                 )}
-                
+
                 {selectedTemplate !== 'minimal' && (
                   <div className="form-group">
                     <label className="form-label">Bannière</label>
@@ -924,7 +924,7 @@ export default function DashboardPage() {
         {activeTab === 'products' && (
           <div className="fade-in">
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 20 }}>
-              <button onClick={() => { if(showAddProductForm) cancelEdit(); setShowAddProductForm(!showAddProductForm); }} className="btn btn-accent">
+              <button onClick={() => { if (showAddProductForm) cancelEdit(); setShowAddProductForm(!showAddProductForm); }} className="btn btn-accent">
                 {showAddProductForm ? "Fermer le formulaire" : "＋ Ajouter un produit"}
               </button>
             </div>

@@ -25,16 +25,15 @@ export default function StorefrontPage() {
           </div>
 
           <div style={{ textAlign: 'center', maxWidth: 800, margin: '0 auto 100px auto' }}>
-            <img src={store.logo_url} alt={store.name} style={{ width: 60, height: 60, marginBottom: 30, opacity: 0.8 }} />
             <h1 style={{ fontSize: '5rem', fontWeight: 300, letterSpacing: -2, marginBottom: 30, lineHeight: 1 }}>{store.name}</h1>
             <p style={{ fontSize: '1.2rem', color: '#888', fontWeight: 400, maxWidth: 600, margin: '0 auto 50px auto', lineHeight: 1.6 }}>{store.description}</p>
             <div style={{ display: 'flex', gap: 20, justifyContent: 'center', marginBottom: 40 }}>
-               {store.whatsapp_number && (
-                 <a href={`https://wa.me/${store.whatsapp_number.toString().replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="whatsapp-minimal-badge">
-                   <img src="/4423697.png" alt="WhatsApp" style={{ width: '20px', height: '20px' }} />
-                   <span>WhatsApp</span>
-                 </a>
-               )}
+              {store.whatsapp_number && (
+                <a href={`https://wa.me/${store.whatsapp_number.toString().replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="whatsapp-minimal-badge">
+                  <img src="/4423697.png" alt="WhatsApp" style={{ width: '20px', height: '20px' }} />
+                  <span>WhatsApp</span>
+                </a>
+              )}
             </div>
             <Link to={`/c/catalogue/${store.slug}/explore`} style={{ color: '#000', fontWeight: 700, textDecoration: 'none', borderBottom: '1px solid #000', paddingBottom: 8, fontSize: '1.1rem', letterSpacing: 1 }}>VOIR LE CATALOGUE &rarr;</Link>
           </div>

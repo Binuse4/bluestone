@@ -7,7 +7,7 @@ export default function Header({ store, onCartClick }) {
   const { cartCount } = useCart();
   const { slug } = useParams();
   const { template } = useTheme();
-  
+
   const storeSlug = slug || store?.slug || 'africa-chic';
 
   const renderLogo = () => {
@@ -20,14 +20,14 @@ export default function Header({ store, onCartClick }) {
             <span style={{ fontWeight: 400, letterSpacing: 1, fontSize: '0.9rem' }}>{store?.name?.toUpperCase() || "BOUTIQUE"}</span>
           </Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
-             <Link to={`/c/catalogue/${storeSlug}/explore?view=favorites`} className="header-icon-btn" style={{ color: '#000' }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
-             </Link>
-             <button onClick={onCartClick} className="cart-trigger" style={{ padding: 0, background: 'none', border: 'none', position: 'relative' }}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                {cartCount > 0 && <span className="cart-badge" style={{ backgroundColor: '#000', width: 16, height: 16, position: 'absolute', top: -5, right: -5, borderRadius: '50%', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem' }}>{cartCount}</span>}
-             </button>
-             <Link to={`/admin/${storeSlug}`} style={{ fontSize: '0.7rem', color: '#888', textDecoration: 'none', border: '1px solid #eee', padding: '3px 8px', borderRadius: '4px' }}>admin</Link>
+            <Link to={`/c/catalogue/${storeSlug}/explore?view=favorites`} className="header-icon-btn" style={{ color: '#000' }}>
+              <svg width="22" height="22" viewBox="0 0 24 19.5" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
+            </Link>
+            <button onClick={onCartClick} className="cart-trigger" style={{ padding: 0, background: 'none', border: 'none', position: 'relative' }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>
+              {cartCount > 0 && <span className="cart-badge" style={{ backgroundColor: '#000', width: 16, height: 16, position: 'absolute', top: -5, right: -5, borderRadius: '50%', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem' }}>{cartCount}</span>}
+            </button>
+            <Link to={`/admin/${storeSlug}`} style={{ fontSize: '0.7rem', color: '#888', textDecoration: 'none', border: '1px solid #eee', padding: '3px 8px', borderRadius: '4px' }}>admin</Link>
           </div>
         </div>
       );
@@ -43,7 +43,7 @@ export default function Header({ store, onCartClick }) {
             </div>
           </Link>
         </div>
-        
+
         <Link to={`/c/catalogue/${storeSlug}`} style={{ textDecoration: 'none', color: 'inherit', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
           <h1 className="header-title-centered" style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800 }}>Explorer</h1>
         </Link>
@@ -57,7 +57,7 @@ export default function Header({ store, onCartClick }) {
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
           </Link>
           <button onClick={onCartClick} className="header-icon-btn cart-trigger" style={{ background: 'none', border: 'none', position: 'relative' }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>
             {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
           </button>
         </div>
