@@ -8,16 +8,16 @@ export default function CatalogPage() {
   const { slug } = useParams();
   const { store, categories, products, banners, loading, error } = useStoreData(slug);
   const { template } = useTheme();
-  
+
   const [searchParams, setSearchParams] = useSearchParams();
   const initialCategory = searchParams.get('category') || 'all';
   const initialView = searchParams.get('view') || 'all';
   const initialFocus = searchParams.get('focus') || null;
-  
+
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState('');
   const [isFavoritesView, setIsFavoritesOnly] = useState(initialView === 'favorites');
-  
+
   const [likedIds, setLikedIds] = useState([]);
   const searchInputRef = useRef(null);
 
@@ -47,7 +47,7 @@ export default function CatalogPage() {
     const cat = searchParams.get('category') || 'all';
     const view = searchParams.get('view') || 'all';
     const focus = searchParams.get('focus');
-    
+
     setSelectedCategory(cat);
     setIsFavoritesOnly(view === 'favorites');
 
@@ -95,7 +95,7 @@ export default function CatalogPage() {
 
   const renderBanner = () => {
     if (!banners || banners.length === 0) return null;
-    
+
     const banner = banners[currentBannerIdx];
     if (!banner) return null;
 
@@ -104,15 +104,15 @@ export default function CatalogPage() {
     const bannerImg = bannerProduct?.image_url;
 
     return (
-      <section className="discount-banner fade-in" style={{ 
-        display: 'flex !important', 
+      <section className="discount-banner fade-in" style={{
+        display: 'flex !important',
         flexDirection: 'row',
-        alignItems: 'center', 
-        justifyContent: 'space-between', 
-        overflow: 'hidden', 
-        padding: template === 'minimal' ? '30px' : '24px', 
-        backgroundColor: template === 'minimal' ? '#f5f5f5' : '#1a1a1a', 
-        borderRadius: template === 'minimal' ? '0px' : '20px', 
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        overflow: 'hidden',
+        padding: template === 'minimal' ? '30px' : '24px',
+        backgroundColor: template === 'minimal' ? '#f5f5f5' : '#1a1a1a',
+        borderRadius: template === 'minimal' ? '0px' : '20px',
         color: template === 'minimal' ? '#111' : '#fff',
         height: template === 'minimal' ? '180px' : 'auto',
         minHeight: '180px',
@@ -123,12 +123,12 @@ export default function CatalogPage() {
         opacity: 1
       }}>
         <div className="discount-content" style={{ flex: '1 1 65%', zIndex: 2, paddingRight: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
-          <p className="discount-text" style={{ 
-            fontSize: template === 'minimal' ? '1.4rem' : '1.2rem', 
-            fontWeight: 800, 
-            margin: 0, 
-            color: 'inherit', 
-            lineHeight: 1.1, 
+          <p className="discount-text" style={{
+            fontSize: template === 'minimal' ? '1.3rem' : '1.1rem',
+            fontWeight: 800,
+            margin: 0,
+            color: 'inherit',
+            lineHeight: 1.1,
             whiteSpace: 'normal',
             maxWidth: '100%',
             overflow: 'hidden',
@@ -138,9 +138,9 @@ export default function CatalogPage() {
           }}>
             {bannerTitle}
           </p>
-          <Link to={`/c/catalogue/${slug}/product/${banner.product_id}`} className="discount-btn" style={{ 
+          <Link to={`/c/catalogue/${slug}/product/${banner.product_id}`} className="discount-btn" style={{
             marginTop: 15,
-            textDecoration: 'none', 
+            textDecoration: 'none',
             display: 'inline-block',
             backgroundColor: template === 'minimal' ? '#000' : '#ff8c00',
             color: '#fff',
@@ -151,25 +151,25 @@ export default function CatalogPage() {
             width: 'fit-content'
           }}>En profiter</Link>
         </div>
-        <div className="discount-images" style={{ 
-          flex: '0 0 30%', 
-          display: 'flex', 
-          justifyContent: 'flex-end', 
+        <div className="discount-images" style={{
+          flex: '0 0 30%',
+          display: 'flex',
+          justifyContent: 'flex-end',
           paddingRight: 0,
           marginRight: template === 'minimal' ? '-15px' : '0',
-          zIndex: 1 
+          zIndex: 1
         }}>
           {bannerImg && (
-            <img 
-              src={bannerImg} 
-              alt="Promo" 
-              style={{ 
-                width: 'auto', 
-                height: template === 'minimal' ? '140px' : '150px', 
-                maxWidth: '100%', 
-                objectFit: 'contain', 
-                transform: template === 'minimal' ? 'translateX(5px)' : 'rotate(-10deg) scale(1.1) translateX(-10px)' 
-              }} 
+            <img
+              src={bannerImg}
+              alt="Promo"
+              style={{
+                width: 'auto',
+                height: template === 'minimal' ? '140px' : '150px',
+                maxWidth: '100%',
+                objectFit: 'contain',
+                transform: template === 'minimal' ? 'translateX(5px)' : 'none'
+              }}
             />
           )}
         </div>
@@ -190,7 +190,7 @@ export default function CatalogPage() {
       <div className="container catalog-layout minimal-view fade-in">
         <section className="minimal-search-section">
           <div className="minimal-search-bar">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
             <input ref={searchInputRef} type="text" placeholder="Rechercher..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
           </div>
         </section>
@@ -207,7 +207,7 @@ export default function CatalogPage() {
             {filteredProducts.map((product) => (<ProductCard key={product.id} product={product} onLikeToggle={handleLikeToggle} />))}
           </div>
         </section>
-        
+
         {/* WhatsApp Badge Minimal only */}
         {store.whatsapp_number && (
           <div style={{ position: 'fixed', bottom: 30, right: 30, zIndex: 1000 }}>
@@ -260,8 +260,8 @@ export default function CatalogPage() {
 
       <div className="search-bar-wrapper" style={{ margin: '0 auto 30px auto' }}>
         <div className="search-input-box">
-           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-           <input ref={searchInputRef} type="text" placeholder="Rechercher un article..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
+          <input ref={searchInputRef} type="text" placeholder="Rechercher un article..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
         </div>
       </div>
 

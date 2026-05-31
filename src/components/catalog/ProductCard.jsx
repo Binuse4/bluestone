@@ -120,21 +120,32 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
           <button onClick={handleLikeToggle} className="modern-like-btn" aria-label="Aimer le produit">
             <svg width="20" height="20" viewBox="0 0 24 24" fill={isLiked ? '#EF4444' : 'none'} stroke={isLiked ? '#EF4444' : 'currentColor'} strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
           </button>
-          <div className="floating-shoe-wrapper">
-            <img src={product.image_url} alt={product.name} className="floating-shoe-img" style={{ filter: product.is_available === false ? 'grayscale(1)' : 'none' }} />
-            <div className="shoe-depth-shadow"></div>
+          <div className="floating-shoe-wrapper" style={{ padding: 0, width: '100%', height: '100%' }}>
+            <img 
+              src={product.image_url} 
+              alt={product.name} 
+              className="floating-shoe-img" 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover', 
+                transform: 'none', 
+                filter: product.is_available === false ? 'grayscale(1)' : 'none' 
+              }} 
+            />
+            <div className="shoe-depth-shadow" style={{ display: 'none' }}></div>
           </div>
         </div>
         <div className="modern-card-bottom">
           <h4 className="modern-card-title">{product.name}</h4>
-          <div className="modern-card-details">
-            <span className="modern-card-price">
-              {formattedComparePrice && <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.85em', marginRight: '5px' }}>{formattedComparePrice}</span>}
+          <div className="modern-card-details" style={{ flexWrap: 'nowrap' }}>
+            <span className="modern-card-price" style={{ whiteSpace: 'nowrap', fontSize: '0.85rem' }}>
+              {formattedComparePrice && <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.8rem', marginRight: '5px' }}>{formattedComparePrice}</span>}
               {formattedPrice}
             </span>
             <div className="modern-card-rating">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFD700" stroke="#FFD700"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
-              <span>4.8</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="#FFD700" stroke="#FFD700"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+              <span style={{ fontSize: '0.75rem' }}>4.8</span>
             </div>
           </div>
         </div>
