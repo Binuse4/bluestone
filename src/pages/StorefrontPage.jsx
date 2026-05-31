@@ -20,7 +20,7 @@ export default function StorefrontPage() {
     return (
       <div className="fade-in theme-minimal-home" style={{ backgroundColor: '#FFF', minHeight: '100vh' }}>
         <div className="container" style={{ paddingTop: 40 }}>
-          <div style={{ height: '40vh', borderRadius: 30, overflow: 'hidden', marginBottom: 60 }}>
+          <div style={{ height: '400px', borderRadius: 30, overflow: 'hidden', marginBottom: 60 }}>
             <img src={store.cover_url || "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=1200"} alt="Banner" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
 

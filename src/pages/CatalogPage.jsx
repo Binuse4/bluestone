@@ -27,7 +27,7 @@ export default function CatalogPage() {
     if (banners && banners.length > 1) {
       const interval = setInterval(() => {
         setCurrentBannerIdx(prev => (prev + 1) % banners.length);
-      }, 4000);
+      }, 7000);
       return () => clearInterval(interval);
     }
   }, [banners]);
@@ -110,10 +110,11 @@ export default function CatalogPage() {
         alignItems: 'center', 
         justifyContent: 'space-between', 
         overflow: 'hidden', 
-        padding: template === 'minimal' ? '40px' : '24px', 
+        padding: template === 'minimal' ? '30px' : '24px', 
         backgroundColor: template === 'minimal' ? '#f5f5f5' : '#1a1a1a', 
         borderRadius: template === 'minimal' ? '0px' : '20px', 
         color: template === 'minimal' ? '#111' : '#fff',
+        height: template === 'minimal' ? '180px' : 'auto',
         minHeight: '180px',
         position: 'relative',
         zIndex: 10,
@@ -121,35 +122,41 @@ export default function CatalogPage() {
         visibility: 'visible',
         opacity: 1
       }}>
-        <div className="discount-content" style={{ flex: '1 1 60%', zIndex: 2, paddingRight: '20px', display: 'block' }}>
+        <div className="discount-content" style={{ flex: '1 1 65%', zIndex: 2, paddingRight: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
           <p className="discount-text" style={{ 
-            fontSize: template === 'minimal' ? '1.8rem' : '1.2rem', 
+            fontSize: template === 'minimal' ? '1.4rem' : '1.2rem', 
             fontWeight: 800, 
             margin: 0, 
             color: 'inherit', 
-            lineHeight: 1.2, 
+            lineHeight: 1.1, 
             whiteSpace: 'normal',
-            maxWidth: '100%'
+            maxWidth: '100%',
+            overflow: 'hidden',
+            display: '-webkit-box',
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: 'vertical'
           }}>
             {bannerTitle}
           </p>
           <Link to={`/c/catalogue/${slug}/product/${banner.product_id}`} className="discount-btn" style={{ 
-            marginTop: 20,
+            marginTop: 15,
             textDecoration: 'none', 
             display: 'inline-block',
             backgroundColor: template === 'minimal' ? '#000' : '#ff8c00',
             color: '#fff',
-            padding: '12px 30px',
+            padding: '10px 25px',
             borderRadius: template === 'minimal' ? '0px' : '12px',
             fontWeight: 700,
-            fontSize: '0.9rem'
+            fontSize: '0.85rem',
+            width: 'fit-content'
           }}>En profiter</Link>
         </div>
         <div className="discount-images" style={{ 
-          flex: '0 0 35%', 
+          flex: '0 0 30%', 
           display: 'flex', 
-          justifyContent: template === 'minimal' ? 'flex-end' : 'center', 
-          paddingRight: template === 'minimal' ? '0' : '20px',
+          justifyContent: 'flex-end', 
+          paddingRight: 0,
+          marginRight: template === 'minimal' ? '-15px' : '0',
           zIndex: 1 
         }}>
           {bannerImg && (
@@ -158,15 +165,15 @@ export default function CatalogPage() {
               alt="Promo" 
               style={{ 
                 width: 'auto', 
-                height: '150px', 
+                height: template === 'minimal' ? '140px' : '150px', 
                 maxWidth: '100%', 
                 objectFit: 'contain', 
-                transform: template === 'minimal' ? 'none' : 'rotate(-10deg) scale(1.1) translateX(-10px)' 
+                transform: template === 'minimal' ? 'translateX(5px)' : 'rotate(-10deg) scale(1.1) translateX(-10px)' 
               }} 
             />
           )}
         </div>
-        {banners.length > 1 && (
+        {banners.length > 1 && template !== 'minimal' && (
           <div className="carousel-dots" style={{ bottom: 15, position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 8 }}>
             {banners.map((_, i) => (
               <span key={i} className={`dot ${i === currentBannerIdx ? 'active' : ''}`} onClick={() => setCurrentBannerIdx(i)} style={{ width: 8, height: 8, borderRadius: '50%', cursor: 'pointer', backgroundColor: template === 'minimal' ? (i === currentBannerIdx ? '#000' : '#ccc') : (i === currentBannerIdx ? '#ff8c00' : '#666') }}></span>
