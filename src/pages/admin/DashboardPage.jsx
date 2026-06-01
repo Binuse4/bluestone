@@ -793,8 +793,8 @@ export default function DashboardPage() {
                       </a>
                     ) : (
                       <>
-                        <span style={{ backgroundColor: 'var(--bg-secondary)', padding: '4px 10px', borderRadius: '20px' }}>📍 {storeForm.address || 'Adresse'}</span>
-                        <span style={{ backgroundColor: 'var(--bg-secondary)', padding: '4px 10px', borderRadius: '20px' }}>💬 {storeForm.whatsapp_number || 'WhatsApp'}</span>
+                        <span style={{ backgroundColor: 'var(--bg-secondary)', padding: '4px 10px', borderRadius: '20px', opacity: storeForm.address ? 1 : 0.5 }}> Localisation</span>
+                        <span style={{ backgroundColor: '#111', color: 'White', padding: '4px 10px', borderRadius: '20px', opacity: storeForm.whatsapp_number ? 1 : 0.5 }}>Nous contacter</span>
                       </>
                     )}
                   </div>

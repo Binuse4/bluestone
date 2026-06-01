@@ -62,7 +62,14 @@ export default function StorefrontPage() {
           <p className="store-description-text" style={{ color: '#666', maxWidth: 600, margin: '0 auto 30px auto' }}>{store.description}</p>
           <div className="store-info-badges" style={{ display: 'flex', gap: 15, justifyContent: 'center', marginBottom: 30 }}>
             {store.address ? (
-              <a href={`https://maps.google.com/?q=${encodeURIComponent(store.address)}`} target="_blank" rel="noopener noreferrer" style={{ backgroundColor: '#f5f5f5', padding: '8px 20px', borderRadius: 20, textDecoration: 'none', color: '#111', fontWeight: 700, fontSize: '0.85rem' }}>Localisation</a>
+              <a 
+                href={store.address.startsWith('http') ? store.address : `https://maps.google.com/?q=${encodeURIComponent(store.address)}`} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                style={{ backgroundColor: '#f5f5f5', padding: '8px 20px', borderRadius: 20, textDecoration: 'none', color: '#111', fontWeight: 700, fontSize: '0.85rem' }}
+              >
+                Localisation
+              </a>
             ) : (
               <span style={{ backgroundColor: '#f5f5f5', padding: '8px 20px', borderRadius: 20, color: '#111', fontWeight: 700, fontSize: '0.85rem' }}>Localisation</span>
             )}

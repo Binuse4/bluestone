@@ -1,6 +1,6 @@
 # BLUE'STON Connect — Topo Technique
 
-> **État d'avancement** — Dernière mise à jour : 30 mai 2026
+> **État d'avancement** — Dernière mise à jour : 1er juin 2026
 > Ce fichier documente tout ce qui a été développé et implémenté jusqu'à aujourd'hui.
 
 ---
@@ -18,7 +18,7 @@
 | **Données locales** | localStorage | Fallback quand Supabase n'est pas configuré |
 | **Styling** | Vanilla CSS | Design system avec variables CSS (pas de Tailwind) |
 | **Typo** | Google Fonts (Outfit) | Police principale pour tous les templates |
-| **Utilitaires** | html2canvas | Capture d'écran du panier pour envoi WhatsApp |
+| **Utilitaires** | html-to-image | Capture d'écran du panier pour envoi WhatsApp (rendu CSS natif via SVG foreignObject) |
 
 ### Connexion Supabase
 
@@ -63,7 +63,7 @@ BlueStone/
 │   │   │   ├── ProductCard.jsx  # Carte produit (uniforme, badge RUPTURE, grayscale)
 │   │   │   └── CategoryCard.jsx # Carte catégorie (nettoyée pour Minimal/Élégance)
 │   │   └── cart/
-│   │       └── CartDrawer.jsx   # Panier + capture image html2canvas
+│   │       └── CartDrawer.jsx   # Panier + capture image html-to-image (clone hors-écran)
 │   │
 │   ├── pages/
 │   │   ├── StorefrontPage.jsx   # Homepage (Badges contact, Hero désactivé sur Élégance)
@@ -90,7 +90,7 @@ BlueStone/
 | **Grille Mobile** | **3 colonnes forcées** sur mobile pour tous les templates pour maximiser la visibilité |
 | **Bannières Promo** | **Carousel automatique** de 2 bannières max, liées à des produits spécifiques |
 | **Fiche produit** | Synchronisation instantanée entre la couleur choisie et l'image de la galerie |
-| **Panier Image** | Envoi d'une capture PNG du panier lors de la commande WhatsApp |
+| **Panier Image** | Capture PNG fidèle du panier via `html-to-image` (clone hors-écran + conversion CORS des images) |
 
 ### ✅ Gestion des Stocks (Rupture)
 
@@ -138,6 +138,7 @@ L'application a été épurée pour ne garder que les deux meilleurs designs :
 - **Grille 3 colonnes** : forcée via CSS global avec `!important` sur mobile pour tous les templates
 - **Cadre Image Uniforme** : toutes les images produits sont centrées dans un cadre carré (`aspect-ratio: 1/1`) avec `object-fit: contain` pour éviter tout rognage malpropre.
 - **Aperçu Dashboard** : synchronisation totale du style de l'aperçu avec le template sélectionné (Minimal vs Élégance).
+- **Capture Panier (html-to-image)** : migration de `html2canvas` vers `html-to-image` pour la capture PNG du panier. `html2canvas` ré-implémentait le CSS en JS et causait des décalages d'icônes/texte. `html-to-image` utilise `SVG foreignObject` (moteur CSS natif du navigateur) pour un rendu pixel-perfect. La capture se fait sur un **clone hors-écran** (`position: static`, `left: -9999px`) pour ne jamais toucher au DOM visible. Les images produits sont converties en **data URLs** au préalable pour contourner les restrictions CORS de SVG.
 
 ---
 
@@ -149,5 +150,6 @@ L'application a été épurée pour ne garder que les deux meilleurs designs :
 - [x] Grille mobile 3 colonnes sur tous les thèmes
 - [x] Suppression des templates Vitrine et Modern Red
 - [x] Intégration du logo officiel 4423697.png
+- [x] Fix capture panier : migration `html2canvas` → `html-to-image` (résolution décalage icônes/texte + page blanche)
 - [ ] Authentification Admin sécurisée (Prochaine étape)
 - [ ] Gestion des stocks par variantes (Taille/Couleur)

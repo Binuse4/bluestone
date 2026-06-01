@@ -1,6 +1,6 @@
 # BLUE'STON Connect — Module Catalogue Commerce
 
-> **Document de contexte** — Dernière mise à jour : 23 mai 2026
+> **Document de contexte** — Dernière mise à jour : 1er juin 2026
 > Ce fichier sert de référence pour toutes les discussions et développements futurs sur ce module.
 
 ---
@@ -85,9 +85,9 @@ Le lien NFC ne change pas, mais les données affichées sont mises à jour dynam
 - **4 catégories** avec **8 produits par catégorie** (32 produits total)
 - Aperçu d'un catalogue commerçant déjà créé (données fictives, images libres)
 
-### Exclu de la démo ❌
+### Exclu de la démo ✔️ (Implémenté depuis)
 
-- Flux WhatsApp (pas pour mercredi)
+- ~~Flux WhatsApp~~ → **Implémenté** : lien WhatsApp pré-rempli + capture PNG du panier via `html-to-image`
 - Paiement en ligne
 - Multi-boutiques
 - Gestion des stocks avancée
@@ -130,8 +130,9 @@ Le lien NFC ne change pas, mais les données affichées sont mises à jour dynam
 
 ### 💬 WhatsApp
 
-- [ ] Intégration du lien WhatsApp dans le bouton "Commander"
-- [ ] Message pré-rempli avec le récapitulatif du panier
+- [x] Intégration du lien WhatsApp dans le bouton "Commander"
+- [x] Message pré-rempli avec le récapitulatif du panier
+- [x] Capture PNG du panier téléchargée automatiquement (via `html-to-image` + clone hors-écran)
 - [ ] Chatbot automatisé (déjà développé par Stone — évaluer la nécessité)
 - [ ] Suivi de commande via WhatsApp
 
