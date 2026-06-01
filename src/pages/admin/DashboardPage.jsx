@@ -622,16 +622,18 @@ export default function DashboardPage() {
                 />
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Adresse Physique (Boutique)</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  value={storeForm.address}
-                  onChange={(e) => setStoreForm({ ...storeForm, address: e.target.value })}
-                  placeholder="Lien Google Maps de la boutique"
-                />
-              </div>
+              {selectedTemplate !== 'minimal' && (
+                <div className="form-group">
+                  <label className="form-label">Adresse Physique (Boutique)</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={storeForm.address}
+                    onChange={(e) => setStoreForm({ ...storeForm, address: e.target.value })}
+                    placeholder="Lien Google Maps de la boutique"
+                  />
+                </div>
+              )}
 
               <div className="form-row">
                 <div className="form-group">

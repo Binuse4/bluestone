@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useCart } from '../../context/CartContext';
 import { useTheme } from '../../context/ThemeContext';
 import { generateWhatsAppLink } from '../../lib/whatsapp';
-import html2canvas from 'html2canvas';
+import { toPng } from 'html-to-image';
 
 export default function CartDrawer({ isOpen, onClose, store }) {
   const {
@@ -37,26 +37,84 @@ export default function CartDrawer({ isOpen, onClose, store }) {
   );
 
   const handleWhatsAppCheckout = async (e) => {
-    // Si l'utilisateur clique sur le lien, on intercepte pour capturer l'image d'abord
     if (cartRef.current) {
       try {
-        const canvas = await html2canvas(cartRef.current, {
-          useCORS: true,
-          allowTaint: true,
+        // 1. Conteneur hors-écran pour ne pas toucher au DOM visible
+        const offscreen = document.createElement('div');
+        offscreen.style.cssText = 'position:absolute;left:-9999px;top:0;';
+        document.body.appendChild(offscreen);
+
+        // 2. Cloner le panier en position static (html-to-image ne capture pas position:fixed)
+        const clone = cartRef.current.cloneNode(true);
+        clone.style.cssText = `
+          position: static;
+          transform: none;
+          width: ${cartRef.current.offsetWidth}px;
+          height: auto;
+          max-height: none;
+          overflow: visible;
+          background: white;
+          box-shadow: none;
+        `;
+
+        // Rendre le body du clone non-scrollable
+        const clonedBody = clone.querySelector('.cart-drawer-body');
+        if (clonedBody) {
+          clonedBody.style.overflow = 'visible';
+          clonedBody.style.maxHeight = 'none';
+          clonedBody.style.flex = 'none';
+        }
+
+        // Retirer la note de bas de page du clone
+        const note = clone.querySelector('.cart-drawer-note');
+        if (note) note.remove();
+
+        offscreen.appendChild(clone);
+
+        // 3. Convertir les images en data URLs (CORS bloque les images externes dans SVG)
+        const images = clone.querySelectorAll('img');
+        await Promise.all([...images].map(img => {
+          return new Promise((resolve) => {
+            if (!img.src || img.src.startsWith('data:')) { resolve(); return; }
+            const tmp = new Image();
+            tmp.crossOrigin = 'anonymous';
+            tmp.onload = () => {
+              try {
+                const c = document.createElement('canvas');
+                c.width = tmp.naturalWidth;
+                c.height = tmp.naturalHeight;
+                c.getContext('2d').drawImage(tmp, 0, 0);
+                img.src = c.toDataURL('image/png');
+              } catch (ex) { /* CORS stricte, on garde l'originale */ }
+              resolve();
+            };
+            tmp.onerror = () => resolve();
+            tmp.src = img.src + (img.src.includes('?') ? '&' : '?') + 'cb=' + Date.now();
+          });
+        }));
+
+        // 4. Capturer le clone (rendu CSS natif du navigateur = alignement parfait)
+        const imgData = await toPng(clone, {
           backgroundColor: '#ffffff',
-          scale: 2 // Meilleure qualité
+          pixelRatio: 2,
         });
-        const imgData = canvas.toDataURL('image/png');
+
+        // 5. Nettoyer
+        document.body.removeChild(offscreen);
+
+        // 6. Télécharger
         const link = document.createElement('a');
         link.href = imgData;
         link.download = `panier-${storeName.replace(/\s+/g, '-')}.png`;
         link.click();
       } catch (err) {
         console.error("Erreur lors de la capture du panier :", err);
+        const leftover = document.querySelector('div[style*="left: -9999px"]');
+        if (leftover) document.body.removeChild(leftover);
       }
     }
 
-    // On laisse un petit délai pour le téléchargement avant d'ouvrir WhatsApp
+    // Délai pour le téléchargement avant d'ouvrir WhatsApp
     setTimeout(() => {
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     }, 800);
