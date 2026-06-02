@@ -16,19 +16,8 @@ export default function ProductPage() {
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [isLiked, setIsLiked] = useState(false);
-  const [mainImageIndex, setMainImageIndex] = useState(0);
 
   const product = products?.find((p) => p.id === productId);
-
-  // Sync image with color selection
-  useEffect(() => {
-    if (product && product.colors && product.colors.length > 0 && selectedColor && selectedColor !== 'Unique') {
-      const colorIndex = product.colors.indexOf(selectedColor);
-      if (colorIndex !== -1 && product.product_images && product.product_images.length > colorIndex) {
-        setMainImageIndex(colorIndex);
-      }
-    }
-  }, [selectedColor, product]);
 
   // Initialiser les sélections par défaut une fois le produit chargé
   useEffect(() => {
@@ -100,10 +89,10 @@ export default function ProductPage() {
     return map[colorName] || '#CCCCCC';
   };
 
-  // Utiliser l'image de la couleur sélectionnée si disponible, sinon l'image principale
+  // Logique de changement d'image par couleur
   let currentMainImage = product.image_url;
-  if (product.colors && product.colors.length > 0 && selectedColor && selectedColor !== 'Unique') {
-    const colorIndex = product.colors.indexOf(selectedColor);
+  if (product.colors && product.colors.length > 0 && selectedColor) {
+    const colorIndex = product.colors.findIndex(c => c.trim().toLowerCase() === selectedColor.trim().toLowerCase());
     if (colorIndex !== -1 && product.product_images && product.product_images.length > colorIndex && product.product_images[colorIndex]) {
       currentMainImage = product.product_images[colorIndex];
     }
