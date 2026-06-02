@@ -201,9 +201,6 @@ export default function ProductPage() {
   }
 
   // --- RENDU THÈME ÉLÉGANCE (PAR DÉFAUT) ---
-  const images = product.product_images && product.product_images.length > 0 ? product.product_images : [product.image_url];
-  const displayImage = images[mainImageIndex] || images[0];
-
   return (
     <div className="container product-detail-layout modern-product-page fade-in">
       <div className="modern-breadcrumb">
