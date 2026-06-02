@@ -273,8 +273,7 @@
 .product-card-image {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Contain ensures the whole product is visible without distortion */
-  padding: 10px; /* Internal padding to breathe */
+  object-fit: cover; /* Fill the card while being well adjusted */
   transition: transform var(--transition-slow);
 }
 

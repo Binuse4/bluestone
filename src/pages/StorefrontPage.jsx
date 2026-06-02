@@ -51,12 +51,15 @@ export default function StorefrontPage() {
   // --- RENDU THÈME ÉLÉGANCE (PAR DÉFAUT) ---
   return (
     <div className="fade-in">
-      <div className="hero-wrapper" style={{ display: 'none' }}></div>
+      <div className="hero-wrapper">
+        <img src={store.cover_url || "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200"} alt={store.name} className="hero-cover" />
+        <div className="hero-overlay"></div>
+      </div>
 
       <div className="container">
         <div className="store-profile-section" style={{ marginTop: 60, textAlign: 'center' }}>
           <div className="store-logo-wrapper" style={{ margin: '0 auto 20px auto', width: 120, height: 120, borderRadius: '50%', overflow: 'hidden', border: '4px solid white', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white' }}>
-            <img className="store-logo-img" src={store.logo_url || '/4423697.png'} alt={store.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            {store.logo_url && <img className="store-logo-img" src={store.logo_url} alt={store.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />}
           </div>
           <h1 className="store-name-title" style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: 10 }}>{store.name}</h1>
           <p className="store-description-text" style={{ color: '#666', maxWidth: 600, margin: '0 auto 30px auto' }}>{store.description}</p>

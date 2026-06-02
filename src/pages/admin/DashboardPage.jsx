@@ -722,16 +722,28 @@ export default function DashboardPage() {
                 )}
 
                 <div style={{ padding: '20px', textAlign: 'center', marginTop: selectedTemplate === 'minimal' ? '0px' : '-50px' }}>
-                  <img src={storeForm.logo_url || '/4423697.png'} alt="Logo" style={{
-                    width: selectedTemplate === 'minimal' ? '60px' : '80px',
-                    height: selectedTemplate === 'minimal' ? '60px' : '80px',
-                    borderRadius: '50%',
-                    border: selectedTemplate === 'minimal' ? 'none' : '4px solid white',
-                    objectFit: 'contain',
-                    backgroundColor: 'white',
-                    margin: '0 auto 10px auto',
-                    opacity: selectedTemplate === 'minimal' ? 0.8 : 1
-                  }} />
+                  {selectedTemplate !== 'minimal' && (
+                    <div style={{
+                      width: '80px',
+                      height: '80px',
+                      borderRadius: '50%',
+                      border: '4px solid white',
+                      backgroundColor: 'white',
+                      margin: '0 auto 10px auto',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      {storeForm.logo_url && (
+                        <img src={storeForm.logo_url} alt="Logo" style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'contain'
+                        }} />
+                      )}
+                    </div>
+                  )}
                   <h4 style={{
                     margin: '0 0 5px 0',
                     fontSize: selectedTemplate === 'minimal' ? '1.5rem' : '1.2rem',

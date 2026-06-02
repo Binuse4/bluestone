@@ -16,7 +16,11 @@ export default function Header({ store, onCartClick }) {
       return (
         <div style={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
           <Link to={`/c/catalogue/${storeSlug}`} className="logo" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: '#000' }}>
-            <img src={store?.logo_url || '/4423697.png'} alt={store?.name} style={{ width: 35, height: 35, objectFit: 'contain' }} />
+            {store?.logo_url ? (
+              <img src={store.logo_url} alt={store?.name} style={{ width: 35, height: 35, objectFit: 'contain' }} />
+            ) : (
+              <div style={{ width: 35, height: 35, backgroundColor: '#eee', borderRadius: '50%' }}></div>
+            )}
             <span style={{ fontWeight: 400, letterSpacing: 1, fontSize: '0.9rem' }}>{store?.name?.toUpperCase() || "BOUTIQUE"}</span>
           </Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
@@ -39,7 +43,7 @@ export default function Header({ store, onCartClick }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
           <Link to={`/c/catalogue/${storeSlug}`} className="logo" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ width: '48px', height: '48px', minWidth: '48px', minHeight: '48px', borderRadius: '50%', overflow: 'hidden', border: '2px solid #eee', backgroundColor: 'white', position: 'relative' }}>
-              <img src={store?.logo_url || '/4423697.png'} alt={store?.name} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+              {store?.logo_url && <img src={store.logo_url} alt={store?.name} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />}
             </div>
           </Link>
         </div>

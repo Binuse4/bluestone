@@ -199,7 +199,31 @@ export default function CatalogPage() {
 
         <section className="minimal-categories" style={{ marginBottom: 40, display: 'flex', justifyContent: 'center', gap: 30, flexWrap: 'wrap' }}>
           <button onClick={() => handleCategoryChange('all')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 500, textDecoration: selectedCategory === 'all' ? 'underline' : 'none', color: selectedCategory === 'all' ? '#000' : '#888' }}>Tout</button>
-          {categories.map((cat) => (<button key={cat.id} onClick={() => handleCategoryChange(cat.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 500, textDecoration: selectedCategory === cat.id ? 'underline' : 'none', color: selectedCategory === cat.id ? '#000' : '#888' }}>{cat.name}</button>))}
+          {categories.map((cat) => (
+            <button 
+              key={cat.id} 
+              onClick={() => handleCategoryChange(cat.id)} 
+              style={{ 
+                background: 'none', 
+                border: 'none', 
+                cursor: 'pointer', 
+                fontSize: '0.9rem', 
+                fontWeight: 500, 
+                textDecoration: selectedCategory === cat.id ? 'underline' : 'none', 
+                color: selectedCategory === cat.id ? '#000' : '#888',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              {cat.icon_url && (
+                <span style={{ fontSize: '1.1rem' }}>
+                  {cat.icon_url.length < 5 ? cat.icon_url : <img src={cat.icon_url} alt="" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />}
+                </span>
+              )}
+              {cat.name}
+            </button>
+          ))}
         </section>
 
         <section className="minimal-products">
@@ -225,7 +249,9 @@ export default function CatalogPage() {
   return (
     <div className="container catalog-layout modern-view fade-in">
       <section className="modern-store-header">
-        <div className="modern-logo-wrapper"><img src={store.logo_url} alt={store.name} /></div>
+        <div className="modern-logo-wrapper">
+          {store.logo_url && <img src={store.logo_url} alt={store.name} />}
+        </div>
         <div className="modern-store-info">
           <h2 className="modern-store-name">{store.name}</h2>
           <p className="modern-store-tagline">
@@ -252,6 +278,11 @@ export default function CatalogPage() {
           <button onClick={() => handleCategoryChange('all')} className={`modern-cat-pill ${selectedCategory === 'all' ? 'active' : ''}`}><span>Tout</span></button>
           {categories.map(cat => (
             <button key={cat.id} onClick={() => handleCategoryChange(cat.id)} className={`modern-cat-pill ${selectedCategory === cat.id ? 'active' : ''}`}>
+              {cat.icon_url && (
+                <span style={{ marginRight: '6px', fontSize: '1.1rem', display: 'flex', alignItems: 'center' }}>
+                  {cat.icon_url.length < 5 ? cat.icon_url : <img src={cat.icon_url} alt="" style={{ width: '18px', height: '18px', objectFit: 'contain' }} />}
+                </span>
+              )}
               <span>{cat.name}</span>
             </button>
           ))}

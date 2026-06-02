@@ -70,15 +70,12 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
                 <svg width="18" height="18" viewBox="0 0 24 24" fill={isLiked ? '#ef4444' : 'none'} stroke={isLiked ? '#ef4444' : 'currentColor'} strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
               </button>
             </div>
-            <div className="minimal-image-wrapper" style={{ width: '100%', height: '100%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="minimal-image-wrapper">
               <img
                 src={product.image_url}
                 alt={product.name}
                 className="minimal-product-img"
                 style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
                   filter: product.is_available === false ? 'grayscale(1)' : 'none'
                 }}
               />
@@ -120,20 +117,15 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
           <button onClick={handleLikeToggle} className="modern-like-btn" aria-label="Aimer le produit">
             <svg width="20" height="20" viewBox="0 0 24 24" fill={isLiked ? '#EF4444' : 'none'} stroke={isLiked ? '#EF4444' : 'currentColor'} strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
           </button>
-          <div className="floating-shoe-wrapper" style={{ padding: 0, width: '100%', height: '100%' }}>
+          <div className="floating-shoe-wrapper">
             <img 
               src={product.image_url} 
               alt={product.name} 
               className="floating-shoe-img" 
               style={{ 
-                width: '100%', 
-                height: '100%', 
-                objectFit: 'cover', 
-                transform: 'none', 
                 filter: product.is_available === false ? 'grayscale(1)' : 'none' 
               }} 
             />
-            <div className="shoe-depth-shadow" style={{ display: 'none' }}></div>
           </div>
         </div>
         <div className="modern-card-bottom">

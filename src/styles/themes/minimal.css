@@ -101,9 +101,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 0;
   height: 240px; /* Base uniform height */
   transition: background-color 0.3s ease;
+  overflow: hidden;
 }
 
 .theme-minimal .minimal-card:hover .minimal-card-top {
@@ -142,16 +143,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 0;
 }
 
 .theme-minimal .minimal-product-img {
-  max-width: 90%;
-  max-height: 90%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  mix-blend-mode: multiply; /* Helps with transparent backgrounds on grey */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .theme-minimal .minimal-card-bottom {
@@ -216,13 +214,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  padding: 0;
+  overflow: hidden;
 }
 
 .theme-minimal .minimal-product-gallery img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .theme-minimal .minimal-product-info {
