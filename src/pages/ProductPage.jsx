@@ -100,6 +100,15 @@ export default function ProductPage() {
     return map[colorName] || '#CCCCCC';
   };
 
+  // Utiliser l'image de la couleur sélectionnée si disponible, sinon l'image principale
+  let currentMainImage = product.image_url;
+  if (product.colors && product.colors.length > 0 && selectedColor && selectedColor !== 'Unique') {
+    const colorIndex = product.colors.indexOf(selectedColor);
+    if (colorIndex !== -1 && product.product_images && product.product_images.length > colorIndex && product.product_images[colorIndex]) {
+      currentMainImage = product.product_images[colorIndex];
+    }
+  }
+
   // --- RENDU THÈME MINIMAL ---
   if (template === 'minimal') {
     return (
@@ -110,7 +119,7 @@ export default function ProductPage() {
 
         <div className="minimal-product-grid">
           <div className="minimal-product-gallery" style={{ opacity: product.is_available === false ? 0.6 : 1 }}>
-            <img src={product.image_url} alt={product.name} style={{ filter: product.is_available === false ? 'grayscale(1)' : 'none' }} />
+            <img src={currentMainImage} alt={product.name} />
           </div>
 
           <div className="minimal-product-info">
@@ -214,7 +223,7 @@ export default function ProductPage() {
       </div>
       <div className="modern-gallery-section" style={{ opacity: product.is_available === false ? 0.7 : 1 }}>
         <div className="modern-main-image-wrapper">
-          <img src={displayImage} alt={product.name} className="modern-main-img" style={{ filter: product.is_available === false ? 'grayscale(1)' : 'none' }} />
+          <img src={currentMainImage} alt={product.name} className="modern-main-img" />
           <div className="shoe-depth-shadow-large"></div>
         </div>
       </div>

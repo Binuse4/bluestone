@@ -11,15 +11,10 @@ export default function CartDrawer({ isOpen, onClose, store }) {
     removeFromCart,
     cartTotal,
     cartCount,
-    promoCode,
-    promoError,
-    discount,
-    finalTotal,
-    applyPromoCode
+    finalTotal
   } = useCart();
   const { template } = useTheme();
 
-  const [promoInput, setPromoInput] = useState('');
   const cartRef = useRef(null);
 
   // Génération du lien WhatsApp
@@ -31,8 +26,8 @@ export default function CartDrawer({ isOpen, onClose, store }) {
     cart,
     cartTotal,
     store?.currency || 'FCFA',
-    promoCode,
-    discount,
+    null,
+    0,
     finalTotal
   );
 

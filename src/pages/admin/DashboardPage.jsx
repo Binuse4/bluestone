@@ -10,7 +10,6 @@ const iconBase = ['👕', '👜', '👟', '💍', '👗', '🧢', '🕶️', '�
 
 export default function DashboardPage() {
   const { slug } = useParams();
-  const navigate = useNavigate();
   const { store, categories, products, banners, loading, error } = useStoreData(slug);
   const { setTemplate: setGlobalTemplate } = useTheme();
 
@@ -49,6 +48,7 @@ export default function DashboardPage() {
 
   const [sizesInput, setSizesInput] = useState('');
   const [colorsInput, setColorsInput] = useState('');
+  const [colorImages, setColorImages] = useState([]);
   const [showAddProductForm, setShowAddProductForm] = useState(false);
 
   // États de modification
@@ -71,6 +71,7 @@ export default function DashboardPage() {
     });
     setSizesInput('');
     setColorsInput('');
+    setColorImages([]);
     setShowAddProductForm(false);
   };
 
@@ -463,7 +464,8 @@ export default function DashboardPage() {
       price: parseFloat(newProd.price),
       compare_price: newProd.compare_price ? parseFloat(newProd.compare_price) : null,
       currency: store.currency || 'FCFA',
-      image_url: newProd.image_url || 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600',
+      image_url: newProd.image_url || colorImages.find(img => img) || 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600',
+      product_images: colorImages, // Extra images for colors
       sizes: parsedSizes,
       colors: parsedColors,
       is_available: newProd.is_available,
@@ -984,12 +986,58 @@ export default function DashboardPage() {
                   </div>
                   <div className="form-group">
                     <label className="form-label">Couleurs (virgules)</label>
-                    <input type="text" className="form-input" value={colorsInput} onChange={(e) => setColorsInput(e.target.value)} placeholder="Noir, Blanc..." />
+                    <input 
+                      type="text" 
+                      className="form-input" 
+                      value={colorsInput} 
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setColorsInput(val);
+                        const count = val.split(',').map(s => s.trim()).filter(Boolean).length;
+                        if (count > colorImages.length) {
+                          setColorImages([...colorImages, ...Array(count - colorImages.length).fill('')]);
+                        }
+                      }} 
+                      placeholder="Noir, Blanc..." 
+                    />
                   </div>
-                  <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: '30px' }}>
-                    <input type="checkbox" id="is_available" checked={newProd.is_available} onChange={(e) => setNewProd({ ...newProd, is_available: e.target.checked })} />
-                    <label htmlFor="is_available" style={{ margin: 0, cursor: 'pointer', fontWeight: 600 }}>En stock (Disponible)</label>
+                </div>
+
+                {/* Gestion des Images par Couleur */}
+                {colorsInput.split(',').map(s => s.trim()).filter(Boolean).length > 0 && (
+                  <div className="admin-card" style={{ backgroundColor: '#f9f9f9', border: '1px dashed #ddd', padding: '15px', marginBottom: '20px' }}>
+                    <h4 style={{ fontSize: '0.9rem', marginBottom: '15px' }}>🖼️ Images par couleur</h4>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                      {colorsInput.split(',').map(s => s.trim()).filter(Boolean).map((color, index) => (
+                        <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                          <span style={{ minWidth: '80px', fontSize: '0.85rem', fontWeight: 600 }}>{color} :</span>
+                          <input 
+                            type="text" 
+                            className="form-input" 
+                            style={{ flex: 1, height: '35px', fontSize: '0.8rem' }}
+                            placeholder={`URL image pour ${color}`}
+                            value={colorImages[index] || ''}
+                            onChange={(e) => {
+                              const newImgs = [...colorImages];
+                              newImgs[index] = e.target.value;
+                              setColorImages(newImgs);
+                            }}
+                          />
+                          <input 
+                            type="file" 
+                            onChange={(e) => handleFileUpload(e, 'product', 'color-image', index)} 
+                            disabled={isUploading} 
+                            style={{ width: '150px', fontSize: '0.7rem' }} 
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
+                )}
+
+                <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: '20px' }}>
+                  <input type="checkbox" id="is_available" checked={newProd.is_available} onChange={(e) => setNewProd({ ...newProd, is_available: e.target.checked })} />
+                  <label htmlFor="is_available" style={{ margin: 0, cursor: 'pointer', fontWeight: 600 }}>En stock (Disponible)</label>
                 </div>
 
                 <div className="form-group">
