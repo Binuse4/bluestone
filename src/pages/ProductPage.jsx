@@ -124,6 +124,59 @@ export default function ProductPage() {
               <p>{product.description}</p>
             </div>
 
+            {/* Sélecteur de Tailles - Minimal */}
+            {product.sizes && product.sizes.length > 0 && product.sizes[0] !== 'Standard' && (
+              <div className="minimal-option-group" style={{ marginBottom: 20 }}>
+                <span className="minimal-option-label" style={{ display: 'block', fontSize: '0.7rem', fontWeight: 700, letterSpacing: 1, marginBottom: 10 }}>TAILLE</span>
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                  {product.sizes.map(size => (
+                    <button 
+                      key={size} 
+                      onClick={() => setSelectedSize(size)}
+                      style={{
+                        padding: '8px 20px',
+                        border: '1px solid #eee',
+                        backgroundColor: selectedSize === size ? '#000' : 'transparent',
+                        color: selectedSize === size ? '#fff' : '#000',
+                        fontSize: '0.8rem',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Sélecteur de Couleurs - Minimal */}
+            {product.colors && product.colors.length > 0 && product.colors[0] !== 'Unique' && (
+              <div className="minimal-option-group" style={{ marginBottom: 30 }}>
+                <span className="minimal-option-label" style={{ display: 'block', fontSize: '0.7rem', fontWeight: 700, letterSpacing: 1, marginBottom: 10 }}>COULEUR</span>
+                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                  {product.colors.map(color => (
+                    <button 
+                      key={color} 
+                      onClick={() => setSelectedColor(color)}
+                      title={color}
+                      style={{
+                        width: 24,
+                        height: 24,
+                        borderRadius: '50%',
+                        backgroundColor: getColorHex(color),
+                        border: selectedColor === color ? '2px solid #000' : '1px solid #eee',
+                        padding: 0,
+                        cursor: 'pointer',
+                        transform: selectedColor === color ? 'scale(1.2)' : 'none',
+                        transition: 'all 0.2s'
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="minimal-purchase-actions">
               <div className="minimal-qty-selector">
                 <button onClick={() => setQuantity(q => Math.max(1, q-1))}>-</button>
@@ -179,6 +232,62 @@ export default function ProductPage() {
         </div>
         <div className="modern-description-section"><h3 className="modern-section-label">Description</h3><p className="modern-description-text">{product.description}</p></div>
         
+        {/* Options de Tailles - Élégance */}
+        {product.sizes && product.sizes.length > 0 && product.sizes[0] !== 'Standard' && (
+          <div className="modern-options-group" style={{ marginBottom: 25 }}>
+            <span className="modern-section-label">Sélectionner la taille</span>
+            <div className="modern-option-list" style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              {product.sizes.map(size => (
+                <button 
+                  key={size} 
+                  onClick={() => setSelectedSize(size)}
+                  className={`modern-size-pill ${selectedSize === size ? 'active' : ''}`}
+                  style={{
+                    minWidth: 50,
+                    height: 50,
+                    borderRadius: 15,
+                    border: selectedSize === size ? '2px solid #111' : '2px solid #f0f0f0',
+                    backgroundColor: selectedSize === size ? '#111' : 'white',
+                    color: selectedSize === size ? 'white' : '#111',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Options de Couleurs - Élégance */}
+        {product.colors && product.colors.length > 0 && product.colors[0] !== 'Unique' && (
+          <div className="modern-options-group" style={{ marginBottom: 35 }}>
+            <span className="modern-section-label">Couleurs disponibles</span>
+            <div className="modern-option-list" style={{ display: 'flex', gap: 15, flexWrap: 'wrap' }}>
+              {product.colors.map(color => (
+                <button 
+                  key={color} 
+                  onClick={() => setSelectedColor(color)}
+                  title={color}
+                  style={{
+                    width: 35,
+                    height: 35,
+                    borderRadius: '50%',
+                    backgroundColor: getColorHex(color),
+                    border: '3px solid white',
+                    boxShadow: selectedColor === color ? '0 0 0 2px #111' : '0 0 0 1px #eee',
+                    cursor: 'pointer',
+                    transform: selectedColor === color ? 'scale(1.15)' : 'none',
+                    transition: 'all 0.2s'
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="modern-purchase-footer">
           <div className="modern-qty-selector"><button onClick={() => setQuantity(q => Math.max(1, q-1))}>-</button><span>{quantity}</span><button onClick={() => setQuantity(q => q+1)}>+</button></div>
           <button 
