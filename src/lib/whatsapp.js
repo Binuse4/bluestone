@@ -12,17 +12,17 @@
  */
 export function generateWhatsAppLink(phone, storeName, items, total, currency = 'FCFA', promoCode = '', discount = 0, finalTotal = null) {
   if (!phone) return '#';
-  
+
   // Formatage du numéro de téléphone (retirer les espaces, signes +, etc.)
   const cleanPhone = phone.replace(/[^0-9]/g, '');
-  
+
   // Construction du message
-  let message = `Bonjour *${storeName}* ! 👋\n\n`;
+  let message = `Bonjour *${storeName}* !\n\n`;
   message += `Je viens de finir mes différents choix dans votre catalogue.\n\n`;
   message += `Je vous envoie ci-joint le fichier image (PNG) qui vient de se télécharger sur mon appareil récapitulant ma commande.`;
-  
+
   // Encodage du message pour l'URL
   const encodedText = encodeURIComponent(message);
-  
+
   return `https://wa.me/${cleanPhone}?text=${encodedText}`;
 }
