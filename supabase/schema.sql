@@ -106,7 +106,7 @@ BEGIN
     'Créateur de mode contemporaine inspirée du patrimoine africain. Prêt-à-porter de luxe, maroquinerie d''art et accessoires faits main.',
     'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=200&auto=format&fit=crop',
     'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200&auto=format&fit=crop',
-    '22997000000',
+    '22955584187',
     '#8c6239',
     'FCFA'
   )

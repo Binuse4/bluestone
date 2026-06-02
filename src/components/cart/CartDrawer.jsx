@@ -36,7 +36,7 @@ export default function CartDrawer({ isOpen, onClose, store }) {
     finalTotal
   );
 
-  const handleWhatsAppCheckout = async (e) => {
+  const handleDownloadCart = async () => {
     if (cartRef.current) {
       try {
         // 1. Conteneur hors-écran pour ne pas toucher au DOM visible
@@ -65,13 +65,19 @@ export default function CartDrawer({ isOpen, onClose, store }) {
           clonedBody.style.flex = 'none';
         }
 
-        // Retirer la note de bas de page du clone
+        // Retirer la note de bas de page et les boutons du clone
         const note = clone.querySelector('.cart-drawer-note');
         if (note) note.remove();
+        const footer = clone.querySelector('.cart-drawer-footer');
+        if (footer) {
+          // On garde le résumé mais on enlève les boutons d'action dans la capture
+          const actions = footer.querySelectorAll('button');
+          actions.forEach(btn => btn.remove());
+        }
 
         offscreen.appendChild(clone);
 
-        // 3. Convertir les images en data URLs (CORS bloque les images externes dans SVG)
+        // 3. Convertir les images en data URLs
         const images = clone.querySelectorAll('img');
         await Promise.all([...images].map(img => {
           return new Promise((resolve) => {
@@ -85,7 +91,7 @@ export default function CartDrawer({ isOpen, onClose, store }) {
                 c.height = tmp.naturalHeight;
                 c.getContext('2d').drawImage(tmp, 0, 0);
                 img.src = c.toDataURL('image/png');
-              } catch (ex) { /* CORS stricte, on garde l'originale */ }
+              } catch (ex) { /* CORS stricte */ }
               resolve();
             };
             tmp.onerror = () => resolve();
@@ -93,7 +99,7 @@ export default function CartDrawer({ isOpen, onClose, store }) {
           });
         }));
 
-        // 4. Capturer le clone (rendu CSS natif du navigateur = alignement parfait)
+        // 4. Capturer le clone
         const imgData = await toPng(clone, {
           backgroundColor: '#ffffff',
           pixelRatio: 2,
@@ -108,16 +114,15 @@ export default function CartDrawer({ isOpen, onClose, store }) {
         link.download = `panier-${storeName.replace(/\s+/g, '-')}.png`;
         link.click();
       } catch (err) {
-        console.error("Erreur lors de la capture du panier :", err);
+        console.error("Erreur lors du téléchargement du panier :", err);
         const leftover = document.querySelector('div[style*="left: -9999px"]');
         if (leftover) document.body.removeChild(leftover);
       }
     }
+  };
 
-    // Délai pour le téléchargement avant d'ouvrir WhatsApp
-    setTimeout(() => {
-      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-    }, 800);
+  const handleWhatsAppCheckout = () => {
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
 
   // --- RENDU THÈME MODERN RED ---
@@ -163,22 +168,11 @@ export default function CartDrawer({ isOpen, onClose, store }) {
                   </div>
                 ))}
 
-                <div className="mr-promo-bar">
-                  <input type="text" placeholder="Code Promo" className="mr-promo-input" value={promoInput} onChange={(e) => setPromoInput(e.target.value)} />
-                  <button className="mr-promo-btn" onClick={() => applyPromoCode(promoInput)}>Ok</button>
-                </div>
-
-                <div className="mr-summary" style={{ padding: '0 20px' }}>
+                <div className="mr-summary" style={{ padding: '0 20px', marginTop: 20 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                     <span>Sous-total</span>
                     <span>{cartTotal.toLocaleString()} {store?.currency || 'FCFA'}</span>
                   </div>
-                  {discount > 0 && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10, color: '#EF4444' }}>
-                      <span>Réduction</span>
-                      <span>-{discount.toLocaleString()}</span>
-                    </div>
-                  )}
                   <div style={{ height: '2px', backgroundColor: '#000', margin: '15px 0' }}></div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, fontSize: '1.2rem' }}>
                     <span>Total Net</span>
@@ -190,8 +184,9 @@ export default function CartDrawer({ isOpen, onClose, store }) {
           </div>
 
           {cart.length > 0 && (
-            <div className="cart-drawer-footer" style={{ borderTop: 'none', padding: '20px' }}>
-              <button className="mr-checkout-btn" onClick={handleWhatsAppCheckout}>Passer commande sur WhatsApp</button>
+            <div className="cart-drawer-footer" style={{ borderTop: 'none', padding: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <button className="mr-promo-btn" style={{ width: '100%', height: '45px' }} onClick={handleDownloadCart}>Télécharger mon panier</button>
+              <button className="mr-checkout-btn" onClick={handleWhatsAppCheckout}>Commander sur WhatsApp</button>
             </div>
           )}
         </div>
@@ -253,26 +248,20 @@ export default function CartDrawer({ isOpen, onClose, store }) {
         {/* Pied de page */}
         {cart.length > 0 && (
           <div className="cart-drawer-footer">
-            <div style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: 16, marginBottom: 16 }}>
-              <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: 8 }}>Code Promo</span>
-              <div style={{ display: 'flex', gap: 10 }}>
-                <input type="text" placeholder="Ex: BLUESTON10" value={promoInput} onChange={(e) => setPromoInput(e.target.value)} style={{ flex: 1, padding: '8px 12px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }} disabled={!!promoCode} />
-                {promoCode ? <button onClick={() => { applyPromoCode(''); setPromoInput(''); }} className="btn btn-secondary">Retirer</button> : <button onClick={() => applyPromoCode(promoInput)} className="btn btn-primary">Appliquer</button>}
-              </div>
-              {promoError && <p style={{ color: '#d9534f', fontSize: '0.75rem', marginTop: 6 }}>⚠️ {promoError}</p>}
-              {promoCode && <p style={{ color: '#15803d', fontSize: '0.75rem', marginTop: 6 }}>✓ Code {promoCode} activé !</p>}
-            </div>
-
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
               <div className="cart-summary-row"><span>Sous-total</span><span>{cartTotal.toLocaleString()} {store?.currency || 'FCFA'}</span></div>
-              {discount > 0 && <div className="cart-summary-row" style={{ color: '#15803d' }}><span>Réduction</span><span>-{discount.toLocaleString()} {store?.currency || 'FCFA'}</span></div>}
               <div className="cart-summary-row" style={{ borderTop: '1px dashed var(--border-color)', paddingTop: 10 }}><strong>Total Net</strong><strong style={{ fontSize: '1.25rem' }}>{finalTotal.toLocaleString()} {store?.currency || 'FCFA'}</strong></div>
             </div>
 
-            <button className="btn btn-primary btn-full btn-accent" onClick={handleWhatsAppCheckout} style={{ padding: '14px 24px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-              Commander sur WhatsApp
-            </button>
-            <p className="cart-drawer-note" style={{ textAlign: 'center', marginTop: 15, fontSize: '0.75rem', color: '#999' }}>L'image de votre panier sera téléchargée automatiquement pour être jointe à votre message.</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <button className="btn btn-secondary btn-full" onClick={handleDownloadCart} style={{ padding: '12px 24px', fontWeight: 600 }}>
+                Télécharger mon panier
+              </button>
+              <button className="btn btn-primary btn-full btn-accent" onClick={handleWhatsAppCheckout} style={{ padding: '14px 24px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+                Commander sur WhatsApp
+              </button>
+            </div>
+            <p className="cart-drawer-note" style={{ textAlign: 'center', marginTop: 15, fontSize: '0.75rem', color: '#999' }}>Téléchargez votre panier pour garder une trace de votre sélection.</p>
           </div>
         )}
       </div>

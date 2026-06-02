@@ -61,8 +61,10 @@
     column-gap: 8px;
   }
   
-  .theme-minimal .minimal-card-top {
-    padding: 10px !important;
+  .theme-minimal .minimal-card,
+  .theme-minimal .minimal-card-top,
+  .theme-minimal .minimal-image-wrapper {
+    padding: 0 !important;
   }
   
   .theme-minimal .minimal-card-title {

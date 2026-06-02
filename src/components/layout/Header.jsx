@@ -48,17 +48,20 @@ export default function Header({ store, onCartClick }) {
           </Link>
         </div>
 
-        <div className="header-right-actions" style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
-          <Link to={`/admin/${storeSlug}`} className="admin-pill-link">Admin</Link>
-          <Link to={`/c/catalogue/${storeSlug}/explore?focus=search`} className="header-icon-btn" style={{ background: 'none', border: 'none' }}>
-            <svg width="22" height="22" viewBox="0 0 24 19" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+        <div className="header-right-actions" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <Link to={`/admin/${storeSlug}`} className="admin-pill-link" style={{ fontSize: '0.75rem', fontWeight: 600, padding: '4px 10px', borderRadius: '20px', backgroundColor: '#f5f5f5', color: '#666', textDecoration: 'none' }}>Admin</Link>
+
+          <Link to={`/c/catalogue/${storeSlug}/explore?focus=search`} className="header-icon-btn" style={{ background: 'none', border: 'none', display: 'flex', alignItems: 'center', color: 'inherit' }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
           </Link>
-          <Link to={`/c/catalogue/${storeSlug}/explore?view=favorites`} className="header-icon-btn" style={{ background: 'none', border: 'none' }}>
-            <svg width="22" height="22" viewBox="0 0 24 19" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
+
+          <Link to={`/c/catalogue/${storeSlug}/explore?view=favorites`} className="header-icon-btn" style={{ background: 'none', border: 'none', display: 'flex', alignItems: 'center', color: 'inherit' }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
           </Link>
-          <button onClick={onCartClick} className="header-icon-btn cart-trigger" style={{ background: 'none', border: 'none', position: 'relative' }}>
+
+          <button onClick={onCartClick} className="header-icon-btn cart-trigger" style={{ background: 'none', border: 'none', position: 'relative', display: 'flex', alignItems: 'center', padding: 0, color: 'inherit', cursor: 'pointer' }}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>
-            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+            {cartCount > 0 && <span className="cart-badge" style={{ position: 'absolute', top: '-8px', right: '-8px' }}>{cartCount}</span>}
           </button>
         </div>
       </div>

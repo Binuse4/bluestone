@@ -114,9 +114,6 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
               RUPTURE
             </div>
           )}
-          <button onClick={handleLikeToggle} className="modern-like-btn" aria-label="Aimer le produit">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill={isLiked ? '#EF4444' : 'none'} stroke={isLiked ? '#EF4444' : 'currentColor'} strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
-          </button>
           <div className="floating-shoe-wrapper">
             <img 
               src={product.image_url} 
@@ -129,7 +126,12 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
           </div>
         </div>
         <div className="modern-card-bottom">
-          <h4 className="modern-card-title">{product.name}</h4>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px', marginBottom: '8px' }}>
+            <h4 className="modern-card-title" style={{ margin: 0, flex: 1 }}>{product.name}</h4>
+            <button onClick={handleLikeToggle} className="modern-like-btn-inline" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', flexShrink: 0 }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill={isLiked ? '#EF4444' : 'none'} stroke={isLiked ? '#EF4444' : 'currentColor'} strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
+            </button>
+          </div>
           <div className="modern-card-details" style={{ flexWrap: 'nowrap' }}>
             <span className="modern-card-price" style={{ whiteSpace: 'nowrap', fontSize: '0.85rem' }}>
               {formattedComparePrice && <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.8rem', marginRight: '5px' }}>{formattedComparePrice}</span>}
