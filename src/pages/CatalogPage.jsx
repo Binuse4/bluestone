@@ -152,25 +152,36 @@ export default function CatalogPage() {
           }}>En profiter</Link>
         </div>
         <div className="discount-images" style={{
-          flex: '0 0 30%',
+          flex: '0 0 35%',
           display: 'flex',
           justifyContent: 'flex-end',
+          alignItems: 'center',
           paddingRight: 0,
-          marginRight: template === 'minimal' ? '-15px' : '0',
-          zIndex: 1
+          zIndex: 1,
+          height: '100%'
         }}>
           {bannerImg && (
-            <img
-              src={bannerImg}
-              alt="Promo"
-              style={{
-                width: 'auto',
-                height: template === 'minimal' ? '140px' : '150px',
-                maxWidth: '100%',
-                objectFit: 'contain',
-                transform: template === 'minimal' ? 'translateX(5px)' : 'none'
-              }}
-            />
+            <div style={{
+              width: '130px',
+              height: '130px',
+              borderRadius: '15px',
+              overflow: 'hidden',
+              backgroundColor: 'rgba(255,255,255,0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 8px 15px rgba(0,0,0,0.1)'
+            }}>
+              <img
+                src={bannerImg}
+                alt="Promo"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           )}
         </div>
         {banners.length > 1 && template !== 'minimal' && (
@@ -278,11 +289,6 @@ export default function CatalogPage() {
           <button onClick={() => handleCategoryChange('all')} className={`modern-cat-pill ${selectedCategory === 'all' ? 'active' : ''}`}><span>Tout</span></button>
           {categories.map(cat => (
             <button key={cat.id} onClick={() => handleCategoryChange(cat.id)} className={`modern-cat-pill ${selectedCategory === cat.id ? 'active' : ''}`}>
-              {cat.icon_url && (
-                <span style={{ marginRight: '6px', fontSize: '1.1rem', display: 'flex', alignItems: 'center' }}>
-                  {cat.icon_url.length < 5 ? cat.icon_url : <img src={cat.icon_url} alt="" style={{ width: '18px', height: '18px', objectFit: 'contain' }} />}
-                </span>
-              )}
               <span>{cat.name}</span>
             </button>
           ))}
