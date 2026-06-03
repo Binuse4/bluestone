@@ -114,47 +114,47 @@ BEGIN
   RETURNING id INTO v_store_id;
 
   -- 2. Créer les Catégories
-  INSERT INTO categories (store_id, name, description, image_url, sort_order)
-  VALUES (v_store_id, 'Prêt-à-Porter', 'Robes, vestes et ensembles contemporains en wax.', 'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?q=80&w=400', 1)
+  INSERT INTO categories (store_id, name, description, image_url, icon_url, sort_order)
+  VALUES (v_store_id, 'Prêt-à-Porter', 'Robes, vestes et ensembles contemporains en wax.', 'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?q=80&w=400', '👕', 1)
   RETURNING id INTO v_cat_vetements;
 
-  INSERT INTO categories (store_id, name, description, image_url, sort_order)
-  VALUES (v_store_id, 'Maroquinerie', 'Sacs à main, pochettes et bagagerie en cuir fin.', 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=400', 2)
+  INSERT INTO categories (store_id, name, description, image_url, icon_url, sort_order)
+  VALUES (v_store_id, 'Maroquinerie', 'Sacs à main, pochettes et bagagerie en cuir fin.', 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=400', '👜', 2)
   RETURNING id INTO v_cat_sacs;
 
-  INSERT INTO categories (store_id, name, description, image_url, sort_order)
-  VALUES (v_store_id, 'Bijoux d''Art', 'Colliers et bracelets sculptés en bronze et perles.', 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=400', 3)
+  INSERT INTO categories (store_id, name, description, image_url, icon_url, sort_order)
+  VALUES (v_store_id, 'Bijoux d''Art', 'Colliers et bracelets sculptés en bronze et perles.', 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=400', '💍', 3)
   RETURNING id INTO v_cat_bijoux;
 
-  INSERT INTO categories (store_id, name, description, image_url, sort_order)
-  VALUES (v_store_id, 'Chaussures', 'Sandales et souliers en cuir artisanal confortables.', 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=400', 4)
+  INSERT INTO categories (store_id, name, description, image_url, icon_url, sort_order)
+  VALUES (v_store_id, 'Chaussures', 'Sandales et souliers en cuir artisanal confortables.', 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=400', '👟', 4)
   RETURNING id INTO v_cat_chaussures;
 
   -- 3. Créer quelques Produits de démonstration
   -- Prêt-à-Porter
-  INSERT INTO products (store_id, category_id, name, description, price, image_url, sizes, colors, is_available, sort_order)
+  INSERT INTO products (store_id, category_id, name, description, price, image_url, product_images, sizes, colors, is_available, sort_order)
   VALUES 
-    (v_store_id, v_cat_vetements, 'Robe Muna', 'Robe longue fluide en lin blanc avec broderie fine dorée.', 45000, 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=600', ARRAY['S', 'M', 'L', 'XL'], ARRAY['Blanc', 'Noir', 'Ocre', 'Indigo'], true, 1),
-    (v_store_id, v_cat_vetements, 'Blazer Kente Moderne', 'Veste blazer cintrée pour femme avec revers en tissage Kente.', 65000, 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=600', ARRAY['S', 'M', 'L', 'XL'], ARRAY['Blanc', 'Noir', 'Ocre', 'Indigo'], true, 2),
-    (v_store_id, v_cat_vetements, 'Chemise Bogolan', 'Chemise en coton bio ornée de motifs Bogolan noirs et ocres.', 32000, 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600', ARRAY['S', 'M', 'L', 'XL'], ARRAY['Blanc', 'Noir', 'Ocre', 'Indigo'], true, 3);
+    (v_store_id, v_cat_vetements, 'Robe Muna', 'Robe longue fluide en lin blanc avec broderie fine dorée.', 45000, 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=600', ARRAY['https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=600', 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=600', 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600', 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600'], ARRAY['S', 'M', 'L', 'XL'], ARRAY['Blanc', 'Noir', 'Ocre', 'Indigo'], true, 1),
+    (v_store_id, v_cat_vetements, 'Blazer Kente Moderne', 'Veste blazer cintrée pour femme avec revers en tissage Kente.', 65000, 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=600', ARRAY['https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=600', 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600'], ARRAY['S', 'M', 'L', 'XL'], ARRAY['Blanc', 'Noir', 'Ocre', 'Indigo'], true, 2),
+    (v_store_id, v_cat_vetements, 'Chemise Bogolan', 'Chemise en coton bio ornée de motifs Bogolan noirs et ocres.', 32000, 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600', ARRAY['https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600', 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600'], ARRAY['S', 'M', 'L', 'XL'], ARRAY['Blanc', 'Noir', 'Ocre', 'Indigo'], true, 3);
 
   -- Maroquinerie
-  INSERT INTO products (store_id, category_id, name, description, price, image_url, sizes, colors, is_available, sort_order)
+  INSERT INTO products (store_id, category_id, name, description, price, image_url, product_images, sizes, colors, is_available, sort_order)
   VALUES 
-    (v_store_id, v_cat_sacs, 'Cabas Tote Bogolan', 'Grand cabas du quotidien mariant le cuir et le Bogolan.', 38000, 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600', ARRAY['Standard'], ARRAY['Marron', 'Noir', 'Ocre'], true, 1),
-    (v_store_id, v_cat_sacs, 'Mini Sac Seau Kente', 'Sac bandoulière en cuir rigide marron habillé de Kente.', 42000, 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=600', ARRAY['Standard'], ARRAY['Marron', 'Noir', 'Ocre'], true, 2);
+    (v_store_id, v_cat_sacs, 'Cabas Tote Bogolan', 'Grand cabas du quotidien mariant le cuir et le Bogolan.', 38000, 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600', ARRAY['https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600', 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=600'], ARRAY['Standard'], ARRAY['Marron', 'Noir', 'Ocre'], true, 1),
+    (v_store_id, v_cat_sacs, 'Mini Sac Seau Kente', 'Sac bandoulière en cuir rigide marron habillé de Kente.', 42000, 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=600', ARRAY['https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=600', 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600'], ARRAY['Standard'], ARRAY['Marron', 'Noir', 'Ocre'], true, 2);
 
   -- Bijoux
-  INSERT INTO products (store_id, category_id, name, description, price, image_url, sizes, colors, is_available, sort_order)
+  INSERT INTO products (store_id, category_id, name, description, price, image_url, product_images, sizes, colors, is_available, sort_order)
   VALUES 
-    (v_store_id, v_cat_bijoux, 'Collier Reine Amina', 'Collier plastron en bronze massif sculpté.', 35000, 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600', ARRAY['Unique'], ARRAY['Bronze', 'Or', 'Argent'], true, 1),
-    (v_store_id, v_cat_bijoux, 'Créoles Perles Massaï', 'Créoles colorées entièrement perlées à la main.', 12000, 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?q=80&w=600', ARRAY['Unique'], ARRAY['Bronze', 'Or', 'Argent'], true, 2);
+    (v_store_id, v_cat_bijoux, 'Collier Reine Amina', 'Collier plastron en bronze massif sculpté.', 35000, 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600', ARRAY['https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600'], ARRAY['Unique'], ARRAY['Bronze', 'Or', 'Argent'], true, 1),
+    (v_store_id, v_cat_bijoux, 'Créoles Perles Massaï', 'Créoles colorées entièrement perlées à la main.', 12000, 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?q=80&w=600', ARRAY['https://images.unsplash.com/photo-1599643477877-530eb83abc8e?q=80&w=600'], ARRAY['Unique'], ARRAY['Bronze', 'Or', 'Argent'], true, 2);
 
   -- Chaussures
-  INSERT INTO products (store_id, category_id, name, description, price, image_url, sizes, colors, is_available, sort_order)
+  INSERT INTO products (store_id, category_id, name, description, price, image_url, product_images, sizes, colors, is_available, sort_order)
   VALUES 
-    (v_store_id, v_cat_chaussures, 'Sandales Nomades Cuir', 'Sandales plates en cuir naturel tanné végétal.', 25000, 'https://images.unsplash.com/photo-1562273138-f46be4ebdf33?q=80&w=600', ARRAY['38', '39', '40', '41', '42', '43'], ARRAY['Marron', 'Noir', 'Camel'], true, 1),
-    (v_store_id, v_cat_chaussures, 'Mules Raffia Tissé', 'Mules à petit talon en raphia naturel tressé.', 28000, 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600', ARRAY['38', '39', '40', '41', '42', '43'], ARRAY['Marron', 'Noir', 'Camel'], true, 2);
+    (v_store_id, v_cat_chaussures, 'Sandales Nomades Cuir', 'Sandales plates en cuir naturel tanné végétal.', 25000, 'https://images.unsplash.com/photo-1562273138-f46be4ebdf33?q=80&w=600', ARRAY['https://images.unsplash.com/photo-1562273138-f46be4ebdf33?q=80&w=600', 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600', 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600'], ARRAY['38', '39', '40', '41', '42', '43'], ARRAY['Marron', 'Noir', 'Camel'], true, 1),
+    (v_store_id, v_cat_chaussures, 'Mules Raffia Tissé', 'Mules à petit talon en raphia naturel tressé.', 28000, 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600', ARRAY['https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600', 'https://images.unsplash.com/photo-1562273138-f46be4ebdf33?q=80&w=600', 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600'], ARRAY['38', '39', '40', '41', '42', '43'], ARRAY['Marron', 'Noir', 'Camel'], true, 2);
 
   -- 4. Créer des bannières de démonstration
   INSERT INTO banners (store_id, product_id, title, discount_rate, sort_order)
