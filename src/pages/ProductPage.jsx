@@ -93,7 +93,8 @@ export default function ProductPage() {
   let currentMainImage = product.image_url;
   if (product.colors && product.colors.length > 0 && selectedColor) {
     const colorIndex = product.colors.findIndex(c => c.trim().toLowerCase() === selectedColor.trim().toLowerCase());
-    if (colorIndex !== -1 && product.product_images && product.product_images.length > colorIndex && product.product_images[colorIndex]) {
+    // On ne change l'image que si une image spécifique existe pour cette couleur dans le tableau product_images
+    if (colorIndex !== -1 && product.product_images && product.product_images[colorIndex]) {
       currentMainImage = product.product_images[colorIndex];
     }
   }

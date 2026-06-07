@@ -101,14 +101,21 @@ export default function DashboardPage() {
       is_available: prod.is_available ?? true
     });
     setSizesInput(prod.sizes ? prod.sizes.join(', ') : '');
-    setColorsInput(prod.colors ? prod.colors.join(', ') : '');
+    const colors = prod.colors || [];
+    setColorsInput(colors.join(', '));
+    
+    // Aligner le tableau d'images avec le nombre de couleurs
+    const existingImgs = prod.product_images || [];
+    const alignedImgs = colors.map((_, i) => existingImgs[i] || '');
+    setColorImages(alignedImgs);
+    
     setShowAddProductForm(true);
     setActiveTab('products');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Handler pour l'upload d'images
-  const handleFileUpload = async (e, type, target) => {
+  const handleFileUpload = async (e, type, target, index = null) => {
     const file = e.target.files[0];
     if (!file) return;
 
@@ -126,6 +133,13 @@ export default function DashboardPage() {
       if (target === 'category') setNewCat(prev => ({ ...prev, image_url: url }));
       if (target === 'category-icon') setNewCat(prev => ({ ...prev, icon_url: url }));
       if (target === 'product') setNewProd(prev => ({ ...prev, image_url: url }));
+      if (target === 'color-image' && index !== null) {
+        setColorImages(prev => {
+          const newImgs = [...prev];
+          newImgs[index] = url;
+          return newImgs;
+        });
+      }
 
       alert("Image chargée avec succès !");
     } catch (err) {
@@ -456,6 +470,9 @@ export default function DashboardPage() {
     const parsedSizes = sizesInput ? sizesInput.split(',').map(s => s.trim()).filter(Boolean) : ['Standard'];
     const parsedColors = colorsInput ? colorsInput.split(',').map(c => c.trim()).filter(Boolean) : ['Unique'];
 
+    // Aligner strictement les images sur les couleurs
+    const finalColorImages = parsedColors.map((_, i) => colorImages[i] || '');
+
     const prodData = {
       store_id: store.id,
       category_id: newProd.category_id || null,
@@ -464,8 +481,8 @@ export default function DashboardPage() {
       price: parseFloat(newProd.price),
       compare_price: newProd.compare_price ? parseFloat(newProd.compare_price) : null,
       currency: store.currency || 'FCFA',
-      image_url: newProd.image_url || colorImages.find(img => img) || 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600',
-      product_images: colorImages, // Extra images for colors
+      image_url: newProd.image_url || finalColorImages.find(img => img) || 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600',
+      product_images: finalColorImages,
       sizes: parsedSizes,
       colors: parsedColors,
       is_available: newProd.is_available,
