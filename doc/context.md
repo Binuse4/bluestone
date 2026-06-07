@@ -1,6 +1,6 @@
 # BLUE'STON Connect — Module Catalogue Commerce
 
-> **Document de contexte** — Dernière mise à jour : 1er juin 2026
+> **Document de contexte** — Dernière mise à jour : 2 juin 2026
 > Ce fichier sert de référence pour toutes les discussions et développements futurs sur ce module.
 
 ---
@@ -22,11 +22,13 @@ Le téléphone lit une URL dans la puce NFC
         ↓
 Le navigateur ouvre le catalogue public de la boutique
         ↓
-Le client explore les catégories et choisit des produits
+Le client explore les catégories (avec émojis sur Minimal) et les produits
         ↓
-Le panier génère un message WhatsApp pré-rempli
+Le client choisit ses variantes (taille/couleur) avec mise à jour visuelle du produit
         ↓
-Le client envoie la commande au commerçant via WhatsApp
+Le client peut télécharger son panier en PNG pour ses archives
+        ↓
+Le client envoie sa commande au commerçant via WhatsApp (message personnalisé)
 ```
 
 ---
@@ -35,16 +37,15 @@ Le client envoie la commande au commerçant via WhatsApp
 
 | Page | Nom | Description |
 |------|-----|-------------|
-| **PAGE 1** | Landing / Splash Screen | Page d'accueil de la boutique (branding, logo, intro) |
-| **PAGE 2** | Exploration / Catalogue | Parcours des catégories et produits (grille, filtres) |
-| **PAGE 3** | Détail produit + Panier → WhatsApp | Fiche produit, récapitulatif du panier, bouton "Commander" qui redirige vers WhatsApp |
+| **PAGE 1** | Landing / Splash Screen | Page d'accueil de la boutique (branding, logo, bannière activée sur Élégance) |
+| **PAGE 2** | Exploration / Catalogue | Parcours des catégories et produits (grille 3 col mobile, filtres, bannières promos fixes) |
+| **PAGE 3** | Détail produit + Panier | Fiche produit stable, choix des variantes, téléchargement PNG et commande WhatsApp |
 
 ### Page 3 — Détail du flux de commande
 
-- Le client voit un récapitulatif de tout ce qu'il a choisi
-- Le bouton **"Commander"** ne mène **PAS** vers une page de paiement
-- Il génère un message WhatsApp pré-rempli envoyé au numéro de la boutique
-- Le numéro WhatsApp est intégré comme un lien dans le bouton commander/proceed
+- Le client voit un récapitulatif avec les visuels exacts des variantes choisies.
+- Le bouton **"Télécharger mon panier"** génère une capture propre (PNG) sans les boutons d'action.
+- Le bouton **"Commander sur WhatsApp"** redirige vers WhatsApp avec un message pré-rempli invitant à joindre la capture PNG.
 
 ---
 
@@ -52,45 +53,23 @@ Le client envoie la commande au commerçant via WhatsApp
 
 | Couche | Technologie |
 |--------|------------|
-| **Frontend** | React |
-| **Backend** | NestJS |
-| **Base de données** | Supabase |
-| **Hébergement existant** | [https://bluestoneconnect.bj](https://bluestoneconnect.bj) |
-| **Déploiement démo** | Vercel |
-
-### Informations Clés
-
-- **Pas de code source existant partagé** — on part de zéro
-- **Pas d'API existante** — tout est à créer
-- **Un back-office / interface admin existe déjà** sur la plateforme BLUE'STON CONNECT (mais pas pour ce module catalogue)
-- Le front du catalogue est **personnalisable au goût du commerçant**
-
-### Structure d'URL cible
-
-```
-bluestonconnect.bj/c/catalogue/{nom-de-la-societe}
-```
-
-Le lien NFC ne change pas, mais les données affichées sont mises à jour dynamiquement depuis le serveur (Supabase).
+| **Frontend** | React 19 + Vite |
+| **Backend** | Supabase |
+| **Base de données** | Supabase (PostgreSQL) |
+| **Hébergement** | Vercel |
 
 ---
 
-## 4. Périmètre de la Démo (Mercredi 28 mai 2026)
+## 4. Périmètre de la Démo (Finalisé)
 
 ### Inclus dans la démo ✅
 
-- **Catalogue public** (ce que voit le client qui scanne le NFC)
-- **Personnalisation par le commerçant** (interface pour saisir ses propres données)
-- **1 commerçant / 1 boutique** de démonstration
-- **4 catégories** avec **8 produits par catégorie** (32 produits total)
-- Aperçu d'un catalogue commerçant déjà créé (données fictives, images libres)
-
-### Exclu de la démo ✔️ (Implémenté depuis)
-
-- ~~Flux WhatsApp~~ → **Implémenté** : lien WhatsApp pré-rempli + capture PNG du panier via `html-to-image`
-- Paiement en ligne
-- Multi-boutiques
-- Gestion des stocks avancée
+- **Catalogue public** avec deux templates : **Minimal** et **Élégance**.
+- **Gestion des variantes** : Choix de tailles et couleurs avec **changement d'image dynamique**.
+- **Images "Full-Fill"** : Rendu immersif sur ordinateur et mobile (sans bordures blanches).
+- **Panier optimisé** : Séparation du téléchargement PNG et de l'envoi WhatsApp.
+- **Header Standardisé** : Icônes et alignements cohérents sur tout le site.
+- **Admin Simplifié** : Gestion des catégories (avec émojis) et des produits (avec images par couleur).
 
 ---
 
@@ -98,43 +77,25 @@ Le lien NFC ne change pas, mais les données affichées sont mises à jour dynam
 
 ### 🔧 Back-Office & Gestion
 
-- [ ] Panneau d'administration pour modifier les produits
-- [ ] Gestion des stocks
-- [ ] Système de commandes / panier avancé
-- [ ] Facturation et envoi dans WhatsApp
+- [x] Panneau d'administration complet pour modifier les produits et catégories
+- [ ] Gestion des stocks réelle
+- [x] Système de variantes (Taille/Couleur) avec images dédiées
 
 ### 🏪 Multi-Boutiques
 
 - [ ] Ajout d'autres commerçants / boutiques
-- [ ] Personnalisation du front par boutique
-
-### 👤 Utilisateurs
-
-- [ ] Création de comptes clients (pas prioritaire, pas encore utile)
-- [ ] Historique de commandes
-- [ ] Système de favoris / wishlist
-
-### 📝 Contenu
-
-- [ ] Plus de 4 catégories / plus de 8 produits par catégorie
-- [ ] Blog ou contenu éditorial
-- [ ] Avis / notes sur les produits
+- [ ] Isolation complète des données par boutique
 
 ### ⚙️ Technique
 
-- [ ] Notifications push
-- [ ] PWA (Progressive Web App)
-- [ ] Multi-langue
-- [ ] SEO avancé
-- [ ] Analytics / statistiques
+- [x] Capture PNG du panier optimisée (clonage DOM, résolution CORS)
+- [x] Design "Full-Bleed" mobile et desktop
+- [ ] PWA (Progressive Web App) pour une expérience "App-like"
 
 ### 💬 WhatsApp
 
-- [x] Intégration du lien WhatsApp dans le bouton "Commander"
-- [x] Message pré-rempli avec le récapitulatif du panier
-- [x] Capture PNG du panier téléchargée automatiquement (via `html-to-image` + clone hors-écran)
-- [ ] Chatbot automatisé (déjà développé par Stone — évaluer la nécessité)
-- [ ] Suivi de commande via WhatsApp
+- [x] Message pré-rempli personnalisé mentionnant l'envoi de la capture PNG.
+- [x] Suppression automatique des boutons d'action dans la capture d'écran du panier.
 
 ---
 
@@ -142,18 +103,11 @@ Le lien NFC ne change pas, mais les données affichées sont mises à jour dynam
 
 | # | Question | Décision |
 |---|----------|----------|
-| Q1 | Backend existe ? | Oui, déjà en place. Faire une Vercel app pour la démo, le code sera intégré dans le module ensuite |
-| Q2 | Périmètre v1 | 1 boutique, 4 catégories × 8 produits, flux WhatsApp = pas mercredi |
-| Q3 | Fonctionnalités futures | Voir roadmap section 5 |
-| Q4 | Deadline | Mercredi (28 mai 2026) pour la première démo |
-| Q5 | WhatsApp | Numéro intégré comme lien dans le bouton commander |
-| Q6 | Choix technologiques | Utiliser ce qui marche le mieux |
-| Q7 | Exemple de design | Pas d'exemple existant, faire une proposition |
-| Q8 | URL | `bluestonconnect.bj/c/catalogue/{nom}` |
-| Q9 | Mise à jour données | Le lien ne change pas, données mises à jour côté serveur |
-| Q10 | Hébergement | bluestoneconnect.bj (Africa something) |
-| Q11 | Admin | Back-office existant sur la plateforme |
-| Q12 | Design front | Personnalisable au goût du commerçant |
+| Q1 | Backend | Utilisation directe de Supabase (Serverless) |
+| Q2 | Périmètre v1 | Catalogue complet + Variantes + Flux WhatsApp PNG |
+| Q3 | WhatsApp | Message incitant à joindre la capture PNG du panier |
+| Q4 | Design | Deux templates : Minimal (Epuré) et Élégance (Premium) |
+| Q5 | Images | Utilisation de `object-fit: cover` pour un remplissage total des cartes |
 
 ---
 
@@ -161,28 +115,12 @@ Le lien NFC ne change pas, mais les données affichées sont mises à jour dynam
 
 | Rôle | Personne | Notes |
 |------|----------|-------|
-| **Product Owner / Commanditaire** | Stone AGASSOUNON | Fondateur BLUE'STON Connect, décisions produit |
-| **Développeur** | Binusè | Développement front + back du module catalogue |
-
----
-
-## 8. Questions Ouvertes
-
-- [ ] Quelles données exactes pour la boutique de démo ? (logo, nom, produits, images)
-- [ ] Design system existant à respecter pour BLUE'STON Connect ?
-- [ ] Accès au Supabase existant ou créer une instance séparée pour la démo ?
-- [ ] Schéma de base de données existant à suivre ?
-- [ ] Processus d'intégration du code dans le module BLUE'STON Connect après la démo ?
+| **Product Owner** | Stone AGASSOUNON | Fondateur BLUE'STON Connect |
+| **Développeur** | Binusè | Expert React / Vite / Supabase |
 
 ---
 
 ## 9. Notes Importantes
 
-> [!WARNING]
-> **Deadline serrée** — La démo doit être prête pour **mercredi 28 mai 2026**.
-
-> [!NOTE]
-> Ce module sera intégré dans sa niche au niveau de BLUE'STON Connect une fois terminé. La démo Vercel est temporaire.
-
 > [!IMPORTANT]
-> Pas de code source existant partagé. Tout le développement part de zéro, basé uniquement sur les spécifications de Stone.
+> Le système d'images par couleur repose sur un mapping par index entre les tableaux `colors` et `product_images` dans Supabase.
