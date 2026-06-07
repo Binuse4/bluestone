@@ -86,7 +86,7 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
                 </div>
               ) : (
                 formattedComparePrice && (
-                  <div style={{ position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#f0f0f0', color: '#999', padding: '4px 10px', fontSize: '0.65rem', fontWeight: 600, textDecoration: 'line-through' }}>
+                  <div style={{ position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#f0f0f0', color: '#999', padding: '4px 10px', fontSize: '0.65rem', fontWeight: 600, textDecoration: 'line-through', whiteSpace: 'nowrap' }}>
                     {formattedComparePrice}
                   </div>
                 )
@@ -95,9 +95,9 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
           </div>
           <div className="minimal-card-bottom">
             <h4 className="minimal-card-title">{product.name}</h4>
-            <span className="minimal-card-price">
+            <div className="minimal-card-price" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {formattedPrice}
-            </span>
+            </div>
           </div>
         </Link>
       </div>
@@ -132,11 +132,17 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
               <svg width="18" height="18" viewBox="0 0 24 24" fill={isLiked ? '#EF4444' : 'none'} stroke={isLiked ? '#EF4444' : 'currentColor'} strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
             </button>
           </div>
-          <div className="modern-card-details" style={{ flexWrap: 'nowrap' }}>
-            <span className="modern-card-price" style={{ whiteSpace: 'nowrap', fontSize: '0.85rem' }}>
-              {formattedComparePrice && <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.8rem', marginRight: '5px' }}>{formattedComparePrice}</span>}
-              {formattedPrice}
-            </span>
+          <div className="modern-card-details" style={{ flexWrap: 'nowrap', alignItems: 'flex-end' }}>
+            <div className="modern-card-price-box" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <span className="modern-card-price" style={{ whiteSpace: 'nowrap', fontSize: '0.9rem', fontWeight: 800, color: '#111' }}>
+                {formattedPrice}
+              </span>
+              {formattedComparePrice && (
+                <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.7rem', whiteSpace: 'nowrap' }}>
+                  {formattedComparePrice}
+                </span>
+              )}
+            </div>
             <div className="modern-card-rating">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="#FFD700" stroke="#FFD700"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
               <span style={{ fontSize: '0.75rem' }}>4.8</span>

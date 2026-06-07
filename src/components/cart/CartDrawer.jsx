@@ -145,8 +145,8 @@ export default function CartDrawer({ isOpen, onClose, store }) {
               <>
                 {cart.map((item) => (
                   <div key={item.cartItemId} className="mr-cart-item fade-in">
-                    <div className="mr-cart-img-box">
-                      <img src={item.image_url} alt={item.name} />
+                    <div className="mr-cart-img-box" style={{ width: '80px', height: '80px', flexShrink: 0, borderRadius: '15px', overflow: 'hidden', backgroundColor: '#fff' }}>
+                      <img src={item.image_url} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
                     <div style={{ flex: 1 }}>
                       <h4 style={{ fontWeight: 700, margin: 0 }}>{item.name}</h4>
@@ -216,7 +216,9 @@ export default function CartDrawer({ isOpen, onClose, store }) {
           ) : (
             cart.map((item) => (
               <div key={item.cartItemId} className="cart-item fade-in">
-                <img src={item.image_url} alt={item.name} className="cart-item-image" />
+                <div style={{ width: '80px', height: '80px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden', backgroundColor: '#f5f5f5' }}>
+                  <img src={item.image_url} alt={item.name} className="cart-item-image" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
                 <div className="cart-item-details">
                   <div>
                     <div className="cart-item-header">
@@ -227,7 +229,7 @@ export default function CartDrawer({ isOpen, onClose, store }) {
                       {item.selectedSize !== 'Standard' && <span>{item.selectedSize} </span>}
                       {item.selectedColor !== 'Unique' && <span>| {item.selectedColor}</span>}
                     </p>
-                    <p className="cart-item-price">{item.price.toLocaleString()} {item.currency || 'FCFA'}</p>
+                    <p className="cart-item-price" style={{ whiteSpace: 'nowrap', fontSize: '0.9rem' }}>{item.price.toLocaleString()} {item.currency || 'FCFA'}</p>
                   </div>
                   <div className="cart-item-qty-actions">
                     <button onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)} className="cart-item-qty-btn">-</button>
@@ -245,7 +247,7 @@ export default function CartDrawer({ isOpen, onClose, store }) {
           <div className="cart-drawer-footer">
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
               <div className="cart-summary-row"><span>Sous-total</span><span>{cartTotal.toLocaleString()} {store?.currency || 'FCFA'}</span></div>
-              <div className="cart-summary-row" style={{ borderTop: '1px dashed var(--border-color)', paddingTop: 10 }}><strong>Total Net</strong><strong style={{ fontSize: '1.25rem' }}>{finalTotal.toLocaleString()} {store?.currency || 'FCFA'}</strong></div>
+              <div className="cart-summary-row" style={{ borderTop: '1px dashed var(--border-color)', paddingTop: 10 }}><strong>Total Net</strong><strong style={{ fontSize: '1.1rem', whiteSpace: 'nowrap' }}>{finalTotal.toLocaleString()} {store?.currency || 'FCFA'}</strong></div>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

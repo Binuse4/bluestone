@@ -138,8 +138,16 @@ export default function CatalogPage() {
           }}>
             {bannerTitle}
           </p>
+          <div className="discount-price" style={{
+            fontSize: template === 'minimal' ? '1.1rem' : '1.3rem',
+            fontWeight: 800,
+            marginBottom: 10,
+            whiteSpace: 'nowrap'
+          }}>
+            {banner.products.price.toLocaleString()} {store?.currency || 'FCFA'}
+          </div>
           <Link to={`/c/catalogue/${slug}/product/${banner.product_id}`} className="discount-btn" style={{
-            marginTop: 15,
+            marginTop: 5,
             textDecoration: 'none',
             display: 'inline-block',
             backgroundColor: template === 'minimal' ? '#000' : '#ff8c00',
