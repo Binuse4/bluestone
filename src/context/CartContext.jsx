@@ -28,8 +28,16 @@ export const CartProvider = ({ children }) => {
     const finalSize = selectedSize || (product.sizes && product.sizes.length > 0 ? product.sizes[0] : 'Standard');
     const finalColor = selectedColor || (product.colors && product.colors.length > 0 ? product.colors[0] : 'Unique');
     
+    // Déterminer l'image associée à la couleur
+    let finalImage = product.image_url;
+    if (product.colors && product.colors.length > 0 && finalColor && finalColor !== 'Unique') {
+      const colorIndex = product.colors.findIndex(c => c.trim().toLowerCase() === finalColor.trim().toLowerCase());
+      if (colorIndex !== -1 && product.product_images && product.product_images[colorIndex]) {
+        finalImage = product.product_images[colorIndex];
+      }
+    }
+
     // Générer un identifiant de ligne panier unique : id-taille-couleur
-    // On nettoie les chaînes pour éviter les problèmes d'espaces
     const cartItemId = `${product.id}-${finalSize.trim()}-${finalColor.trim()}`;
 
     setCart(prevCart => {
@@ -41,8 +49,10 @@ export const CartProvider = ({ children }) => {
             : item
         );
       }
+      // On stocke l'image spécifique (finalImage) pour cette ligne de panier
       return [...prevCart, { 
         ...product, 
+        image_url: finalImage,
         cartItemId,
         quantity, 
         selectedSize: finalSize, 

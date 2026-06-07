@@ -95,7 +95,7 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
           </div>
           <div className="minimal-card-bottom">
             <h4 className="minimal-card-title">{product.name}</h4>
-            <div className="minimal-card-price" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <div className="minimal-card-price" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: '0.8rem', fontWeight: 600, color: '#111' }}>
               {formattedPrice}
             </div>
           </div>
