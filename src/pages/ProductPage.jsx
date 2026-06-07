@@ -69,6 +69,7 @@ export default function ProductPage() {
 
   const handleAddToCart = () => {
     if (product.is_available !== false) {
+      // Forcer l'utilisation des états actuels pour garantir la précision
       addToCart(product, quantity, selectedSize, selectedColor);
     }
   };
