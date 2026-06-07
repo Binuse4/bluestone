@@ -24,12 +24,13 @@ export const CartProvider = ({ children }) => {
 
   // Ajouter un produit au panier avec taille et couleur
   const addToCart = (product, quantity = 1, selectedSize = '', selectedColor = '') => {
-    // Déterminer les valeurs par défaut si non fournies
-    const size = selectedSize || (product.sizes && product.sizes.length > 0 ? product.sizes[0] : 'Standard');
-    const color = selectedColor || (product.colors && product.colors.length > 0 ? product.colors[0] : 'Unique');
+    // Déterminer les valeurs finales (priorité au choix utilisateur, puis aux données produit)
+    const finalSize = selectedSize || (product.sizes && product.sizes.length > 0 ? product.sizes[0] : 'Standard');
+    const finalColor = selectedColor || (product.colors && product.colors.length > 0 ? product.colors[0] : 'Unique');
     
     // Générer un identifiant de ligne panier unique : id-taille-couleur
-    const cartItemId = `${product.id}-${size}-${color}`;
+    // On nettoie les chaînes pour éviter les problèmes d'espaces
+    const cartItemId = `${product.id}-${finalSize.trim()}-${finalColor.trim()}`;
 
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.cartItemId === cartItemId);
@@ -44,8 +45,8 @@ export const CartProvider = ({ children }) => {
         ...product, 
         cartItemId,
         quantity, 
-        selectedSize: size, 
-        selectedColor: color 
+        selectedSize: finalSize, 
+        selectedColor: finalColor 
       }];
     });
   };
