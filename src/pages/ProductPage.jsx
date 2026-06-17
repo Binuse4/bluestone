@@ -145,7 +145,7 @@ export default function ProductPage() {
             {/* Sélecteur de Tailles - Nordic */}
             {product.sizes && product.sizes.length > 0 && product.sizes[0] !== 'Standard' && (
               <div>
-                <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '15px' }}>Size</span>
+                <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '15px' }}>Taille</span>
                 <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                   {product.sizes.map(size => (
                     <button 
@@ -172,7 +172,7 @@ export default function ProductPage() {
             {/* Sélecteur de Couleurs - Nordic */}
             {product.colors && product.colors.length > 0 && product.colors[0] !== 'Unique' && (
               <div>
-                <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '15px' }}>Color</span>
+                <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '15px' }}>Couleur</span>
                 <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
                   {product.colors.map(color => (
                     <button 
@@ -207,7 +207,7 @@ export default function ProductPage() {
                 className="nordic-add-btn"
                 disabled={product.is_available === false}
               >
-                {product.is_available === false ? 'Out of Stock' : 'Add to Cart'}
+                {product.is_available === false ? 'Rupture' : 'Ajouter au panier'}
               </button>
             </div>
           </div>

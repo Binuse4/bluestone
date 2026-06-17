@@ -73,11 +73,61 @@
   padding: 40px 0;
 }
 
+.theme-nordic .nordic-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: white;
+  padding: 4px 8px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  z-index: 10;
+}
+
+.theme-nordic .nordic-badge.sold-out {
+  background-color: #E53E3E;
+}
+
+.theme-nordic .nordic-badge.sale {
+  background-color: #2D3748;
+}
+
 @media (max-width: 768px) {
   .theme-nordic .products-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 15px !important;
-    padding: 15px !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px 4px !important;
+    padding: 4px !important;
+  }
+  
+  .theme-nordic .nordic-card-name {
+    font-size: 0.65rem !important;
+  }
+
+  .theme-nordic .nordic-card-price {
+    font-size: 0.7rem !important;
+  }
+  
+  .theme-nordic .nordic-card-old-price {
+    font-size: 0.6rem !important;
+  }
+  
+  .theme-nordic .nordic-card-bottom {
+    padding-top: 6px !important;
+    gap: 2px !important;
+  }
+  
+  .theme-nordic .nordic-badge {
+    top: 5px !important;
+    left: 5px !important;
+    padding: 2px 4px !important;
+    font-size: 0.5rem !important;
+  }
+  
+  .theme-nordic .nordic-price-row {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 0 !important;
   }
 }
 
