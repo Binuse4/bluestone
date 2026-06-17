@@ -294,6 +294,20 @@ export default function DashboardPage() {
         gridCols: 2,
         heroHeight: '0px'
       }
+    },
+    {
+      id: 'nordic',
+      name: 'Nordic',
+      emoji: '🌲',
+      description: 'Inspiré par le design scandinave. Textes uppercase, sans bordures, espace hyper-clair. Mode pointue.',
+      features: ['Full Bleed', 'Typo Sharp', 'Hover Zoom', 'Hero Banner'],
+      preview: {
+        headerBg: '#ffffff',
+        headerText: '#2D3748',
+        cardRadius: '0px',
+        gridCols: 2,
+        heroHeight: '400px'
+      }
     }
   ];
 

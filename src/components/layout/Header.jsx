@@ -39,6 +39,25 @@ export default function Header({ store, onCartClick }) {
       );
     }
 
+    // --- THÈME NORDIC ---
+    if (template === 'nordic') {
+      return (
+        <div style={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between', padding: '10px 0' }}>
+          <Link to={`/c/catalogue/${storeSlug}`} className="nordic-nav-link" style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '0.15em' }}>
+            {store?.name?.toUpperCase() || "NORDIC"}
+          </Link>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '25px' }}>
+            <Link to={`/admin/${storeSlug}`} className="nordic-nav-link">Admin</Link>
+            <Link to={`/c/catalogue/${storeSlug}/explore`} className="nordic-nav-link">Shop</Link>
+            <button onClick={onCartClick} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', position: 'relative' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D3748" strokeWidth="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>
+              {cartCount > 0 && <span style={{ position: 'absolute', top: -5, right: -10, backgroundColor: '#E53E3E', color: 'white', fontSize: '0.6rem', fontWeight: 700, padding: '2px 6px', borderRadius: '10px' }}>{cartCount}</span>}
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     // --- THÈME ÉLÉGANCE (DEFAULT) ---
     return (
       <div className="header-modern-layout" style={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>

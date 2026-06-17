@@ -48,6 +48,35 @@ export default function StorefrontPage() {
     );
   }
 
+  // --- RENDU THÈME NORDIC ---
+  if (template === 'nordic') {
+    return (
+      <div className="fade-in">
+        <div className="nordic-hero">
+          <img src={store.cover_url || "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200"} alt={store.name} className="nordic-hero-img" />
+          <div className="nordic-hero-content">
+            <h1 className="nordic-hero-title">{store.name}</h1>
+            <p style={{ fontSize: '1.2rem', fontWeight: 300, letterSpacing: '0.05em', marginTop: '10px' }}>Discover the collection</p>
+          </div>
+        </div>
+        <div className="container" style={{ padding: '60px 0' }}>
+          <div style={{ textAlign: 'center', marginBottom: '50px' }}>
+            <h2 style={{ fontSize: '1.8rem', fontWeight: 600, color: '#2D3748', textTransform: 'uppercase', letterSpacing: '0.1em' }}>New Arrivals</h2>
+            <div style={{ width: '40px', height: '2px', backgroundColor: '#CBD5E0', margin: '15px auto' }}></div>
+          </div>
+          <div className="products-grid">
+            {featuredProducts.map(p => <ProductCard key={p.id} product={p} />)}
+          </div>
+          <div style={{ textAlign: 'center', marginTop: '50px' }}>
+            <Link to={`/c/catalogue/${slug}/explore`} style={{ display: 'inline-block', border: '1px solid #2D3748', color: '#2D3748', padding: '12px 30px', textDecoration: 'none', textTransform: 'uppercase', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.1em', transition: 'all 0.2s' }} onMouseOver={(e) => { e.target.style.backgroundColor = '#2D3748'; e.target.style.color = '#fff'; }} onMouseOut={(e) => { e.target.style.backgroundColor = 'transparent'; e.target.style.color = '#2D3748'; }}>
+              Shop All
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // --- RENDU THÈME ÉLÉGANCE (PAR DÉFAUT) ---
   return (
     <div className="fade-in">

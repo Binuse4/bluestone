@@ -264,6 +264,29 @@ export default function CatalogPage() {
     );
   }
 
+  // --- RENDU THÈME NORDIC ---
+  if (template === 'nordic') {
+    return (
+      <div className="container fade-in" style={{ padding: '40px 0' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px', flexWrap: 'wrap', gap: '20px' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#2D3748', textTransform: 'uppercase', letterSpacing: '0.1em', margin: 0 }}>Collection</h2>
+          <div style={{ display: 'flex', gap: '15px' }}>
+            <button onClick={() => handleCategoryChange('all')} style={{ background: 'none', border: 'none', fontSize: '0.85rem', fontWeight: selectedCategory === 'all' ? 700 : 400, color: selectedCategory === 'all' ? '#1a202c' : '#718096', textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'pointer', padding: '5px 0', borderBottom: selectedCategory === 'all' ? '2px solid #1a202c' : '2px solid transparent' }}>All</button>
+            {categories.map(cat => (
+              <button key={cat.id} onClick={() => handleCategoryChange(cat.id)} style={{ background: 'none', border: 'none', fontSize: '0.85rem', fontWeight: selectedCategory === cat.id ? 700 : 400, color: selectedCategory === cat.id ? '#1a202c' : '#718096', textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'pointer', padding: '5px 0', borderBottom: selectedCategory === cat.id ? '2px solid #1a202c' : '2px solid transparent' }}>{cat.name}</button>
+            ))}
+          </div>
+        </div>
+
+        {renderBanner()}
+
+        <div className="products-grid">
+          {filteredProducts.map((product) => (<ProductCard key={product.id} product={product} onLikeToggle={handleLikeToggle} />))}
+        </div>
+      </div>
+    );
+  }
+
   // --- RENDU THÈME ÉLÉGANCE (DEFAULT) ---
   return (
     <div className="container catalog-layout modern-view fade-in">

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext();
 
-const VALID_TEMPLATES = ['elegance', 'minimal']; // Suppression de Vitrine et Modern Red
+const VALID_TEMPLATES = ['elegance', 'minimal', 'nordic']; // Ajout du template Nordic
 const DEFAULT_TEMPLATE = 'elegance';
 
 export function ThemeProvider({ children }) {

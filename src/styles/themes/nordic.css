@@ -1,0 +1,228 @@
+/* =============================================
+   TEMPLATE : NORDIC (Inspired by Nordic-Store)
+   Style : Scandinavian, hyper-clean, minimal borders
+   ============================================= */
+
+.theme-nordic body {
+  background-color: #ffffff;
+  color: #2D3748;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* --- HEADER NORDIC --- */
+.theme-nordic .site-header {
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: none;
+  box-shadow: 0 1px 10px rgba(0,0,0,0.02);
+}
+
+.theme-nordic .nordic-nav-link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #4A5568;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.theme-nordic .nordic-nav-link:hover {
+  color: #000;
+}
+
+/* --- HERO NORDIC --- */
+.theme-nordic .nordic-hero {
+  height: 60vh;
+  min-height: 400px;
+  background-color: #f7f7f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.theme-nordic .nordic-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
+}
+
+.theme-nordic .nordic-hero-content {
+  position: absolute;
+  text-align: center;
+  color: #fff;
+  z-index: 2;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+}
+
+.theme-nordic .nordic-hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+/* --- PRODUCT GRID NORDIC --- */
+.theme-nordic .products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+  padding: 40px 0;
+}
+
+@media (max-width: 768px) {
+  .theme-nordic .products-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 15px !important;
+    padding: 15px !important;
+  }
+}
+
+/* --- PRODUCT CARD NORDIC --- */
+.theme-nordic .nordic-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.3s;
+}
+
+.theme-nordic .nordic-card:hover .nordic-card-img {
+  transform: scale(1.05);
+}
+
+.theme-nordic .nordic-card-top {
+  position: relative;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  background-color: #F7FAFC;
+}
+
+.theme-nordic .nordic-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.theme-nordic .nordic-card-bottom {
+  padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.theme-nordic .nordic-card-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #2D3748;
+}
+
+.theme-nordic .nordic-card-price {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #718096;
+}
+
+/* --- PRODUCT PAGE NORDIC --- */
+.theme-nordic .nordic-product-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 60px;
+  padding: 60px 0;
+}
+
+@media (max-width: 992px) {
+  .theme-nordic .nordic-product-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 20px 0;
+  }
+}
+
+.theme-nordic .nordic-gallery {
+  width: 100%;
+  height: 600px;
+  background-color: #f9f9f9;
+}
+
+@media (max-width: 768px) {
+  .theme-nordic .nordic-gallery {
+    height: 350px;
+  }
+}
+
+.theme-nordic .nordic-info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.theme-nordic .nordic-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.theme-nordic .nordic-price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #4A5568;
+}
+
+.theme-nordic .nordic-desc {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #718096;
+}
+
+.theme-nordic .nordic-add-btn {
+  background-color: #1a202c;
+  color: white;
+  border: none;
+  padding: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.theme-nordic .nordic-add-btn:hover:not(:disabled) {
+  background-color: #2D3748;
+}
+
+.theme-nordic .nordic-add-btn:disabled {
+  background-color: #E2E8F0;
+  cursor: not-allowed;
+}
+
+/* --- CART NORDIC --- */
+.theme-nordic .nordic-cart {
+  background-color: #ffffff;
+}
+
+.theme-nordic .nordic-cart-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* --- WHATSAPP BADGE NORDIC --- */
+.theme-nordic .whatsapp-nordic-btn {
+  background-color: #000;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-decoration: none;
+}

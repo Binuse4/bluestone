@@ -104,6 +104,34 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
     );
   }
 
+  // --- RENDU THÈME NORDIC ---
+  if (template === 'nordic') {
+    return (
+      <Link to={`/c/catalogue/${slug}/product/${product.id}`} className="nordic-card fade-in" style={{ opacity: product.is_available === false ? 0.6 : 1 }}>
+        <div className="nordic-card-top">
+          {product.is_available === false && (
+            <div style={{ position: 'absolute', top: 10, left: 10, backgroundColor: '#E53E3E', color: 'white', padding: '4px 8px', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.05em', zIndex: 10 }}>
+              SOLD OUT
+            </div>
+          )}
+          {product.compare_price && product.is_available !== false && (
+            <div style={{ position: 'absolute', top: 10, left: 10, backgroundColor: '#2D3748', color: 'white', padding: '4px 8px', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.05em', zIndex: 10 }}>
+              SALE
+            </div>
+          )}
+          <img src={product.image_url} alt={product.name} className="nordic-card-img" style={{ filter: product.is_available === false ? 'grayscale(1)' : 'none' }} />
+        </div>
+        <div className="nordic-card-bottom">
+          <h4 className="nordic-card-name" style={{ margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.name}</h4>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {formattedComparePrice && <span style={{ textDecoration: 'line-through', color: '#A0AEC0', fontSize: '0.75rem' }}>{formattedComparePrice}</span>}
+            <span className="nordic-card-price">{formattedPrice}</span>
+          </div>
+        </div>
+      </Link>
+    );
+  }
+
   // --- RENDU THÈME ÉLÉGANCE (PAR DÉFAUT) ---
   return (
     <div className="product-card modern-card fade-in" style={{ opacity: product.is_available === false ? 0.8 : 1 }}>

@@ -105,6 +105,117 @@ export default function ProductPage() {
     }
   }
 
+  // --- RENDU THÈME NORDIC ---
+  if (template === 'nordic') {
+    return (
+      <div className="container fade-in">
+        <div className="nordic-product-layout">
+          <div className="nordic-gallery">
+            <img 
+              src={currentMainImage} 
+              alt={product.name} 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover',
+                filter: product.is_available === false ? 'grayscale(1)' : 'none'
+              }} 
+            />
+          </div>
+          <div className="nordic-info-panel">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <h1 className="nordic-title">{product.name}</h1>
+                <button onClick={handleLikeToggle} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '5px' }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill={isLiked ? '#E53E3E' : 'none'} stroke={isLiked ? '#E53E3E' : '#4A5568'} strokeWidth="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
+                </button>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span className="nordic-price">{formattedPrice}</span>
+                {product.compare_price && <span style={{ textDecoration: 'line-through', color: '#A0AEC0', fontSize: '1rem' }}>{product.compare_price.toLocaleString()} {product.currency || 'FCFA'}</span>}
+              </div>
+            </div>
+            
+            <div style={{ height: '1px', backgroundColor: '#E2E8F0', width: '100%' }}></div>
+            
+            <div className="nordic-desc">
+              {product.description}
+            </div>
+
+            {/* Sélecteur de Tailles - Nordic */}
+            {product.sizes && product.sizes.length > 0 && product.sizes[0] !== 'Standard' && (
+              <div>
+                <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '15px' }}>Size</span>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  {product.sizes.map(size => (
+                    <button 
+                      key={size} 
+                      onClick={() => setSelectedSize(size)}
+                      style={{
+                        padding: '10px 20px',
+                        border: selectedSize === size ? '2px solid #1a202c' : '1px solid #E2E8F0',
+                        backgroundColor: 'transparent',
+                        color: '#1a202c',
+                        fontSize: '0.85rem',
+                        fontWeight: selectedSize === size ? 600 : 400,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Sélecteur de Couleurs - Nordic */}
+            {product.colors && product.colors.length > 0 && product.colors[0] !== 'Unique' && (
+              <div>
+                <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '15px' }}>Color</span>
+                <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+                  {product.colors.map(color => (
+                    <button 
+                      key={color} 
+                      onClick={() => setSelectedColor(color)}
+                      title={color}
+                      style={{
+                        width: '30px',
+                        height: '30px',
+                        borderRadius: '50%',
+                        backgroundColor: getColorHex(color),
+                        border: '2px solid #fff',
+                        boxShadow: selectedColor === color ? '0 0 0 2px #1a202c' : '0 0 0 1px #E2E8F0',
+                        padding: 0,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s'
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginTop: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #E2E8F0', height: '54px' }}>
+                <button onClick={() => setQuantity(q => Math.max(1, q-1))} style={{ width: '40px', height: '100%', background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: '#4A5568' }}>-</button>
+                <span style={{ width: '40px', textAlign: 'center', fontWeight: 600, color: '#1a202c' }}>{quantity}</span>
+                <button onClick={() => setQuantity(q => q+1)} style={{ width: '40px', height: '100%', background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: '#4A5568' }}>+</button>
+              </div>
+              <button 
+                onClick={handleAddToCart} 
+                className="nordic-add-btn"
+                disabled={product.is_available === false}
+              >
+                {product.is_available === false ? 'Out of Stock' : 'Add to Cart'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // --- RENDU THÈME MINIMAL ---
   if (template === 'minimal') {
     return (
