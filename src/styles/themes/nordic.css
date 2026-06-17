@@ -73,6 +73,15 @@
   padding: 40px 0;
 }
 
+/* Category Scrollbar hiding */
+.theme-nordic .nordic-category-scroll::-webkit-scrollbar {
+  display: none;
+}
+.theme-nordic .nordic-category-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .theme-nordic .nordic-badge {
   position: absolute;
   top: 10px;
@@ -102,6 +111,11 @@
   
   .theme-nordic .nordic-card-name {
     font-size: 0.65rem !important;
+    white-space: normal !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .theme-nordic .nordic-card-price {

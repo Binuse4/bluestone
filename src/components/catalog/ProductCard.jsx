@@ -122,7 +122,7 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
           <img src={product.image_url} alt={product.name} className="nordic-card-img" style={{ filter: product.is_available === false ? 'grayscale(1)' : 'none' }} />
         </div>
         <div className="nordic-card-bottom">
-          <h4 className="nordic-card-name" style={{ margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.name}</h4>
+          <h4 className="nordic-card-name" style={{ margin: 0 }}>{product.name}</h4>
           <div className="nordic-price-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden' }}>
             <span className="nordic-card-price" style={{ whiteSpace: 'nowrap' }}>{formattedPrice}</span>
             {formattedComparePrice && <span className="nordic-card-old-price" style={{ textDecoration: 'line-through', color: '#A0AEC0', fontSize: '0.75rem', whiteSpace: 'nowrap' }}>{formattedComparePrice}</span>}
