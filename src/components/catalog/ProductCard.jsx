@@ -9,6 +9,19 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
   const { template } = useTheme();
   const [isLiked, setIsLiked] = useState(false);
   const [hoveredColorIndex, setHoveredColorIndex] = useState(null);
+  const [isCardHovered, setIsCardHovered] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (template !== 'nordic') return;
+    const images = product.product_images;
+    if (!isCardHovered || !images || images.length <= 1) {
+      setCurrentImageIndex(0);
+      return;
+    }
+    const t = setInterval(() => setCurrentImageIndex(i => (i + 1) % images.length), 700);
+    return () => clearInterval(t);
+  }, [isCardHovered, template, product.product_images]);
 
   // Charger le statut favori depuis localStorage
   useEffect(() => {
@@ -130,25 +143,26 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
       .map((color, i) => ({ color, image: nordicImages[i] }))
       .filter(entry => !!entry.image);
 
-    // Image affichée : swatch survolé si disponible, sinon image par défaut du produit
-    const displayImage = (hoveredColorIndex !== null && swatchEntries[hoveredColorIndex])
-      ? swatchEntries[hoveredColorIndex].image
-      : product.image_url;
+    // Image affichée : défilement auto au survol de la card
+    const displayImage = nordicImages[currentImageIndex] || product.image_url;
 
     const handleNordicQuickAdd = (e) => {
       e.preventDefault();
       e.stopPropagation();
       if (product.is_available !== false) {
-        const selectedColor = (hoveredColorIndex !== null && swatchEntries[hoveredColorIndex])
-          ? swatchEntries[hoveredColorIndex].color
-          : (nordicColors[0] || '');
-        addToCart(product, 1, '', selectedColor);
+        addToCart(product, 1, '', nordicColors[currentImageIndex] || nordicColors[0] || '');
         setIsCartOpen(true);
       }
     };
 
     return (
-      <Link to={`/c/catalogue/${slug}/product/${product.id}`} className="nordic-card fade-in" style={{ opacity: product.is_available === false ? 0.6 : 1 }}>
+      <Link
+        to={`/c/catalogue/${slug}/product/${product.id}`}
+        className="nordic-card fade-in"
+        style={{ opacity: product.is_available === false ? 0.6 : 1 }}
+        onMouseEnter={() => setIsCardHovered(true)}
+        onMouseLeave={() => setIsCardHovered(false)}
+      >
         <div className="nordic-card-top">
           {product.is_available === false && (
             <div className="nordic-badge sold-out">RUPTURE</div>
@@ -170,14 +184,11 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
               {swatchEntries.map((entry, i) => (
                 <span
                   key={i}
-                  className={`nordic-swatch${hoveredColorIndex === i ? ' active' : ''}`}
+                  className={`nordic-swatch${currentImageIndex === i ? ' active' : ''}`}
                   style={{
                     backgroundColor: getNordicColorHex(entry.color),
                     border: entry.color.toLowerCase() === 'blanc' || entry.color.toLowerCase() === 'white' ? '1px solid #E2E8F0' : 'none'
                   }}
-                  onMouseEnter={() => setHoveredColorIndex(i)}
-                  onMouseLeave={() => setHoveredColorIndex(null)}
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoveredColorIndex(prev => prev === i ? null : i); }}
                   title={entry.color}
                 />
               ))}
