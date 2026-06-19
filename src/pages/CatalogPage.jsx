@@ -110,84 +110,72 @@ export default function CatalogPage() {
         alignItems: 'center',
         justifyContent: 'space-between',
         overflow: 'hidden',
-        padding: template === 'minimal' ? '30px' : '24px',
+        padding: template === 'minimal' ? '12px 16px' : '12px 16px',
         backgroundColor: template === 'minimal' ? '#f5f5f5' : '#1a1a1a',
-        borderRadius: template === 'minimal' ? '0px' : '20px',
+        borderRadius: template === 'minimal' ? '0px' : '12px',
         color: template === 'minimal' ? '#111' : '#fff',
-        height: template === 'minimal' ? '180px' : 'auto',
-        minHeight: '180px',
+        minHeight: template === 'minimal' ? '80px' : '76px',
         position: 'relative',
         zIndex: 10,
         width: '100%',
         visibility: 'visible',
         opacity: 1
       }}>
-        <div className="discount-content" style={{ flex: '1 1 65%', zIndex: 2, paddingRight: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
+        <div className="discount-content" style={{ flex: '1 1 62%', zIndex: 2, paddingRight: '8px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '4px' }}>
           <p className="discount-text" style={{
-            fontSize: template === 'minimal' ? '1.3rem' : '1.1rem',
+            fontSize: '0.8rem',
             fontWeight: 800,
             margin: 0,
             color: 'inherit',
-            lineHeight: 1.1,
-            whiteSpace: 'normal',
-            maxWidth: '100%',
+            lineHeight: 1.2,
             overflow: 'hidden',
             display: '-webkit-box',
-            WebkitLineClamp: 3,
+            WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical'
           }}>
             {bannerTitle}
           </p>
           <div className="discount-price" style={{
-            fontSize: template === 'minimal' ? '1.1rem' : '1.3rem',
+            fontSize: '0.85rem',
             fontWeight: 800,
-            marginBottom: 10,
+            margin: 0,
             whiteSpace: 'nowrap'
           }}>
             {banner.products.price.toLocaleString()} {store?.currency || 'FCFA'}
           </div>
           <Link to={`/c/catalogue/${slug}/product/${banner.product_id}`} className="discount-btn" style={{
-            marginTop: 5,
             textDecoration: 'none',
             display: 'inline-block',
             backgroundColor: template === 'minimal' ? '#000' : '#ff8c00',
             color: '#fff',
-            padding: '10px 25px',
-            borderRadius: template === 'minimal' ? '0px' : '12px',
+            padding: '5px 14px',
+            borderRadius: template === 'minimal' ? '0px' : '8px',
             fontWeight: 700,
-            fontSize: '0.85rem',
+            fontSize: '0.72rem',
             width: 'fit-content'
           }}>En profiter</Link>
         </div>
         <div className="discount-images" style={{
-          flex: '0 0 35%',
+          flex: '0 0 38%',
           display: 'flex',
           justifyContent: 'flex-end',
           alignItems: 'center',
-          paddingRight: 0,
-          zIndex: 1,
-          height: '100%'
+          zIndex: 1
         }}>
           {bannerImg && (
             <div style={{
-              width: '130px',
-              height: '130px',
-              borderRadius: '15px',
+              width: '70px',
+              height: '70px',
+              borderRadius: '10px',
               overflow: 'hidden',
               backgroundColor: 'rgba(255,255,255,0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 8px 15px rgba(0,0,0,0.1)'
+              flexShrink: 0,
+              boxShadow: '0 3px 8px rgba(0,0,0,0.15)'
             }}>
               <img
                 src={bannerImg}
                 alt="Promo"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover'
-                }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
           )}
