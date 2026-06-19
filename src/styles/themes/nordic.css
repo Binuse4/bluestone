@@ -158,11 +158,13 @@
     height: 13px !important;
   }
 
-  .theme-nordic .nordic-quick-add {
-    padding: 8px !important;
-    font-size: 0.65rem !important;
+  .theme-nordic .nordic-quick-add-plus {
     opacity: 1 !important;
-    transform: translateY(0) !important;
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 1.2rem !important;
+    bottom: 6px !important;
+    right: 6px !important;
   }
 }
 
@@ -213,28 +215,29 @@
 }
 
 /* --- QUICK ADD BUTTON NORDIC --- */
-.theme-nordic .nordic-quick-add {
+.theme-nordic .nordic-quick-add-plus {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
   background-color: #1a202c;
   color: #fff;
   border: none;
-  padding: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  font-size: 1.4rem;
+  line-height: 1;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   opacity: 0;
-  transform: translateY(100%);
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.2s ease;
+  padding: 0;
 }
 
-.theme-nordic .nordic-card:hover .nordic-quick-add {
+.theme-nordic .nordic-card:hover .nordic-quick-add-plus {
   opacity: 1;
-  transform: translateY(0);
 }
 
 /* --- COLOR SWATCHES NORDIC --- */

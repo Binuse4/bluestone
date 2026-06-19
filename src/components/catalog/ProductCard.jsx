@@ -158,8 +158,8 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
           )}
           <img src={displayImage} alt={product.name} className="nordic-card-img" style={{ filter: product.is_available === false ? 'grayscale(1)' : 'none' }} />
           {product.is_available !== false && (
-            <button onClick={handleNordicQuickAdd} className="nordic-quick-add">
-              Ajouter
+            <button onClick={handleNordicQuickAdd} className="nordic-quick-add-plus" aria-label="Ajouter au panier">
+              +
             </button>
           )}
         </div>
@@ -177,6 +177,7 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
                   }}
                   onMouseEnter={() => setHoveredColorIndex(i)}
                   onMouseLeave={() => setHoveredColorIndex(null)}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoveredColorIndex(prev => prev === i ? null : i); }}
                   title={entry.color}
                 />
               ))}
