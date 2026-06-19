@@ -13,6 +13,8 @@ export const CartProvider = ({ children }) => {
     }
   });
 
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
   // États pour les codes promo
   const [promoCode, setPromoCode] = useState('');
   const [promoError, setPromoError] = useState('');
@@ -162,7 +164,9 @@ export const CartProvider = ({ children }) => {
       promoError,
       discount,
       finalTotal,
-      applyPromoCode
+      applyPromoCode,
+      isCartOpen,
+      setIsCartOpen
     }}>
       {children}
     </CartContext.Provider>

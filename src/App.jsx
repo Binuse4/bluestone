@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useParams } from 'react-router-dom';
-import { CartProvider } from './context/CartContext';
+import { CartProvider, useCart } from './context/CartContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { useStoreData } from './hooks/useStoreData';
 
@@ -19,7 +19,7 @@ import CartDrawer from './components/cart/CartDrawer';
 function StoreLayout() {
   const { slug } = useParams();
   const { store, loading } = useStoreData(slug);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { isCartOpen, setIsCartOpen } = useCart();
   const { setTemplate } = useTheme();
 
   // Synchroniser le template du store avec le ThemeContext

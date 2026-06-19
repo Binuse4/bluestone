@@ -8,7 +8,7 @@ import ProductCard from '../components/catalog/ProductCard';
 export default function ProductPage() {
   const { slug, productId } = useParams();
   const { store, categories, products, loading, error } = useStoreData(slug);
-  const { addToCart } = useCart();
+  const { addToCart, setIsCartOpen } = useCart();
   const { template } = useTheme();
 
   // États de sélection
@@ -202,8 +202,8 @@ export default function ProductPage() {
                 <span style={{ width: '40px', textAlign: 'center', fontWeight: 600, color: '#1a202c' }}>{quantity}</span>
                 <button onClick={() => setQuantity(q => q+1)} style={{ width: '40px', height: '100%', background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: '#4A5568' }}>+</button>
               </div>
-              <button 
-                onClick={handleAddToCart} 
+              <button
+                onClick={() => { handleAddToCart(); if (product.is_available !== false) setIsCartOpen(true); }}
                 className="nordic-add-btn"
                 disabled={product.is_available === false}
               >

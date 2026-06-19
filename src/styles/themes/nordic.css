@@ -139,9 +139,30 @@
   }
   
   .theme-nordic .nordic-price-row {
-    flex-direction: column;
-    align-items: flex-start !important;
-    gap: 0 !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 4px !important;
+  }
+
+  .theme-nordic .nordic-swatch {
+    width: 10px !important;
+    height: 10px !important;
+  }
+
+  .theme-nordic .nordic-color-swatches {
+    gap: 4px !important;
+  }
+
+  .theme-nordic .nordic-like-btn svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  .theme-nordic .nordic-quick-add {
+    padding: 8px !important;
+    font-size: 0.65rem !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
   }
 }
 
@@ -189,6 +210,72 @@
   font-size: 0.85rem;
   font-weight: 600;
   color: #718096;
+}
+
+/* --- QUICK ADD BUTTON NORDIC --- */
+.theme-nordic .nordic-quick-add {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #1a202c;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.theme-nordic .nordic-card:hover .nordic-quick-add {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- COLOR SWATCHES NORDIC --- */
+.theme-nordic .nordic-color-swatches {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.theme-nordic .nordic-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
+}
+
+.theme-nordic .nordic-swatch.active,
+.theme-nordic .nordic-swatch:hover {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px #1a202c;
+}
+
+/* --- LIKE BUTTON NORDIC --- */
+.theme-nordic .nordic-like-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: #A0AEC0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.theme-nordic .nordic-like-btn:hover {
+  color: #E53E3E;
 }
 
 /* --- PRODUCT PAGE NORDIC --- */
