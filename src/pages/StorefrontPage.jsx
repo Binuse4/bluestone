@@ -67,44 +67,42 @@ export default function StorefrontPage() {
 
         <div className="container" style={{ padding: '40px 0 60px 0' }}>
 
-          {/* Bannière de réduction */}
+          {/* Bannière de réduction — identique à CatalogPage */}
           {firstBanner && bannerProduct && (
-            <div style={{
+            <section className="discount-banner fade-in" style={{
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
               overflow: 'hidden',
-              padding: '12px 16px',
+              padding: '22px 24px',
               backgroundColor: '#1a1a1a',
-              borderRadius: '12px',
+              borderRadius: '22px',
               color: '#fff',
-              minHeight: '76px',
+              minHeight: '160px',
               marginBottom: '50px',
-              position: 'relative',
+              width: '100%',
             }}>
-              <div style={{ flex: '1 1 62%', paddingRight: '8px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '4px' }}>
-                <p style={{ fontSize: '0.8rem', fontWeight: 800, margin: 0, lineHeight: 1.2, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+              <div className="discount-content" style={{ flex: '1 1 60%', paddingRight: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '8px' }}>
+                <p className="discount-text" style={{ fontSize: '1.05rem', fontWeight: 800, margin: 0, color: 'inherit', lineHeight: 1.3, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
                   {bannerTitle}
                 </p>
-                <div style={{ fontSize: '0.85rem', fontWeight: 800, margin: 0, whiteSpace: 'nowrap' }}>
-                  {bannerProduct.price?.toLocaleString()} {store?.currency || 'FCFA'}
+                <div className="discount-price" style={{ fontSize: '1.05rem', fontWeight: 800, margin: 0, whiteSpace: 'nowrap' }}>
+                  {firstBanner.products.price.toLocaleString()} {store?.currency || 'FCFA'}
                 </div>
-                <Link
-                  to={`/c/catalogue/${slug}/product/${firstBanner.product_id}`}
-                  style={{ textDecoration: 'none', display: 'inline-block', backgroundColor: '#ff8c00', color: '#fff', padding: '5px 14px', borderRadius: '8px', fontWeight: 700, fontSize: '0.72rem', width: 'fit-content' }}
-                >
-                  En profiter
-                </Link>
+                <Link to={`/c/catalogue/${slug}/product/${firstBanner.product_id}`} className="discount-btn" style={{
+                  textDecoration: 'none', display: 'inline-block', backgroundColor: '#ff8c00', color: '#fff',
+                  padding: '10px 22px', borderRadius: '18px', fontWeight: 700, fontSize: '0.88rem', width: 'fit-content'
+                }}>En profiter</Link>
               </div>
-              {bannerImg && (
-                <div style={{ flex: '0 0 38%', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                  <div style={{ width: '70px', height: '70px', borderRadius: '10px', overflow: 'hidden', flexShrink: 0, boxShadow: '0 3px 8px rgba(0,0,0,0.3)' }}>
+              <div className="discount-images" style={{ flex: '0 0 40%', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                {bannerImg && (
+                  <div style={{ width: '120px', height: '120px', borderRadius: '14px', overflow: 'hidden', backgroundColor: 'rgba(255,255,255,0.08)', flexShrink: 0 }}>
                     <img src={bannerImg} alt="Promo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            </section>
           )}
 
           <div style={{ textAlign: 'center', marginBottom: '50px' }}>

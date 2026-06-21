@@ -103,31 +103,32 @@ export default function CatalogPage() {
     const bannerTitle = banner.title || (bannerProduct ? `${banner.discount_rate}% de réduction sur ${bannerProduct.name}` : "Offre Spéciale");
     const bannerImg = bannerProduct?.image_url;
 
+    const isNordic = template === 'nordic';
+    const isMinimal = template === 'minimal';
+
     return (
       <section className="discount-banner fade-in" style={{
-        display: 'flex !important',
+        display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         overflow: 'hidden',
-        padding: template === 'minimal' ? '12px 16px' : '12px 16px',
-        backgroundColor: template === 'minimal' ? '#f5f5f5' : '#1a1a1a',
-        borderRadius: template === 'minimal' ? '0px' : '12px',
-        color: template === 'minimal' ? '#111' : '#fff',
-        minHeight: template === 'minimal' ? '80px' : '76px',
+        padding: isMinimal ? '12px 16px' : isNordic ? '22px 24px' : '12px 16px',
+        backgroundColor: isMinimal ? '#f5f5f5' : '#1a1a1a',
+        borderRadius: isMinimal ? '0px' : isNordic ? '22px' : '12px',
+        color: isMinimal ? '#111' : '#fff',
+        minHeight: isMinimal ? '80px' : isNordic ? '160px' : '76px',
         position: 'relative',
         zIndex: 10,
         width: '100%',
-        visibility: 'visible',
-        opacity: 1
       }}>
-        <div className="discount-content" style={{ flex: '1 1 62%', zIndex: 2, paddingRight: '8px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '4px' }}>
+        <div className="discount-content" style={{ flex: '1 1 60%', paddingRight: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: isNordic ? '8px' : '4px' }}>
           <p className="discount-text" style={{
-            fontSize: '0.8rem',
+            fontSize: isNordic ? '1.05rem' : '0.8rem',
             fontWeight: 800,
             margin: 0,
             color: 'inherit',
-            lineHeight: 1.2,
+            lineHeight: 1.3,
             overflow: 'hidden',
             display: '-webkit-box',
             WebkitLineClamp: 2,
@@ -136,7 +137,7 @@ export default function CatalogPage() {
             {bannerTitle}
           </p>
           <div className="discount-price" style={{
-            fontSize: '0.85rem',
+            fontSize: isNordic ? '1.05rem' : '0.85rem',
             fontWeight: 800,
             margin: 0,
             whiteSpace: 'nowrap'
@@ -146,31 +147,29 @@ export default function CatalogPage() {
           <Link to={`/c/catalogue/${slug}/product/${banner.product_id}`} className="discount-btn" style={{
             textDecoration: 'none',
             display: 'inline-block',
-            backgroundColor: template === 'minimal' ? '#000' : '#ff8c00',
+            backgroundColor: isMinimal ? '#000' : '#ff8c00',
             color: '#fff',
-            padding: '5px 14px',
-            borderRadius: template === 'minimal' ? '0px' : '8px',
+            padding: isNordic ? '10px 22px' : '5px 14px',
+            borderRadius: isMinimal ? '0px' : isNordic ? '18px' : '8px',
             fontWeight: 700,
-            fontSize: '0.72rem',
+            fontSize: isNordic ? '0.88rem' : '0.72rem',
             width: 'fit-content'
           }}>En profiter</Link>
         </div>
         <div className="discount-images" style={{
-          flex: '0 0 38%',
+          flex: '0 0 40%',
           display: 'flex',
           justifyContent: 'flex-end',
           alignItems: 'center',
-          zIndex: 1
         }}>
           {bannerImg && (
             <div style={{
-              width: '70px',
-              height: '70px',
-              borderRadius: '10px',
+              width: isNordic ? '120px' : '70px',
+              height: isNordic ? '120px' : '70px',
+              borderRadius: isNordic ? '14px' : '10px',
               overflow: 'hidden',
-              backgroundColor: 'rgba(255,255,255,0.1)',
+              backgroundColor: 'rgba(255,255,255,0.08)',
               flexShrink: 0,
-              boxShadow: '0 3px 8px rgba(0,0,0,0.15)'
             }}>
               <img
                 src={bannerImg}
