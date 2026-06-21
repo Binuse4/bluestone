@@ -194,10 +194,10 @@ export default function ProductCard({ product, categoryName, onLikeToggle }) {
               ))}
             </div>
           )}
-          <div className="nordic-price-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', overflow: 'hidden' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <span className="nordic-card-price" style={{ whiteSpace: 'nowrap' }}>{formattedPrice}</span>
-              {formattedComparePrice && <span className="nordic-card-old-price" style={{ textDecoration: 'line-through', color: '#A0AEC0', fontSize: '0.75rem', whiteSpace: 'nowrap' }}>{formattedComparePrice}</span>}
+          <div className="nordic-price-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px' }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '5px', minWidth: 0, flex: 1, overflow: 'hidden' }}>
+              <span className="nordic-card-price" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>{formattedPrice}</span>
+              {formattedComparePrice && <span className="nordic-card-old-price" style={{ textDecoration: 'line-through', color: '#A0AEC0', fontSize: '0.7rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }}>{formattedComparePrice}</span>}
             </div>
             <button onClick={handleLikeToggle} className="nordic-like-btn" aria-label="Ajouter aux favoris">
               <svg width="16" height="16" viewBox="0 0 24 24" fill={isLiked ? '#E53E3E' : 'none'} stroke={isLiked ? '#E53E3E' : '#A0AEC0'} strokeWidth="1.5">

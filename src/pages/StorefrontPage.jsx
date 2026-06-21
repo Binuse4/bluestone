@@ -50,6 +50,11 @@ export default function StorefrontPage() {
 
   // --- RENDU THÈME NORDIC ---
   if (template === 'nordic') {
+    const firstBanner = banners && banners[0];
+    const bannerProduct = firstBanner ? (Array.isArray(firstBanner.products) ? firstBanner.products[0] : firstBanner.products) : null;
+    const bannerTitle = firstBanner ? (firstBanner.title || (bannerProduct ? `${firstBanner.discount_rate}% de réduction sur ${bannerProduct.name}` : 'Offre Spéciale')) : null;
+    const bannerImg = bannerProduct?.image_url;
+
     return (
       <div className="fade-in">
         <div className="nordic-hero">
@@ -59,7 +64,49 @@ export default function StorefrontPage() {
             <p style={{ fontSize: '1.2rem', fontWeight: 300, letterSpacing: '0.05em', marginTop: '10px' }}>Découvrir la collection</p>
           </div>
         </div>
-        <div className="container" style={{ padding: '60px 0' }}>
+
+        <div className="container" style={{ padding: '40px 0 60px 0' }}>
+
+          {/* Bannière de réduction */}
+          {firstBanner && bannerProduct && (
+            <div style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              overflow: 'hidden',
+              padding: '12px 16px',
+              backgroundColor: '#1a1a1a',
+              borderRadius: '12px',
+              color: '#fff',
+              minHeight: '76px',
+              marginBottom: '50px',
+              position: 'relative',
+            }}>
+              <div style={{ flex: '1 1 62%', paddingRight: '8px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '4px' }}>
+                <p style={{ fontSize: '0.8rem', fontWeight: 800, margin: 0, lineHeight: 1.2, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                  {bannerTitle}
+                </p>
+                <div style={{ fontSize: '0.85rem', fontWeight: 800, margin: 0, whiteSpace: 'nowrap' }}>
+                  {bannerProduct.price?.toLocaleString()} {store?.currency || 'FCFA'}
+                </div>
+                <Link
+                  to={`/c/catalogue/${slug}/product/${firstBanner.product_id}`}
+                  style={{ textDecoration: 'none', display: 'inline-block', backgroundColor: '#ff8c00', color: '#fff', padding: '5px 14px', borderRadius: '8px', fontWeight: 700, fontSize: '0.72rem', width: 'fit-content' }}
+                >
+                  En profiter
+                </Link>
+              </div>
+              {bannerImg && (
+                <div style={{ flex: '0 0 38%', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                  <div style={{ width: '70px', height: '70px', borderRadius: '10px', overflow: 'hidden', flexShrink: 0, boxShadow: '0 3px 8px rgba(0,0,0,0.3)' }}>
+                    <img src={bannerImg} alt="Promo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           <div style={{ textAlign: 'center', marginBottom: '50px' }}>
             <h2 style={{ fontSize: '1.8rem', fontWeight: 600, color: '#2D3748', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Nouveautés</h2>
             <div style={{ width: '40px', height: '2px', backgroundColor: '#CBD5E0', margin: '15px auto' }}></div>

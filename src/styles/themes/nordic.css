@@ -104,8 +104,8 @@
 
 @media (max-width: 768px) {
   .theme-nordic .products-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 8px 4px !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px 8px !important;
     padding: 4px !important;
   }
   
@@ -292,21 +292,104 @@
 @media (max-width: 992px) {
   .theme-nordic .nordic-product-layout {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 20px;
     padding: 20px 0;
   }
 }
 
 .theme-nordic .nordic-gallery {
-  width: 100%;
-  height: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   background-color: #f9f9f9;
 }
 
+.theme-nordic .nordic-gallery-main-img {
+  width: 100%;
+  height: 550px;
+  object-fit: cover;
+}
+
 @media (max-width: 768px) {
-  .theme-nordic .nordic-gallery {
-    height: 350px;
+  .theme-nordic .nordic-gallery-main-img {
+    height: 300px;
   }
+}
+
+/* --- THUMBNAILS NORDIC --- */
+.theme-nordic .nordic-thumb-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.theme-nordic .nordic-thumb-row::-webkit-scrollbar {
+  display: none;
+}
+
+.theme-nordic .nordic-thumb {
+  width: 70px;
+  height: 70px;
+  flex-shrink: 0;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.theme-nordic .nordic-thumb.active {
+  border-color: #1a202c;
+}
+
+.theme-nordic .nordic-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .theme-nordic .nordic-thumb {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+/* --- OPTION ROWS NORDIC (Couleur / Quantité) --- */
+.theme-nordic .nordic-option-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-top: 1px solid #E2E8F0;
+}
+
+.theme-nordic .nordic-option-row:last-of-type {
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.theme-nordic .nordic-option-label {
+  font-size: 0.85rem;
+  color: #4A5568;
+  font-weight: 500;
+}
+
+/* --- QUANTITY ARROWS NORDIC --- */
+.theme-nordic .nordic-qty-arrow {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #4A5568;
+  font-size: 0.75rem;
+  padding: 6px 8px;
+  transition: color 0.2s;
+}
+
+.theme-nordic .nordic-qty-arrow:hover {
+  color: #1a202c;
 }
 
 .theme-nordic .nordic-info-panel {
