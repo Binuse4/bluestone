@@ -19,6 +19,7 @@ export default function CatalogPage() {
   const [isFavoritesView, setIsFavoritesOnly] = useState(initialView === 'favorites');
 
   const [likedIds, setLikedIds] = useState([]);
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const searchInputRef = useRef(null);
 
   // Carousel Logic for Banners
@@ -121,6 +122,7 @@ export default function CatalogPage() {
         position: 'relative',
         zIndex: 10,
         width: '100%',
+        marginBottom: isNordic ? '40px' : '0',
       }}>
         <div className="discount-content" style={{ flex: '1 1 60%', paddingRight: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: isNordic ? '8px' : '4px' }}>
           <p className="discount-text" style={{
@@ -255,15 +257,35 @@ export default function CatalogPage() {
   if (template === 'nordic') {
     return (
       <div className="container fade-in" style={{ padding: '40px 0' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#2D3748', textTransform: 'uppercase', letterSpacing: '0.1em', margin: '0 0 15px 0' }}>Collection</h2>
-          <div className="nordic-category-scroll" style={{ display: 'flex', gap: '15px', overflowX: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: '10px' }}>
-            <button onClick={() => handleCategoryChange('all')} style={{ flexShrink: 0, background: 'none', border: 'none', fontSize: '0.85rem', fontWeight: selectedCategory === 'all' ? 700 : 400, color: selectedCategory === 'all' ? '#1a202c' : '#718096', textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'pointer', padding: '5px 0', borderBottom: selectedCategory === 'all' ? '2px solid #1a202c' : '2px solid transparent' }}>Tout</button>
-            {categories.map(cat => (
-              <button key={cat.id} onClick={() => handleCategoryChange(cat.id)} style={{ flexShrink: 0, background: 'none', border: 'none', fontSize: '0.85rem', fontWeight: selectedCategory === cat.id ? 700 : 400, color: selectedCategory === cat.id ? '#1a202c' : '#718096', textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'pointer', padding: '5px 0', borderBottom: selectedCategory === cat.id ? '2px solid #1a202c' : '2px solid transparent' }}>{cat.name}</button>
-            ))}
+
+        {/* En-tête : Categories (cliquable) + Filter */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #E2E8F0', paddingBottom: '13px', marginBottom: '0', cursor: 'pointer' }} onClick={() => setIsCategoryOpen(prev => !prev)}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 600, color: '#2D3748', margin: 0 }}>Categories</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ transform: isCategoryOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
+              <path d="M1 3L5 7L9 3" stroke="#718096" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <button onClick={e => e.stopPropagation()} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', color: '#718096', fontSize: '0.82rem', padding: 0 }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/></svg>
+              Filter
+            </button>
           </div>
         </div>
+
+        {/* Liste verticale de catégories — masquée par défaut */}
+        {isCategoryOpen && (
+          <div style={{ marginBottom: '32px' }}>
+            <button onClick={() => { handleCategoryChange('all'); setIsCategoryOpen(false); }} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '13px 0', background: 'none', border: 'none', borderBottom: '1px solid #E2E8F0', fontSize: '0.92rem', fontWeight: selectedCategory === 'all' ? 500 : 400, color: selectedCategory === 'all' ? '#C9A96E' : '#4A5568', cursor: 'pointer' }}>
+              All
+            </button>
+            {categories.map(cat => (
+              <button key={cat.id} onClick={() => { handleCategoryChange(cat.id); setIsCategoryOpen(false); }} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '13px 0', background: 'none', border: 'none', borderBottom: '1px solid #E2E8F0', fontSize: '0.92rem', fontWeight: selectedCategory === cat.id ? 500 : 400, color: selectedCategory === cat.id ? '#C9A96E' : '#4A5568', cursor: 'pointer' }}>
+                {cat.name}
+              </button>
+            ))}
+          </div>
+        )}
+        {!isCategoryOpen && <div style={{ marginBottom: '32px' }} />}
 
         {renderBanner()}
 

@@ -243,9 +243,9 @@
 /* --- COLOR SWATCHES NORDIC --- */
 .theme-nordic .nordic-color-swatches {
   display: flex;
-  gap: 6px;
+  gap: 10px;
   flex-wrap: wrap;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .theme-nordic .nordic-swatch {
